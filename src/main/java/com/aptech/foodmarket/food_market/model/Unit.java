@@ -10,7 +10,7 @@ public class Unit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "name",length = 50)
     private String name;
@@ -27,11 +27,11 @@ public class Unit {
     @Column(name = "edited_at")
     private Date editedAt;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -9,10 +9,9 @@ public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
+
     @OneToOne(optional=false)
-//    @JoinColumn(name = "user_id")
-//    @ManyToOne(optional=false)
     @JoinColumn(name="user_id")
     @MapsId("userId")
     private  User user;
@@ -47,11 +46,11 @@ public class Admin {
         this.user = user;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -10,7 +10,7 @@ public class Promotion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "title")
     private String title;
@@ -33,11 +33,11 @@ public class Promotion {
     @OneToMany(mappedBy = "promotion")
     private List<Order> orders;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

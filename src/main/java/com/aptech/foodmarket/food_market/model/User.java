@@ -15,7 +15,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "username",length = 50)
     private String username;
@@ -30,14 +30,6 @@ public class User {
     @Transient
     private String passwordConfirm;
 
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
     @Column(name = "full_name")
     private String fullName;
 
@@ -45,7 +37,7 @@ public class User {
     private String address;
 
     @Column(name = "gender")
-    private boolean gender;
+    private Boolean gender;
 
     @Column(name = "birthday")
     private Date birthday;
@@ -71,35 +63,11 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
 
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-    public Supplier getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
-
-    public Admin getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -127,6 +95,14 @@ public class User {
         this.password = password;
     }
 
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
     public String getFullName() {
         return fullName;
     }
@@ -143,11 +119,11 @@ public class User {
         this.address = address;
     }
 
-    public boolean isGender() {
+    public Boolean getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(Boolean gender) {
         this.gender = gender;
     }
 
@@ -191,5 +167,28 @@ public class User {
         this.editedAt = editedAt;
     }
 
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
 }
 

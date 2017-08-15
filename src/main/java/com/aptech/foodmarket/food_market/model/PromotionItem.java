@@ -9,7 +9,16 @@ public class PromotionItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
+
+    @Column(name = "percent",length = 2)
+    private Integer percent;
+
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "edited_at")
+    private Date editedAt;
 
     @ManyToOne(optional=false)
     @JoinColumn(name="promotion_id")
@@ -19,44 +28,19 @@ public class PromotionItem {
     @JoinColumn(name="item_id")
     private Item item;
 
-    @Column(name = "percent",length = 2)
-    private int percent;
-
-    @Column(name = "created_at")
-    private Date createdAt;
-
-    @Column(name = "edited_at")
-    private Date editedAt;
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Promotion getPromotion() {
-        return promotion;
-    }
-
-    public void setPromotion(Promotion promotion) {
-        this.promotion = promotion;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-
-    public int getPercent() {
+    public Integer getPercent() {
         return percent;
     }
 
-    public void setPercent(int percent) {
+    public void setPercent(Integer percent) {
         this.percent = percent;
     }
 
@@ -74,5 +58,21 @@ public class PromotionItem {
 
     public void setEditedAt(Date editedAt) {
         this.editedAt = editedAt;
+    }
+
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
     }
 }

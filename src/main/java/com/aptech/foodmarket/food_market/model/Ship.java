@@ -10,22 +10,46 @@ public class Ship {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "distance",length = 45)
     private String distance;
 
     @Column(name = "price")
-    private float price;
-
-    @OneToMany(mappedBy = "ship")
-    private List<Order> orders;
+    private Float price;
 
     @Column(name = "created_at")
     private Date createdAt;
 
     @Column(name = "edited_at")
     private Date editedAt;
+
+    @OneToMany(mappedBy = "ship")
+    private List<Order> orders;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
 
     public Date getCreatedAt() {
         return createdAt;
@@ -41,30 +65,6 @@ public class Ship {
 
     public void setEditedAt(Date editedAt) {
         this.editedAt = editedAt;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getDistance() {
-        return distance;
-    }
-
-    public void setDistance(String distance) {
-        this.distance = distance;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
     }
 
     public List<Order> getOrders() {

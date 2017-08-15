@@ -10,10 +10,28 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "name", length = 50)
     private String name;
+
+    @Column(name = "price")
+    private Float price;
+
+    @Column(name = "avatar")
+    private String avatar;
+
+    @Column(name = "status")
+    private Boolean status;
+
+    @Column(name = "quantity")
+    private Integer quantity;
+
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "edited_at")
+    private Date editedAt;
 
     @ManyToOne(optional=false)
     @JoinColumn(name="unit_id")
@@ -22,24 +40,6 @@ public class Item {
     @ManyToOne(optional=false)
     @JoinColumn(name="supplier_id")
     private Supplier supplier;
-
-    @Column(name = "price")
-    private float price;
-
-    @Column(name = "avatar")
-    private String avatar;
-
-    @Column(name = "status", length = 1)
-    private int status;
-
-    @Column(name = "quantity")
-    private int quantity;
-
-    @Column(name = "created_at")
-    private Date createdAt;
-
-    @Column(name = "edited_at")
-    private Date editedAt;
 
     @OneToMany(mappedBy = "item")
     private List<PromotionItem> promotionItems;
@@ -58,11 +58,11 @@ public class Item {
                     referencedColumnName = "id"))
     private List<Category> categories;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -74,27 +74,11 @@ public class Item {
         this.name = name;
     }
 
-    public Unit getUnit() {
-        return unit;
-    }
-
-    public void setUnit(Unit unit) {
-        this.unit = unit;
-    }
-
-    public Supplier getSupplier() {
-        return supplier;
-    }
-
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
-
-    public float getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
@@ -106,19 +90,19 @@ public class Item {
         this.avatar = avatar;
     }
 
-    public int getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
@@ -136,6 +120,22 @@ public class Item {
 
     public void setEditedAt(Date editedAt) {
         this.editedAt = editedAt;
+    }
+
+    public Unit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
     }
 
     public List<PromotionItem> getPromotionItems() {

@@ -10,7 +10,28 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
+
+    @Column(name = "trans_at")
+    private Date transportedAt;
+
+    @Column(name = "address")
+    private Date address;
+
+    @Column(name = "status")
+    private Byte status;
+
+    @Column(name = "phone",length = 15)
+    private String phone;
+
+    @Column(name = "note")
+    private String note;
+
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "edited_at")
+    private Date editedAt;
 
     @ManyToOne(optional=false)
     @JoinColumn(name="user_id")
@@ -27,65 +48,12 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
 
-    @Column(name = "trans_at")
-    private Date transportedAt;
-
-    @Column(name = "address")
-    private Date address;
-
-    @Column(name = "status")
-    private byte status;
-
-    @Column(name = "phone",length = 15)
-    private String phone;
-
-    @Column(name = "note")
-    private String note;
-
-    @Column(name = "created_at")
-    private Date createdAt;
-
-    @Column(name = "edited_at")
-    private Date editedAt;
-
-    public Promotion getPromotion() {
-        return promotion;
-    }
-
-    public void setPromotion(Promotion promotion) {
-        this.promotion = promotion;
-    }
-
-    public Ship getShip() {
-        return ship;
-    }
-
-    public void setShip(Ship ship) {
-        this.ship = ship;
-    }
-
-    public List<OrderItem> getOrderItems() {
-        return orderItems;
-    }
-
-    public void setOrderItems(List<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Date getTransportedAt() {
@@ -104,11 +72,11 @@ public class Order {
         this.address = address;
     }
 
-    public byte getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
-    public void setStatus(byte status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 
@@ -142,5 +110,37 @@ public class Order {
 
     public void setEditedAt(Date editedAt) {
         this.editedAt = editedAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
+    }
+
+    public Ship getShip() {
+        return ship;
+    }
+
+    public void setShip(Ship ship) {
+        this.ship = ship;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 }
