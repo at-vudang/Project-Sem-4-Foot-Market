@@ -52,16 +52,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>org.hibernate</groupId>-->
-        <!--<artifactId>hibernate-core</artifactId>-->
-        <!--&lt;!&ndash;<version>4.1.4.Final</version>&ndash;&gt;-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>org.hibernate</groupId>-->
-        <!--<artifactId>hibernate-entitymanager</artifactId>-->
-        <!--&lt;!&ndash;<version>5.2.3.Final</version>&ndash;&gt;-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-jwt</artifactId>
