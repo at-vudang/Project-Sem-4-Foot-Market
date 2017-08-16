@@ -1,6 +1,7 @@
 package com.aptech.foodmarket.food_market.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "users")
+@Where(clause="is_active = 1")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,6 +64,10 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
+
+    @Column(name="is_active")
+    private Boolean active;
+
 
     public Integer getId() {
         return id;
@@ -189,6 +195,14 @@ public class User {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
 
