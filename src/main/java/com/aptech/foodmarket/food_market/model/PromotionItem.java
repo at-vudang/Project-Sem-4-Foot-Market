@@ -1,9 +1,12 @@
 package com.aptech.foodmarket.food_market.model;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Where(clause = "is_active = 1")
 @Table(name = "promotion_items")
 public class PromotionItem {
     @Id
@@ -19,6 +22,9 @@ public class PromotionItem {
 
     @Column(name = "edited_at")
     private Date editedAt;
+
+    @Column(name = "is_active")
+    private Boolean active;
 
     @ManyToOne(optional=false)
     @JoinColumn(name="promotion_id")
@@ -74,5 +80,13 @@ public class PromotionItem {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

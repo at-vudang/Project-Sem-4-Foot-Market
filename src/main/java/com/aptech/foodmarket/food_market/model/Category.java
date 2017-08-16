@@ -1,10 +1,13 @@
 package com.aptech.foodmarket.food_market.model;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import java.util.Date;
 
 @Entity
+@Where(clause = "is_active")
 @Table(name = "categories")
 public class Category {
     @Id
@@ -24,6 +27,9 @@ public class Category {
 
     @Column(name = "edited_at")
     private Date editedAt;
+
+    @Column(name = "is_active")
+    private Boolean active;
 
     public Integer getId() {
         return id;
@@ -63,5 +69,13 @@ public class Category {
 
     public void setEditedAt(Date editedAt) {
         this.editedAt = editedAt;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
