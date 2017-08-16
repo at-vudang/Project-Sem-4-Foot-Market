@@ -1,8 +1,13 @@
 package com.aptech.foodmarket.food_market.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Where;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +16,8 @@ import java.util.List;
  */
 @Entity
 @Table(name = "users")
-public class User {
+@Where(clause="is_active = 1")
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -62,6 +68,36 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
+
+    @Column(name="is_active")
+    private Boolean active;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        return authorities;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return active;
+    }
 
     public Integer getId() {
         return id;
@@ -189,6 +225,14 @@ public class User {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
 
