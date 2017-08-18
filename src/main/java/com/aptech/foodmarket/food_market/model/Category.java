@@ -22,6 +22,10 @@ public class Category {
     @Lob
     private String description;
 
+    @ManyToOne(optional=false)
+    @JoinColumn(name="level_category_id")
+    private LevelCategory levelCategory;
+
     @Column(name = "created_at")
     private Date createdAt;
 
