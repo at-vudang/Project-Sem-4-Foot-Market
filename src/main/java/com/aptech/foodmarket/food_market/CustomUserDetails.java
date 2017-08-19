@@ -18,7 +18,7 @@ public class CustomUserDetails implements UserDetails {
         this.username = byUsername.getUsername();
         this.password = byUsername.getPassword();
         List<GrantedAuthority> auths = new ArrayList<>();
-        auths.add(new SimpleGrantedAuthority("ADMIN"));
+        auths.add(new SimpleGrantedAuthority("ADMIN2"));
         this.authorities = auths;
     }
 
