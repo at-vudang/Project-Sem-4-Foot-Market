@@ -18,8 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 //@EnableResourceServer
 public class FoodMarketApplication extends SpringBootServletInitializer{
 
-	@Autowired
-	// private PasswordEncoder passwordEncoder;
+//	@Autowired
+//	private PasswordEncoder passwordEncoder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(FoodMarketApplication.class, args);
@@ -28,6 +28,7 @@ public class FoodMarketApplication extends SpringBootServletInitializer{
 //	public void authenticationManager(AuthenticationManagerBuilder builder, UserRepository repo) throws Exception {
 //		builder.userDetailsService(s -> {
 //            return new CustomUserDetails(repo.findByUsername(s));
-//        }).passwordEncoder(passwordEncoder);
+//        });
+////				.passwordEncoder(passwordEncoder);
 //	}
 }

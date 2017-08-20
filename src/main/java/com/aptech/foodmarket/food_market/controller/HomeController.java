@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HomeController {
-    @Autowired
-    private UserService userService;
+//    @Autowired
+//    private UserService userService;
     @Autowired
     private UserRepository userRepository;
     @GetMapping(value="/")
     public String home() {
-        return userService.findByUserName("vudang1").getPassword();
+       return "Hello";
     }
 
     @GetMapping(value="/private")

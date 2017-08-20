@@ -2,13 +2,9 @@ package com.aptech.foodmarket.food_market.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Where;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.lang.annotation.Documented;
-import java.util.ArrayList;
-import java.util.Collection;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Where(clause="is_active = 1")
-public class User implements UserDetails {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -62,9 +58,6 @@ public class User implements UserDetails {
     private Date editedAt;
 
     @OneToOne(mappedBy = "user")
-    private Admin admin;
-
-    @OneToOne(mappedBy = "user")
     private Supplier supplier;
 
     @OneToMany(mappedBy = "user")
@@ -73,31 +66,29 @@ public class User implements UserDetails {
     @Column(name="is_active")
     private Boolean active;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "USER_AUTHORITY",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
+    private List<Authority> authorities;
 
+    public List<Authority> getAuthorities() {
         return authorities;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
+    }
+    @Column(name = "last_rest_pass_date")
+    private Date lastPasswordResetDate;
+
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return active;
+    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
     }
 
     public Integer getId() {
@@ -202,14 +193,6 @@ public class User implements UserDetails {
 
     public void setEditedAt(Date editedAt) {
         this.editedAt = editedAt;
-    }
-
-    public Admin getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
     }
 
     public Supplier getSupplier() {
