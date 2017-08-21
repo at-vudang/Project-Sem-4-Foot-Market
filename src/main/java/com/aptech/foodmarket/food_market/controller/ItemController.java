@@ -3,6 +3,8 @@ package com.aptech.foodmarket.food_market.controller;
 import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.model.User;
 import com.aptech.foodmarket.food_market.repository.ItemRepository;
+import com.aptech.foodmarket.food_market.service.ItemService;
+import com.aptech.foodmarket.food_market.vo.ItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +17,13 @@ public class ItemController {
     @Autowired
     ItemRepository itemRepository ;
 
+    @Autowired
+    ItemService itemService;
+
     @RequestMapping("/all")
     @ResponseBody
-    public List<Item> getAll() {
-             return itemRepository.findAll();
+    public List<ItemVO> getAll() {
+             return itemService.getAll();
     }
 
     @RequestMapping("/getItemByName")
