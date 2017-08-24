@@ -15,7 +15,7 @@ import java.util.List;
 @Controller
 public class ItemController {
     @Autowired
-    ItemRepository itemRepository ;
+    ItemRepository itemRepository;
 
     @Autowired
     ItemService itemService;
@@ -23,14 +23,13 @@ public class ItemController {
     @RequestMapping("/all")
     @ResponseBody
     public List<ItemVO> getAll() {
-             return itemService.getAll();
+        return itemService.getAll();
     }
 
     @RequestMapping("/getItemByName")
     @ResponseBody
-    public List<Item> getItemByName(String name) {
-        System.out.println(name);
-        return itemRepository.findByName(name);
+    public List<ItemVO> getItemByName(String name) {
+        return itemService.getItemByName(name);
     }
 
     @RequestMapping("/getItemById")
@@ -38,4 +37,11 @@ public class ItemController {
     public Item getItemByName(int id) {
         return itemRepository.findOne(id);
     }
+
+    @RequestMapping("/getItemNew")
+    @ResponseBody
+    public List<ItemVO> getItemNew(int quantity) {
+        return itemService.getItemNew(quantity);
+    }
+
 }

@@ -7,31 +7,22 @@ import java.util.Date;
 import java.util.List;
 
 public class ItemVO {
+
     private Integer id;
     private String name;
     private Float price;
     private String avatar;
-
     private Boolean status;
-
     private Integer quantity;
     private Date createdAt;
-
     private Date editedAt;
-
     private Boolean active;
-
-    private Unit unit;
-
-    private Supplier supplier;
-
-    private List<Integer> promotionId;
-
-    private List<Integer> imageItemId;
-
-    private List<Integer> orderItemsId;
-
-    private List<Integer> categoriesId;
+    private UnitVO unit;
+//    private Supplier supplier;
+    private List<PromotionItem> promotions;
+//    private List<ImageItem> imageItems;
+//    private List<OrderItem> orderItems;
+//    private List<Category> category;
 
     public Integer getId() {
         return id;
@@ -105,53 +96,59 @@ public class ItemVO {
         this.active = active;
     }
 
-    public Unit getUnit() {
+    public UnitVO getUnit() {
         return unit;
     }
 
-    public void setUnit(Unit unit) {
+    public void setUnit(UnitVO unit) {
         this.unit = unit;
     }
 
-    public Supplier getSupplier() {
-        return supplier;
+    //    public UnitVO getUnit() {
+//        return unit;
+//    }
+//
+//    public void setUnit(UnitVO unit) {
+//        this.unit = unit;
+//    }
+//
+//    public Supplier getSupplier() {
+//        return supplier;
+//    }
+//
+//    public void setSupplier(Supplier supplier) {
+//        this.supplier = supplier;
+//    }
+//
+    public List<PromotionItem> getPromotions() {
+        return promotions;
     }
 
-    public void setSupplier(Supplier supplier) {
-        this.supplier = supplier;
+    public void setPromotions(List<PromotionItem> promotions) {
+        this.promotions = promotions;
     }
 
-    public List<Integer> getPromotionId() {
-        return promotionId;
-    }
-
-    public void setPromotionId(List<Integer> promotionId) {
-        this.promotionId = promotionId;
-    }
-
-    public List<Integer> getImageItemId() {
-        return imageItemId;
-    }
-
-    public void setImageItemId(List<Integer> imageItemId) {
-        this.imageItemId = imageItemId;
-    }
-
-    public List<Integer> getOrderItemsId() {
-        return orderItemsId;
-    }
-
-    public void setOrderItemsId(List<Integer> orderItemsId) {
-        this.orderItemsId = orderItemsId;
-    }
-
-    public List<Integer> getCategoriesId() {
-        return categoriesId;
-    }
-
-    public void setCategoriesId(List<Integer> categoriesId) {
-        this.categoriesId = categoriesId;
-    }
-
-
+//    public List<ImageItem> getImageItems() {
+//        return imageItems;
+//    }
+//
+//    public void setImageItems(List<ImageItem> imageItems) {
+//        this.imageItems = imageItems;
+//    }
+//
+//    public List<OrderItem> getOrderItems() {
+//        return orderItems;
+//    }
+//
+//    public void setOrderItems(List<OrderItem> orderItems) {
+//        this.orderItems = orderItems;
+//    }
+//
+//    public List<Category> getCategory() {
+//        return category;
+//    }
+//
+//    public void setCategory(List<Category> category) {
+//        this.category = category;
+//    }
 }

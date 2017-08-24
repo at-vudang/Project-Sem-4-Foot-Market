@@ -1,13 +1,14 @@
 package com.aptech.foodmarket.food_market.builder;
 
-import com.aptech.foodmarket.food_market.model.Supplier;
-import com.aptech.foodmarket.food_market.model.Unit;
+import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
+import com.aptech.foodmarket.food_market.vo.UnitVO;
 
 import java.util.Date;
 import java.util.List;
 
 public final class ItemVOBuilder {
+
     private Integer id;
     private String name;
     private Float price;
@@ -17,12 +18,12 @@ public final class ItemVOBuilder {
     private Date createdAt;
     private Date editedAt;
     private Boolean active;
-    private Unit unit;
-    private Supplier supplier;
-    private List<Integer> promotionId;
-    private List<Integer> imageItemId;
-    private List<Integer> orderItemsId;
-    private List<Integer> categoriesId;
+    private UnitVO unit;
+//    private Supplier supplier;
+    private List<PromotionItem> promotions;
+//    private List<ImageItem> imageItems;
+//    private List<OrderItem> orderItems;
+//    private List<Category> category;
 
     private ItemVOBuilder() {
     }
@@ -76,35 +77,35 @@ public final class ItemVOBuilder {
         return this;
     }
 
-    public ItemVOBuilder withUnit(Unit unit) {
+    public ItemVOBuilder withUnit(UnitVO unit) {
         this.unit = unit;
         return this;
     }
 
-    public ItemVOBuilder withSupplier(Supplier supplier) {
-        this.supplier = supplier;
+//    public ItemVOBuilder withSupplier(Supplier supplier) {
+//        this.supplier = supplier;
+//        return this;
+//    }
+//
+    public ItemVOBuilder withPromotions(List<PromotionItem> promotions) {
+        this.promotions = promotions;
         return this;
     }
-
-    public ItemVOBuilder withPromotionId(List<Integer> promotionId) {
-        this.promotionId = promotionId;
-        return this;
-    }
-
-    public ItemVOBuilder withImageItemId(List<Integer> imageItemId) {
-        this.imageItemId = imageItemId;
-        return this;
-    }
-
-    public ItemVOBuilder withOrderItemsId(List<Integer> orderItemsId) {
-        this.orderItemsId = orderItemsId;
-        return this;
-    }
-
-    public ItemVOBuilder withCategoriesId(List<Integer> categoriesId) {
-        this.categoriesId = categoriesId;
-        return this;
-    }
+//
+//    public ItemVOBuilder withImageItems(List<ImageItem> imageItems) {
+//        this.imageItems = imageItems;
+//        return this;
+//    }
+//
+//    public ItemVOBuilder withOrderItems(List<OrderItem> orderItems) {
+//        this.orderItems = orderItems;
+//        return this;
+//    }
+//
+//    public ItemVOBuilder withCategory(List<Category> category) {
+//        this.category = category;
+//        return this;
+//    }
 
     public ItemVO build() {
         ItemVO itemVO = new ItemVO();
@@ -118,11 +119,11 @@ public final class ItemVOBuilder {
         itemVO.setEditedAt(editedAt);
         itemVO.setActive(active);
         itemVO.setUnit(unit);
-        itemVO.setSupplier(supplier);
-        itemVO.setPromotionId(promotionId);
-        itemVO.setImageItemId(imageItemId);
-        itemVO.setOrderItemsId(orderItemsId);
-        itemVO.setCategoriesId(categoriesId);
+//        itemVO.setSupplier(supplier);
+        itemVO.setPromotions(promotions);
+//        itemVO.setImageItems(imageItems);
+//        itemVO.setOrderItems(orderItems);
+//        itemVO.setCategory(category);
         return itemVO;
     }
 }

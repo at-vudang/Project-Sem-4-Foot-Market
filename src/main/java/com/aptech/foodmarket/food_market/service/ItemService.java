@@ -7,7 +7,18 @@ import java.util.List;
 
 public interface ItemService {
 
-    public List<Item> getItemByName(String name);
+    public List<ItemVO> getItemByName(String name);
 
     public List<ItemVO> getAll();
+
+    public List<ItemVO> getItemBestSeller( int quantity);
+
+    public List<ItemVO> getItemByCategory( int cateId);
+
+    public List<ItemVO> getItemByCategoryOrName( String key);
+
+    public List<ItemVO> getItemPromotion( int quantity);
+
+    public List<ItemVO> getItemNew( int quantity);
+
 }
