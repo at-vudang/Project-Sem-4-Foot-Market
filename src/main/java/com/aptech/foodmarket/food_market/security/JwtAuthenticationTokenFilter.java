@@ -35,6 +35,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         String authToken = request.getHeader(this.tokenHeader);
         // authToken.startsWith("Bearer ")
         // String authToken = header.substring(7);
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        response.setHeader("Access-Control-Allow-Origin","*");
         String username;
         try {
             username = jwtTokenUtil.getUsernameFromToken(authToken);
