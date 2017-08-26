@@ -2,6 +2,7 @@ package com.aptech.foodmarket.food_market.builder;
 
 import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
+import com.aptech.foodmarket.food_market.vo.SupplierVO;
 import com.aptech.foodmarket.food_market.vo.UnitVO;
 
 import java.util.Date;
@@ -19,7 +20,7 @@ public final class ItemVOBuilder {
     private Date editedAt;
     private Boolean active;
     private UnitVO unit;
-//    private Supplier supplier;
+    private SupplierVO supplier;
     private List<PromotionItem> promotions;
 //    private List<ImageItem> imageItems;
 //    private List<OrderItem> orderItems;
@@ -82,11 +83,11 @@ public final class ItemVOBuilder {
         return this;
     }
 
-//    public ItemVOBuilder withSupplier(Supplier supplier) {
-//        this.supplier = supplier;
-//        return this;
-//    }
-//
+    public ItemVOBuilder withSupplier(SupplierVO supplier) {
+        this.supplier = supplier;
+        return this;
+    }
+
     public ItemVOBuilder withPromotions(List<PromotionItem> promotions) {
         this.promotions = promotions;
         return this;
@@ -119,7 +120,7 @@ public final class ItemVOBuilder {
         itemVO.setEditedAt(editedAt);
         itemVO.setActive(active);
         itemVO.setUnit(unit);
-//        itemVO.setSupplier(supplier);
+        itemVO.setSupplier(supplier);
         itemVO.setPromotions(promotions);
 //        itemVO.setImageItems(imageItems);
 //        itemVO.setOrderItems(orderItems);

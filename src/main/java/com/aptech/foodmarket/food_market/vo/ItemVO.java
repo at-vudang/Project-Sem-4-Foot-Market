@@ -18,7 +18,7 @@ public class ItemVO {
     private Date editedAt;
     private Boolean active;
     private UnitVO unit;
-//    private Supplier supplier;
+    private SupplierVO supplier;
     private List<PromotionItem> promotions;
 //    private List<ImageItem> imageItems;
 //    private List<OrderItem> orderItems;
@@ -112,14 +112,14 @@ public class ItemVO {
 //        this.unit = unit;
 //    }
 //
-//    public Supplier getSupplier() {
-//        return supplier;
-//    }
-//
-//    public void setSupplier(Supplier supplier) {
-//        this.supplier = supplier;
-//    }
-//
+    public SupplierVO getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(SupplierVO supplier) {
+        this.supplier = supplier;
+    }
+
     public List<PromotionItem> getPromotions() {
         return promotions;
     }

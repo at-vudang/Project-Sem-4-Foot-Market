@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
+@RequestMapping("/item")
 public class ItemController {
     @Autowired
     ItemRepository itemRepository;
@@ -20,7 +21,7 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
-    @RequestMapping("/all")
+    @RequestMapping("/")
     @ResponseBody
     public List<ItemVO> getAll() {
         return itemService.getAll();
@@ -42,6 +43,12 @@ public class ItemController {
     @ResponseBody
     public List<ItemVO> getItemNew(int quantity) {
         return itemService.getItemNew(quantity);
+    }
+
+    @RequestMapping("/getItemPromotion")
+    @ResponseBody
+    public List<ItemVO> getItemPromotion(int quantity) {
+        return itemService.getItemPromotion(quantity);
     }
 
 }
