@@ -3,6 +3,7 @@ package com.aptech.foodmarket.food_market.controller;
 import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.model.User;
 import com.aptech.foodmarket.food_market.repository.ItemRepository;
+import com.aptech.foodmarket.food_market.repository.OrderItemRepository;
 import com.aptech.foodmarket.food_market.service.ItemService;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ import java.util.List;
 public class ItemController {
     @Autowired
     ItemRepository itemRepository;
+
+    @Autowired
+    OrderItemRepository orderItemRepository;
 
     @Autowired
     ItemService itemService;
@@ -49,6 +53,13 @@ public class ItemController {
     @ResponseBody
     public List<ItemVO> getItemPromotion(int quantity) {
         return itemService.getItemPromotion(quantity);
+    }
+
+    @RequestMapping("/getItemBest")
+    @ResponseBody
+    public List<Integer> getItemBest() {
+        return orderItemRepository.getIDBest();
+//        return itemService.getItemBestSeller(orderItemRepository.getIDBest());
     }
 
 }

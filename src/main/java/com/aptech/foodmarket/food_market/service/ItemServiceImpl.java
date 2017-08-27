@@ -78,8 +78,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemVO> getItemBestSeller(int quantity) {
-        return null;
+    public List<ItemVO> getItemBestSeller(List<Integer> ids) {
+        return this.defaultJson(itemRepository.findByIdIn(ids));
     }
 
     @Override

@@ -13,11 +13,15 @@ public interface ItemRepository extends JpaRepository<Item,Integer> {
 
     List<Item> findItemsByCategories(int cateId);
 
-//    @Query("SELECT i FROM items i join categories c on i.where i.name LIKE %:key% or i.name LIKE %:key%")
-//    List<Item> findByItemNameOrCategory(@Param("key") String key);
+//    @Query("SELECT i FROM items i join categories c on c.id = i.category_id where i.name LIKE '%:key%' or i.name LIKE '%:key%'")
+//    List<Item> findByItemNameOrCategory();
 
     List<Item> findAllByOrderByIdDesc();
 
     List<Item> findAllByOrderByPromotionItemsDesc();
+//
+//    @Query("select * from ")
+//    List<Item> getItemBest();
 
+    List<Item> findByIdIn(List<Integer> ids);
 }
