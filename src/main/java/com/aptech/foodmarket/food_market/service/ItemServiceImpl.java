@@ -3,6 +3,7 @@ package com.aptech.foodmarket.food_market.service;
 import com.aptech.foodmarket.food_market.builder.ItemVOBuilder;
 import com.aptech.foodmarket.food_market.builder.SupplierVOBuilder;
 import com.aptech.foodmarket.food_market.builder.UnitVOBuilder;
+import com.aptech.foodmarket.food_market.model.Category;
 import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.repository.ItemRepository;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
@@ -45,7 +46,7 @@ public class ItemServiceImpl implements ItemService {
                     .withPromotions(item.getPromotionItems())
 //                    .withImageItems(item.getImageItems())
 //                    .withOrderItems(item.getOrderItems())
-//                    .withCategory(item.getCategories())
+                    .withCategory(item.getCategories())
                     .build());
         });
         return itemVOS;
@@ -66,8 +67,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemVO> getItemByCategory(int cateId) {
-        List<Item> items = itemRepository.findItemsByCategories(cateId);
+    public List<ItemVO> getItemByCategory(Category cate) {
+        List<Item> items = itemRepository.findAllByCategories(cate);
         return this.defaultJson(items);
     }
 

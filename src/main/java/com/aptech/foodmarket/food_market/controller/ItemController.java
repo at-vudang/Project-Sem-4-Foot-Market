@@ -2,6 +2,7 @@ package com.aptech.foodmarket.food_market.controller;
 
 import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.model.User;
+import com.aptech.foodmarket.food_market.repository.CategoryRepository;
 import com.aptech.foodmarket.food_market.repository.ItemRepository;
 import com.aptech.foodmarket.food_market.repository.OrderItemRepository;
 import com.aptech.foodmarket.food_market.service.ItemService;
@@ -23,6 +24,9 @@ public class ItemController {
     OrderItemRepository orderItemRepository;
 
     @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
     ItemService itemService;
 
     @RequestMapping("/")
@@ -35,6 +39,12 @@ public class ItemController {
     @ResponseBody
     public List<ItemVO> getItemByName(String name) {
         return itemService.getItemByName(name);
+    }
+
+    @RequestMapping("/getItemByCate")
+    @ResponseBody
+    public List<ItemVO> getItemByCate(int cate_id) {
+        return itemService.getItemByCategory(categoryRepository.findOne(cate_id));
     }
 
     @RequestMapping("/getItemById")
@@ -57,9 +67,9 @@ public class ItemController {
 
     @RequestMapping("/getItemBest")
     @ResponseBody
-    public List<Integer> getItemBest() {
-        return orderItemRepository.getIDBest();
-//        return itemService.getItemBestSeller(orderItemRepository.getIDBest());
+    public List<ItemVO> getItemBest() {
+//        return orderItemRepository.getIDBest();
+        return itemService.getItemBestSeller(orderItemRepository.getIDBest());
     }
 
 }

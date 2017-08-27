@@ -24,7 +24,7 @@ public final class ItemVOBuilder {
     private List<PromotionItem> promotions;
 //    private List<ImageItem> imageItems;
 //    private List<OrderItem> orderItems;
-//    private List<Category> category;
+    private List<Category> category;
 
     private ItemVOBuilder() {
     }
@@ -103,10 +103,10 @@ public final class ItemVOBuilder {
 //        return this;
 //    }
 //
-//    public ItemVOBuilder withCategory(List<Category> category) {
-//        this.category = category;
-//        return this;
-//    }
+    public ItemVOBuilder withCategory(List<Category> category) {
+        this.category = category;
+        return this;
+    }
 
     public ItemVO build() {
         ItemVO itemVO = new ItemVO();
@@ -124,7 +124,7 @@ public final class ItemVOBuilder {
         itemVO.setPromotions(promotions);
 //        itemVO.setImageItems(imageItems);
 //        itemVO.setOrderItems(orderItems);
-//        itemVO.setCategory(category);
+        itemVO.setCategory(category);
         return itemVO;
     }
 }

@@ -22,7 +22,7 @@ public class ItemVO {
     private List<PromotionItem> promotions;
 //    private List<ImageItem> imageItems;
 //    private List<OrderItem> orderItems;
-//    private List<Category> category;
+    private List<Category> category;
 
     public Integer getId() {
         return id;
@@ -143,12 +143,12 @@ public class ItemVO {
 //    public void setOrderItems(List<OrderItem> orderItems) {
 //        this.orderItems = orderItems;
 //    }
-//
-//    public List<Category> getCategory() {
-//        return category;
-//    }
-//
-//    public void setCategory(List<Category> category) {
-//        this.category = category;
-//    }
+
+    public List<Category> getCategory() {
+        return category;
+    }
+
+    public void setCategory(List<Category> category) {
+        this.category = category;
+    }
 }
