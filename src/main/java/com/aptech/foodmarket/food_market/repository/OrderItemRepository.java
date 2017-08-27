@@ -9,6 +9,4 @@ import java.util.List;
 public interface OrderItemRepository extends JpaRepository<OrderItem,Integer>{
 
 //    List<OrderItem> findAllByOrderBy();
-
-    List<OrderItem> findAllBy
 }
