@@ -5,6 +5,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Where(clause = "is_active")
@@ -25,6 +26,12 @@ public class Category {
     @ManyToOne(optional=false)
     @JoinColumn(name="level_category_id")
     private LevelCategory levelCategory;
+
+    @ManyToMany(mappedBy = "categories")
+    private List<Item> items;
+
+    @Column(name = "parent_id")
+    private Integer parentId;
 
     @Column(name = "created_at")
     private Date createdAt;
@@ -81,5 +88,29 @@ public class Category {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public LevelCategory getLevelCategory() {
+        return levelCategory;
+    }
+
+    public void setLevelCategory(LevelCategory levelCategory) {
+        this.levelCategory = levelCategory;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 }

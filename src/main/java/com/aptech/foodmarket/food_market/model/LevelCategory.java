@@ -6,7 +6,6 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Where(clause = "is_active")
 @Table(name = "level_categories")
 public class LevelCategory {
     @Id
