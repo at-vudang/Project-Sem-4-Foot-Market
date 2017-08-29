@@ -1,13 +1,16 @@
 package com.aptech.foodmarket.food_market.builder;
 
-import com.aptech.foodmarket.food_market.model.LevelCategory;
 import com.aptech.foodmarket.food_market.vo.CategoryVO;
+import com.aptech.foodmarket.food_market.vo.ItemVO;
+
+import java.util.List;
 
 public final class CategoryVOBuilder {
     private Integer id;
     private String name;
     private String description;
     private Integer levelCategory;
+    private List<ItemVO> items;
 
     private CategoryVOBuilder() {
     }
@@ -36,12 +39,18 @@ public final class CategoryVOBuilder {
         return this;
     }
 
+    public CategoryVOBuilder withItems(List<ItemVO> items) {
+        this.items = items;
+        return this;
+    }
+
     public CategoryVO build() {
         CategoryVO categoryVO = new CategoryVO();
         categoryVO.setId(id);
         categoryVO.setName(name);
         categoryVO.setDescription(description);
         categoryVO.setLevelCategory(levelCategory);
+        categoryVO.setItems(items);
         return categoryVO;
     }
 }

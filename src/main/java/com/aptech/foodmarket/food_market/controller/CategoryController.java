@@ -1,5 +1,6 @@
 package com.aptech.foodmarket.food_market.controller;
 
+import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.service.CategoryService;
 import com.aptech.foodmarket.food_market.service.ItemService;
 import com.aptech.foodmarket.food_market.vo.CategoryVO;
@@ -23,6 +24,17 @@ public class CategoryController {
     @ResponseBody
     public List<CategoryVO> getCategoriesByLevel(@PathVariable Integer level) {
         return categoryService.getCategoriesByLevel(level);
+    }
+
+    @RequestMapping("/{id}")
+    @ResponseBody
+    public CategoryVO getCategoriesById(@PathVariable Integer id) {
+        return categoryService.getCategoryById(id);
+    }
+    @RequestMapping("/items/{id}")
+    @ResponseBody
+    public List<ItemVO> getItemsById(@PathVariable Integer id) {
+        return categoryService.getItems(id);
     }
 
     @RequestMapping("/parents/{parentID}")

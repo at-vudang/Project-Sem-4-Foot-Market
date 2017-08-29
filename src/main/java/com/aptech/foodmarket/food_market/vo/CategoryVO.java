@@ -2,11 +2,22 @@ package com.aptech.foodmarket.food_market.vo;
 
 import com.aptech.foodmarket.food_market.model.LevelCategory;
 
+import java.util.List;
+
 public class CategoryVO {
     private Integer id;
     private String name;
     private String description;
     private Integer levelCategory;
+    private List<ItemVO> items;
+
+    public List<ItemVO> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemVO> items) {
+        this.items = items;
+    }
 
     public Integer getId() {
         return id;
