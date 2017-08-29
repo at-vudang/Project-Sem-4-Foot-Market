@@ -1,5 +1,6 @@
 package com.aptech.foodmarket.food_market.service;
 
+import com.aptech.foodmarket.food_market.model.Category;
 import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 
@@ -14,7 +15,7 @@ public interface ItemService {
 
     public List<ItemVO> getItemBestSeller( List<Integer> ids);
 
-    public List<ItemVO> getItemByCategory( int cateId);
+    public List<ItemVO> getItemByCategory(Category cate);
 
     public List<ItemVO> getItemByCategoryOrName( String key);
 
