@@ -2,16 +2,22 @@ package com.aptech.foodmarket.food_market.vo;
 
 import com.aptech.foodmarket.food_market.model.LevelCategory;
 
-import java.util.Date;
+import java.util.List;
 
 public class CategoryVO {
-
     private Integer id;
     private String name;
     private String description;
-    private Date createdAt;
-    private Date editedAt;
-  //  private LevelCategory levelCategory;
+    private Integer levelCategory;
+    private List<ItemVO> items;
+
+    public List<ItemVO> getItems() {
+        return items;
+    }
+
+    public void setItems(List<ItemVO> items) {
+        this.items = items;
+    }
 
     public Integer getId() {
         return id;
@@ -37,27 +43,11 @@ public class CategoryVO {
         this.description = description;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Integer getLevelCategory() {
+        return levelCategory;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setLevelCategory(Integer levelCategory) {
+        this.levelCategory = levelCategory;
     }
-
-    public Date getEditedAt() {
-        return editedAt;
-    }
-
-    public void setEditedAt(Date editedAt) {
-        this.editedAt = editedAt;
-    }
-
-//    public LevelCategory getLevelCategory() {
-//        return levelCategory;
-//    }
-//
-//    public void setLevelCategory(LevelCategory levelCategory) {
-//        this.levelCategory = levelCategory;
-//    }
 }

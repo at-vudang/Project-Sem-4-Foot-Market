@@ -1,25 +1,17 @@
 package com.aptech.foodmarket.food_market.builder;
 
-import com.aptech.foodmarket.food_market.model.LevelCategory;
 import com.aptech.foodmarket.food_market.vo.CategoryVO;
+import com.aptech.foodmarket.food_market.vo.ItemVO;
 
-import java.util.Date;
+import java.util.List;
 
 public final class CategoryVOBuilder {
     private Integer id;
     private String name;
     private String description;
-    private Date createdAt;
-    private Date editedAt;
-    private LevelCategory levelCategory;
 
-    public LevelCategory getLevelCategory() {
-        return levelCategory;
-    }
-
-    public void setLevelCategory(LevelCategory levelCategory) {
-        this.levelCategory = levelCategory;
-    }
+    private Integer levelCategory;
+    private List<ItemVO> items;
 
     private CategoryVOBuilder() {
     }
@@ -43,29 +35,25 @@ public final class CategoryVOBuilder {
         return this;
     }
 
-    public CategoryVOBuilder withCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+
+    public CategoryVOBuilder withLevelCategory(Integer levelCategory) {
+        this.levelCategory = levelCategory;
         return this;
     }
 
-    public CategoryVOBuilder withEditedAt(Date editedAt) {
-        this.editedAt = editedAt;
+    public CategoryVOBuilder withItems(List<ItemVO> items) {
+        this.items = items;
         return this;
     }
 
-//    public CategoryVOBuilder withLevelCategory(LevelCategory levelCategory) {
-//        this.levelCategory = levelCategory;
-//        return this;
-//    }
 
     public CategoryVO build() {
         CategoryVO categoryVO = new CategoryVO();
         categoryVO.setId(id);
         categoryVO.setName(name);
         categoryVO.setDescription(description);
-        categoryVO.setCreatedAt(createdAt);
-        categoryVO.setEditedAt(editedAt);
-      //  categoryVO.setLevelCategory(levelCategory);
+        categoryVO.setLevelCategory(levelCategory);
+        categoryVO.setItems(items);
         return categoryVO;
     }
 }

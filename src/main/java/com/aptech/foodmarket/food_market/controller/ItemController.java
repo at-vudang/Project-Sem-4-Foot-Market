@@ -71,11 +71,5 @@ public class ItemController {
 //        return orderItemRepository.getIDBest();
         return itemService.getItemBestSeller(orderItemRepository.getIDBest());
     }
-    @RequestMapping("/getItemByCategoryName")
-    @ResponseBody
-    public List<ItemVO> getItemByCategoryName(String name) {
-//        return orderItemRepository.getIDBest();
-        return itemService.getItemByCategoryName(name);
-    }
 
 }
