@@ -1,5 +1,6 @@
 package com.aptech.foodmarket.food_market.repository;
 
+import com.aptech.foodmarket.food_market.model.Category;
 import com.aptech.foodmarket.food_market.model.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +11,7 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item,Integer> {
 
     List<Item> findByName(String name);
-
+    List<Item> findAllByCategories(Category category);
     List<Item> findItemsByCategories(int cateId);
 
 //    @Query("SELECT i FROM items i join categories c on c.id = i.category_id where i.name LIKE '%:key%' or i.name LIKE '%:key%'")

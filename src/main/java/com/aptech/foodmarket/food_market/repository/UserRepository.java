@@ -12,7 +12,7 @@ import java.util.List;
  * Created by nydiarra on 06/05/17.
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer>, UserRepositoryCustom {
+public interface UserRepository extends JpaRepository<User, Integer> {
     User findByUsername(String username);
     @Query(value = "SELECT * FROM USERS WHERE EMAIL_ADDRESS = ?1", nativeQuery = true)
     User findByEmailAddress(String emailAddress);

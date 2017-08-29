@@ -26,6 +26,9 @@ public class Category {
     @JoinColumn(name="level_category_id")
     private LevelCategory levelCategory;
 
+    @Column(name = "parent_id")
+    private Integer parentId;
+
     @Column(name = "created_at")
     private Date createdAt;
 
@@ -81,5 +84,21 @@ public class Category {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public LevelCategory getLevelCategory() {
+        return levelCategory;
+    }
+
+    public void setLevelCategory(LevelCategory levelCategory) {
+        this.levelCategory = levelCategory;
+    }
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 }
