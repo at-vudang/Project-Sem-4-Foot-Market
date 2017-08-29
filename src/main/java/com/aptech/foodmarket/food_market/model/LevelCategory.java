@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Where(clause = "is_active")
+@Where(clause = "is_active =1")
 @Table(name = "level_categories")
 public class LevelCategory {
     @Id
@@ -19,6 +19,9 @@ public class LevelCategory {
 
     @OneToMany(mappedBy = "levelCategory")
     private List<Category> categories;
+
+    @Column(name="is_active")
+    private Boolean active;
 
     public Integer getId() {
         return id;

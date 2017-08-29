@@ -1,39 +1,17 @@
-package com.aptech.foodmarket.food_market.model;
+package com.aptech.foodmarket.food_market.vo;
 
-import org.hibernate.annotations.Where;
+import com.aptech.foodmarket.food_market.model.LevelCategory;
 
-import javax.persistence.*;
-import javax.validation.constraints.Max;
 import java.util.Date;
 
-@Entity
-@Where(clause = "is_active = 1")
-@Table(name = "categories")
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+public class CategoryVO {
+
     private Integer id;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "description")
-    @Lob
     private String description;
-
-    @ManyToOne(optional=false)
-    @JoinColumn(name="level_category_id")
-    private LevelCategory levelCategory;
-
-    @Column(name = "created_at")
     private Date createdAt;
-
-    @Column(name = "edited_at")
     private Date editedAt;
-
-    @Column(name = "is_active")
-    private Boolean active;
+  //  private LevelCategory levelCategory;
 
     public Integer getId() {
         return id;
@@ -75,11 +53,11 @@ public class Category {
         this.editedAt = editedAt;
     }
 
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
+//    public LevelCategory getLevelCategory() {
+//        return levelCategory;
+//    }
+//
+//    public void setLevelCategory(LevelCategory levelCategory) {
+//        this.levelCategory = levelCategory;
+//    }
 }
