@@ -11,7 +11,15 @@ public final class CategoryVOBuilder {
     private String description;
     private Date createdAt;
     private Date editedAt;
-  //  private LevelCategory levelCategory;
+    private LevelCategory levelCategory;
+
+    public LevelCategory getLevelCategory() {
+        return levelCategory;
+    }
+
+    public void setLevelCategory(LevelCategory levelCategory) {
+        this.levelCategory = levelCategory;
+    }
 
     private CategoryVOBuilder() {
     }

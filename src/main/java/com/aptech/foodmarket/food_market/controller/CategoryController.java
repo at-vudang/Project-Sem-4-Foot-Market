@@ -22,16 +22,16 @@ public class CategoryController {
 
     @RequestMapping("/")
     @ResponseBody
-    public List<Category> getAllNameCategory() throws SQLGrammarException {
+    public List<CategoryVO> getAllNameCategory() throws SQLGrammarException {
 
-//        try {
-//            return categoryService.getAllNameCategory();
-//        }
-//        catch (Exception ex){
-//            ex.printStackTrace();
-//        }
-//          return null;
-        return categoryRepository.findAll();
+        try {
+            return categoryService.getAllNameCategory();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+          return null;
+     //   return categoryRepository.findAll();
     }
 
 }

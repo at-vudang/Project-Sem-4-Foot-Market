@@ -1,10 +1,24 @@
 package com.aptech.foodmarket.food_market.service;
-
+import com.aptech.foodmarket.food_market.model.Category;
+import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
-
+import java.lang.reflect.Array;
 import java.util.List;
 
 public interface ItemService {
 
-    public List<ItemVO> getByCategoryName(String name);
+    public List<ItemVO> getItemByName(String name);
+
+    public List<ItemVO> getAll();
+
+    public List<ItemVO> getItemBestSeller( List<Integer> ids);
+
+    public List<ItemVO> getItemByCategory(Category cate);
+
+    public List<ItemVO> getItemByCategoryOrName( String key);
+
+    public List<ItemVO> getItemPromotion( int quantity);
+
+    public List<ItemVO> getItemNew( int quantity);
+
 }
