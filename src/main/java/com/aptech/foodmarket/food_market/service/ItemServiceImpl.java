@@ -46,7 +46,7 @@ public class ItemServiceImpl implements ItemService {
                     .withPromotions(item.getPromotionItems())
 //                    .withImageItems(item.getImageItems())
 //                    .withOrderItems(item.getOrderItems())
-                    .withCategory(item.getCategories())
+//                    .withCategory(item.getCategories())
                     .build());
         });
         return itemVOS;
