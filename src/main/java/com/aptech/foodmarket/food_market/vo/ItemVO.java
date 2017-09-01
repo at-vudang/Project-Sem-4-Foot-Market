@@ -19,10 +19,10 @@ public class ItemVO {
     private Boolean active;
     private UnitVO unit;
     private SupplierVO supplier;
-    private List<PromotionItem> promotions;
+//    private List<PromotionItem> promotions;
 //    private List<ImageItem> imageItems;
 //    private List<OrderItem> orderItems;
-    private List<Category> category;
+//    private List<Category> category;
 
     public Integer getId() {
         return id;
@@ -120,13 +120,13 @@ public class ItemVO {
         this.supplier = supplier;
     }
 
-    public List<PromotionItem> getPromotions() {
-        return promotions;
-    }
-
-    public void setPromotions(List<PromotionItem> promotions) {
-        this.promotions = promotions;
-    }
+//    public List<PromotionItem> getPromotions() {
+//        return promotions;
+//    }
+//
+//    public void setPromotions(List<PromotionItem> promotions) {
+//        this.promotions = promotions;
+//    }
 
 //    public List<ImageItem> getImageItems() {
 //        return imageItems;
@@ -144,11 +144,11 @@ public class ItemVO {
 //        this.orderItems = orderItems;
 //    }
 
-    public List<Category> getCategory() {
-        return category;
-    }
-
-    public void setCategory(List<Category> category) {
-        this.category = category;
-    }
+//    public List<Category> getCategory() {
+//        return category;
+//    }
+//
+//    public void setCategory(List<Category> category) {
+//        this.category = category;
+//    }
 }
