@@ -20,7 +20,6 @@ public class CategoryController {
     @RequestMapping("/")
     @ResponseBody
     public List<CategoryVO> getAllNameCategory() throws SQLGrammarException {
-
         try {
             return categoryService.getAllNameCategory();
         }
@@ -28,7 +27,7 @@ public class CategoryController {
             ex.printStackTrace();
         }
           return null;
-     //   return categoryRepository.findAll();
+        // return categoryRepository.findAll();
     }
 
     @Autowired

@@ -76,7 +76,7 @@ public class CategoryServiceImpl implements CategoryService{
         categories.stream().forEach(user -> {
             categoryVOS.add(CategoryVOBuilder.aCategoryVO()
                     .withName(user.getName())
-                    //     .withLevelCategory(user.getLevelCategory())
+                    .withId(user.getId())
                     .build());
         });
         return categoryVOS;
