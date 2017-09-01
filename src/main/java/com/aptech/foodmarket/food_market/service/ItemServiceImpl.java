@@ -10,8 +10,12 @@ import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.SupplierVO;
 import com.aptech.foodmarket.food_market.vo.UnitVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Convert;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
@@ -38,10 +42,10 @@ public class ItemServiceImpl implements ItemService {
                     .withPrice(item.getPrice())
                     .withAvatar(item.getAvatar())
                     .withQuantity(item.getQuantity())
-                    .withCreatedAt(item.getCreatedAt())
-                    .withEditedAt(item.getEditedAt())
-                    .withSupplier(supplierVO)
-                    .withUnit(unitVO)
+//                    .withCreatedAt(item.getCreatedAt())
+//                    .withEditedAt(item.getEditedAt())
+//                    .withSupplier(supplierVO)
+//                    .withUnit(unitVO)
 //                    .withPromotions(item.getPromotionItems())
 //                    .withImageItems(item.getImageItems())
 //                    .withOrderItems(item.getOrderItems())
@@ -50,6 +54,16 @@ public class ItemServiceImpl implements ItemService {
         });
         return itemVOS;
 
+    }
+
+    public ItemVO convertVO(Item item) {
+        ItemVO itemVO = ItemVOBuilder.anItemVO().withId(item.getId())
+                .withName(item.getName())
+                .withPrice(item.getPrice())
+                .withAvatar(item.getAvatar())
+                .withQuantity(item.getQuantity())
+                .build();
+        return itemVO;
     }
 
     @Override
@@ -90,5 +104,16 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemVO> getItemNew(int quantity) {
         return this.defaultJson(itemRepository.findAllByOrderByIdDesc()).subList(0,quantity);
+    }
+    @Override
+    public Page<ItemVO> findPaginated(int page, int size) {
+        Page<Item> items = itemRepository.findAll(new PageRequest(page, size));
+        Page<ItemVO> itemsVOItemVOS = items.map(new Converter<Item, ItemVO>() {
+            @Override
+            public ItemVO convert(Item entity) {
+                return convertVO(entity);
+            }
+        });
+        return itemsVOItemVOS;
     }
 }
