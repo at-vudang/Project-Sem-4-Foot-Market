@@ -116,4 +116,11 @@ public class ItemServiceImpl implements ItemService {
         });
         return itemsVOItemVOS;
     }
+
+    @Override
+    public List<ItemVO> getCart(List<Integer> itemIds) {
+        List<ItemVO> itemVOS = this.defaultJson(itemRepository.findByIdIn(itemIds));
+        System.out.println(itemVOS.get(1).getId());
+        return itemVOS;
+    }
 }

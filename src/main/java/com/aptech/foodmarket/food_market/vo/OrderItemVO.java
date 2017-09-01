@@ -9,7 +9,7 @@ import java.util.Date;
 public class OrderItemVO {
     private Integer id;
 
-    private Integer quantity;
+    private Integer quantityCart;
 
     public Integer getId() {
         return id;
@@ -19,11 +19,11 @@ public class OrderItemVO {
         this.id = id;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Integer getQuantityCart() {
+        return quantityCart;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setQuantityCart(Integer quantity) {
+        this.quantityCart = quantity;
     }
 }
