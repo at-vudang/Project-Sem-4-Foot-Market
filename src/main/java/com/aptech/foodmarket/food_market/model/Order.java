@@ -1,5 +1,7 @@
 package com.aptech.foodmarket.food_market.model;
 
+import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -18,11 +20,14 @@ public class Order {
     @Column(name = "trans_at")
     private Date transportedAt;
 
-    @Column(name = "address")
-    private Date address;
+    @Column(name = "address",columnDefinition = "TEXT")
+    private String address;
 
     @Column(name = "status")
     private Byte status;
+
+    @Column(name = "name", columnDefinition = "TINYTEXT")
+    private String name;
 
     @Column(name = "phone",length = 15)
     private String phone;
@@ -54,6 +59,17 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        editedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        editedAt = new Date();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -70,11 +86,11 @@ public class Order {
         this.transportedAt = transportedAt;
     }
 
-    public Date getAddress() {
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(Date address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -84,6 +100,14 @@ public class Order {
 
     public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPhone() {

@@ -121,10 +121,10 @@ public final class ItemVOBuilder {
         itemVO.setActive(active);
         itemVO.setUnit(unit);
         itemVO.setSupplier(supplier);
-        itemVO.setPromotions(promotions);
+        //itemVO.setPromotions(promotions);
 //        itemVO.setImageItems(imageItems);
 //        itemVO.setOrderItems(orderItems);
-        itemVO.setCategory(category);
+      //  itemVO.setCategory(category);
         return itemVO;
     }
 }

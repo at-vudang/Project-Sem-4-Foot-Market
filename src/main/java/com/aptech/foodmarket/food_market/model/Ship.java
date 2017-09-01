@@ -10,6 +10,11 @@ import java.util.List;
 @Where(clause = "is_active = 1")
 @Table(name="ships")
 public class Ship {
+    public Ship() {
+    }
+    public Ship(Integer id) {
+        this.id = id;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -32,6 +37,17 @@ public class Ship {
 
     @OneToMany(mappedBy = "ship")
     private List<Order> orders;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        editedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        editedAt = new Date();
+    }
 
     public Integer getId() {
         return id;

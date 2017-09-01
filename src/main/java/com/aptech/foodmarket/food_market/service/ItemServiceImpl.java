@@ -25,7 +25,6 @@ public class ItemServiceImpl implements ItemService {
     private ItemRepository itemRepository;
 
     public List<ItemVO> defaultJson(List<Item> items) {
-        System.out.println("asfafasvfvfvfdfahhhhhhdgsfgfgsdgdsgsdfgsdfgsdfgsdgsdfgsdfgsdfgsdfgsdgfsd");
         List<ItemVO> itemVOS = new ArrayList<>();
         items.stream().forEach(item -> {
             UnitVO unitVO = new UnitVO();
@@ -43,10 +42,10 @@ public class ItemServiceImpl implements ItemService {
                     .withEditedAt(item.getEditedAt())
                     .withSupplier(supplierVO)
                     .withUnit(unitVO)
-                    .withPromotions(item.getPromotionItems())
+//                    .withPromotions(item.getPromotionItems())
 //                    .withImageItems(item.getImageItems())
 //                    .withOrderItems(item.getOrderItems())
-                    .withCategory(item.getCategories())
+//                    .withCategory(item.getCategories())
                     .build());
         });
         return itemVOS;

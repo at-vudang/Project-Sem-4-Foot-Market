@@ -10,6 +10,11 @@ import java.util.List;
 @Where(clause = "is_active")
 @Table(name = "items")
 public class Item {
+    public Item() {
+    }
+    public Item(Integer id) {
+        this.id = id;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -62,7 +67,19 @@ public class Item {
             referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "category_id",
                     referencedColumnName = "id"))
+
     private List<Category> categories;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        editedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        editedAt = new Date();
+    }
 
     public Integer getId() {
         return id;

@@ -15,7 +15,7 @@ public class OrderItem {
     private Integer id;
 
     @Column(name = "price_offical")
-    private Float priceOffical;
+    private Double priceOffical;
 
     @Column(name = "quantity")
     private Integer quantity;
@@ -37,6 +37,17 @@ public class OrderItem {
     @JoinColumn(name="order_id")
     private Order order;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        editedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        editedAt = new Date();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -45,11 +56,11 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Float getPriceOffical() {
+    public Double getPriceOffical() {
         return priceOffical;
     }
 
-    public void setPriceOffical(Float priceOffical) {
+    public void setPriceOffical(Double priceOffical) {
         this.priceOffical = priceOffical;
     }
 

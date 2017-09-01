@@ -34,6 +34,17 @@ public class PromotionItem {
     @JoinColumn(name="item_id")
     private Item item;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        editedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        editedAt = new Date();
+    }
+
     public Integer getId() {
         return id;
     }
