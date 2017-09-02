@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.aptech.foodmarket.food_market.model.*;
+import com.aptech.foodmarket.food_market.repository.CategoryRepository;
 import com.aptech.foodmarket.food_market.repository.ImageRepository;
 import com.aptech.foodmarket.food_market.service.CategoryService;
 import com.aptech.foodmarket.food_market.service.ItemService;
@@ -27,13 +28,15 @@ public class BasicWebCrawler {
     private ItemService itemService;
     @Autowired
     private ImageRepository imageRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     private HashSet<String> links;
     private String linksCategory;
     public BasicWebCrawler() {
         links = new HashSet<String>();
     }
-    public void getItems(String url, Category category) {
+    public void getItems(String url, List<Category> categories) {
         List<Item> items = new ArrayList<>();
         try {
             Document document = Jsoup.connect(url).get();
@@ -56,8 +59,6 @@ public class BasicWebCrawler {
                     item.setDescription(description);
                     item.setStatus(true);
                     item.setQuantity(100);
-                    List<Category> categories = new ArrayList<>();
-                    categories.add(category);
                     item.setCategories(categories);
                     Unit unit = new Unit();
                     unit.setId(1);
@@ -98,6 +99,7 @@ public class BasicWebCrawler {
             Elements catesOnPage = document.select("#segment_navigation__mega_menu__list a");
             for (Element cate : catesOnPage) {
                 try {
+
                     Category category = new Category();
                     category.setName(cate.select(".title").text());
                     category.setActive(true);
@@ -107,22 +109,29 @@ public class BasicWebCrawler {
                     } catch (Exception ex){
                         System.err.println("For '" + URL + "': " + ex.getMessage());
                     }
+
                     Integer parentId = category.getId();
+
                     document = Jsoup.connect("https://www.adayroi.com" + cate.attr("href")).get();
                     catesOnPage = document.select(".widget-breadcrumb .active .list-unstyled li");
                     for (Element cateSub : catesOnPage) {
                         try {
+                            List<Category> categories = new ArrayList<>();
+
                             category = new Category();
                             category.setName(cateSub.select("a").text());
                             category.setActive(true);
                             category.setParentId(parentId);
                             category.setLevelCategory(2);
                             try {
+                                categories.add(categoryRepository.findOne(parentId));
                                 category = categoryService.create(category);
+                                categories.add(category);
                             } catch (Exception ex){
                                 System.err.println("For '" + URL + "': " + ex.getMessage());
                             }
-                            getItems("https://www.adayroi.com/" + cateSub.select("a").attr("href"),category);
+                            getItems("https://www.adayroi.com/" + cateSub.select("a").attr("href")
+                                    ,categories);
                             System.out.println(category.getName());
                         } catch (Exception ex){
                             System.err.println("For '" + URL + "': " + ex.getMessage());
