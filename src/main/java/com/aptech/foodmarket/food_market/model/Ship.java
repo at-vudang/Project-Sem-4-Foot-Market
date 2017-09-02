@@ -20,7 +20,7 @@ public class Ship {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "distance",length = 45)
+    @Column(name = "distance",length = 45, unique = true)
     private String distance;
 
     @Column(name = "price")

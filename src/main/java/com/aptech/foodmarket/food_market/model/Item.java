@@ -8,7 +8,9 @@ import java.util.List;
 
 @Entity
 @Where(clause = "is_active")
-@Table(name = "items")
+@Table(name = "items", uniqueConstraints={
+        @UniqueConstraint(columnNames = {"name", "supplier_id"})
+})
 public class Item {
     public Item() {
     }
@@ -20,8 +22,11 @@ public class Item {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "name", length = 50)
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
 
     @Column(name = "price")
     private Float price;
@@ -199,5 +204,13 @@ public class Item {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -15,10 +15,10 @@ public class Unit {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "name",length = 50)
+    @Column(name = "name",length = 50, unique = true)
     private String name;
 
-    @Column(name = "syntax",length = 3)
+    @Column(name = "syntax",length = 4)
     private String syntax;
 
     @OneToMany(mappedBy = "unit")
