@@ -33,6 +33,17 @@ public class Unit {
     @Column(name = "is_active")
     private Boolean active;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        editedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        editedAt = new Date();
+    }
+
     public Integer getId() {
         return id;
     }

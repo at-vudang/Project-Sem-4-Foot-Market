@@ -36,6 +36,17 @@ public class Supplier {
     @OneToMany(mappedBy = "supplier")
     private List<Item> items;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        editedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        editedAt = new Date();
+    }
+
     public Integer getId() {
         return id;
     }

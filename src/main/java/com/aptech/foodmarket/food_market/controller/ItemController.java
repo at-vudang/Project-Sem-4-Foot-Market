@@ -7,10 +7,14 @@ import com.aptech.foodmarket.food_market.repository.ItemRepository;
 import com.aptech.foodmarket.food_market.repository.OrderItemRepository;
 import com.aptech.foodmarket.food_market.service.ItemService;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -30,10 +34,17 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
-    @RequestMapping("/")
+    @RequestMapping(value = "/all",params = { "page", "size" },
+            method = RequestMethod.GET)
     @ResponseBody
-    public List<ItemVO> getAll() {
-        return itemService.getAll();
+    public Page<ItemVO> getAll(@RequestParam("page") int page, @RequestParam("size") int size) {
+
+        Page<ItemVO> resultPage = itemService.findPaginated(page, size);
+//        if (page > resultPage.getTotalPages()) {
+//            throw new NotFoundException();
+//        }
+        return resultPage;
+        //return itemService.getAll();
     }
 
     @RequestMapping("/getItemByName")
@@ -72,5 +83,4 @@ public class ItemController {
 //        return orderItemRepository.getIDBest();
         return itemService.getItemBestSeller(orderItemRepository.getIDBest());
     }
-
 }

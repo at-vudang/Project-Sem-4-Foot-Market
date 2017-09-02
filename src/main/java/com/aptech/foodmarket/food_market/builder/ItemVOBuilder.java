@@ -16,15 +16,12 @@ public final class ItemVOBuilder {
     private String avatar;
     private Boolean status;
     private Integer quantity;
-    private Date createdAt;
-    private Date editedAt;
-    private Boolean active;
     private UnitVO unit;
     private SupplierVO supplier;
-    private List<PromotionItem> promotions;
+//    private List<PromotionItem> promotions;
 //    private List<ImageItem> imageItems;
 //    private List<OrderItem> orderItems;
-    private List<Category> category;
+//    private List<Category> category;
 
     private ItemVOBuilder() {
     }
@@ -63,21 +60,6 @@ public final class ItemVOBuilder {
         return this;
     }
 
-    public ItemVOBuilder withCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
-    public ItemVOBuilder withEditedAt(Date editedAt) {
-        this.editedAt = editedAt;
-        return this;
-    }
-
-    public ItemVOBuilder withActive(Boolean active) {
-        this.active = active;
-        return this;
-    }
-
     public ItemVOBuilder withUnit(UnitVO unit) {
         this.unit = unit;
         return this;
@@ -88,10 +70,10 @@ public final class ItemVOBuilder {
         return this;
     }
 
-    public ItemVOBuilder withPromotions(List<PromotionItem> promotions) {
-        this.promotions = promotions;
-        return this;
-    }
+//    public ItemVOBuilder withPromotions(List<PromotionItem> promotions) {
+//        this.promotions = promotions;
+//        return this;
+//    }
 //
 //    public ItemVOBuilder withImageItems(List<ImageItem> imageItems) {
 //        this.imageItems = imageItems;
@@ -103,10 +85,10 @@ public final class ItemVOBuilder {
 //        return this;
 //    }
 //
-    public ItemVOBuilder withCategory(List<Category> category) {
-        this.category = category;
-        return this;
-    }
+//    public ItemVOBuilder withCategory(List<Category> category) {
+//        this.category = category;
+//        return this;
+//    }
 
     public ItemVO build() {
         ItemVO itemVO = new ItemVO();
@@ -116,15 +98,12 @@ public final class ItemVOBuilder {
         itemVO.setAvatar(avatar);
         itemVO.setStatus(status);
         itemVO.setQuantity(quantity);
-        itemVO.setCreatedAt(createdAt);
-        itemVO.setEditedAt(editedAt);
-        itemVO.setActive(active);
-        itemVO.setUnit(unit);
-        itemVO.setSupplier(supplier);
-        itemVO.setPromotions(promotions);
+//        itemVO.setUnit(unit);
+//        itemVO.setSupplier(supplier);
+        //itemVO.setPromotions(promotions);
 //        itemVO.setImageItems(imageItems);
 //        itemVO.setOrderItems(orderItems);
-        itemVO.setCategory(category);
+      //  itemVO.setCategory(category);
         return itemVO;
     }
 }

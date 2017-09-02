@@ -42,6 +42,17 @@ public class Category {
     @Column(name = "is_active")
     private Boolean active;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        editedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        editedAt = new Date();
+    }
+
     public Integer getId() {
         return id;
     }
@@ -70,8 +81,8 @@ public class Category {
         return createdAt;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(Date date) {
+        this.createdAt = date;
     }
 
     public Date getEditedAt() {

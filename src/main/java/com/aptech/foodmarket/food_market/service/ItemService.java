@@ -3,6 +3,7 @@ package com.aptech.foodmarket.food_market.service;
 import com.aptech.foodmarket.food_market.model.Category;
 import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
+import org.springframework.data.domain.Page;
 
 import java.lang.reflect.Array;
 import java.util.List;
@@ -25,5 +26,6 @@ public interface ItemService {
 
     public ItemVO getItemById( int id);
 
+    public Page<ItemVO> findPaginated(int page, int size);
 
 }

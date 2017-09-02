@@ -15,6 +15,11 @@ import java.util.List;
 @Table(name = "users")
 @Where(clause="is_active = 1")
 public class User {
+    public User() {
+    }
+    public User(Integer id) {
+        this.id = id;
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -89,6 +94,17 @@ public class User {
 
     public void setLastPasswordResetDate(Date lastPasswordResetDate) {
         this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        editedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        editedAt = new Date();
     }
 
     public Integer getId() {

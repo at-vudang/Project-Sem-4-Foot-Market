@@ -30,6 +30,17 @@ public class ImageItem {
     @Column(name = "is_active")
     private Boolean active;
 
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        editedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        editedAt = new Date();
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }

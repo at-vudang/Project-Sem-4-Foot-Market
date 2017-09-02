@@ -40,7 +40,6 @@ public class JwtUser implements UserDetails {
         this.lastPasswordResetDate = lastPasswordResetDate;
     }
 
-    @JsonIgnore
     public Integer getId() {
         return id;
     }
