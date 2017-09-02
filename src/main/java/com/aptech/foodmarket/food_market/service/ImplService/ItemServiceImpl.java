@@ -1,4 +1,4 @@
-package com.aptech.foodmarket.food_market.service;
+package com.aptech.foodmarket.food_market.service.ImplService;
 
 import com.aptech.foodmarket.food_market.builder.ItemVOBuilder;
 import com.aptech.foodmarket.food_market.builder.SupplierVOBuilder;
@@ -6,6 +6,7 @@ import com.aptech.foodmarket.food_market.builder.UnitVOBuilder;
 import com.aptech.foodmarket.food_market.model.Category;
 import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.repository.ItemRepository;
+import com.aptech.foodmarket.food_market.service.ItemService;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.SupplierVO;
 import com.aptech.foodmarket.food_market.vo.UnitVO;
@@ -25,7 +26,6 @@ public class ItemServiceImpl implements ItemService {
     private ItemRepository itemRepository;
 
     public List<ItemVO> defaultJson(List<Item> items) {
-        System.out.println("asfafasvfvfvfdfahhhhhhdgsfgfgsdgdsgsdfgsdfgsdfgsdgsdfgsdfgsdfgsdfgsdgfsd");
         List<ItemVO> itemVOS = new ArrayList<>();
         items.stream().forEach(item -> {
             UnitVO unitVO = new UnitVO();
@@ -44,9 +44,6 @@ public class ItemServiceImpl implements ItemService {
                     .withSupplier(supplierVO)
                     .withUnit(unitVO)
                     .withPromotions(item.getPromotionItems())
-//                    .withImageItems(item.getImageItems())
-//                    .withOrderItems(item.getOrderItems())
-//                    .withCategory(item.getCategories())
                     .build());
         });
         return itemVOS;
@@ -91,5 +88,28 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemVO> getItemNew(int quantity) {
         return this.defaultJson(itemRepository.findAllByOrderByIdDesc()).subList(0,quantity);
+    }
+
+    @Override
+    public ItemVO getItemById( int id) {
+        Item item = itemRepository.findOne(id);
+        UnitVO unitVO = new UnitVO();
+        unitVO = UnitVOBuilder.anUnitVO().withId(item.getUnit().getId())
+                .withName(item.getUnit().getName())
+                .withSyntax(item.getUnit().getSyntax()).build();
+        SupplierVO supplierVO = SupplierVOBuilder.aSupplierVO().withId(item.getSupplier().getId())
+                .build();
+        return  ItemVOBuilder.anItemVO().withId(item.getId())
+                .withName(item.getName())
+                .withPrice(item.getPrice())
+                .withAvatar(item.getAvatar())
+                .withQuantity(item.getQuantity())
+                .withCreatedAt(item.getCreatedAt())
+                .withEditedAt(item.getEditedAt())
+                .withSupplier(supplierVO)
+                .withUnit(unitVO)
+                .withPromotions(item.getPromotionItems())
+                .build();
+
     }
 }

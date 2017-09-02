@@ -23,4 +23,7 @@ public interface ItemService {
 
     public List<ItemVO> getItemNew( int quantity);
 
+    public ItemVO getItemById( int id);
+
+
 }
