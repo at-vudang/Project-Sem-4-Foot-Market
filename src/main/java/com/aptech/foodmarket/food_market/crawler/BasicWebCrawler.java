@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.aptech.foodmarket.food_market.model.*;
+import com.aptech.foodmarket.food_market.repository.CategoryRepository;
 import com.aptech.foodmarket.food_market.repository.ImageRepository;
 import com.aptech.foodmarket.food_market.service.CategoryService;
 import com.aptech.foodmarket.food_market.service.ItemService;
@@ -27,57 +28,67 @@ public class BasicWebCrawler {
     private ItemService itemService;
     @Autowired
     private ImageRepository imageRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     private HashSet<String> links;
     private String linksCategory;
     public BasicWebCrawler() {
         links = new HashSet<String>();
     }
-    public void getItems(String url, Category category) {
+    public void getItems(String url, List<Category> categories) {
         List<Item> items = new ArrayList<>();
         try {
             Document document = Jsoup.connect(url).get();
             Elements itemElements = document.select(".body-list-item .item");
             for (Element el: itemElements
                  ) {
-                String urlImage = el.select(".post-thumb img").attr("data-src");
-                String name = el.select(".post-title a").attr("title");
-                Float price = Float.parseFloat(el.select(".item-content .adr-coupon").attr("data-price")) * 100;
-                String urlDetail = el.select(".post-title a").attr("href");
-                document = Jsoup.connect("https://adayroi.com/" + urlDetail).get();
-                 Element elDetail = document.select("#tab_content_product_introduction").first();
-                String description = elDetail.html();
-                Item item = new Item();
-                item.setActive(true);
-                item.setPrice(price);
-                item.setAvatar(FileUtil.getImages(urlImage,"/home/vudang/Documents/Sem4/Images/Upload/"));
-                item.setName(name);
-                item.setDescription(description);
-                item.setStatus(true);
-                item.setQuantity(100);
-                List<Category> categories = new ArrayList<>();
-                categories.add(category);
-                item.setCategories(categories);
-                Unit unit = new Unit();
-                unit.setId(1);
-                item.setUnit(unit);
-                Supplier supplier = new Supplier();
-                supplier.setId(1);
-                item.setSupplier(supplier);
-                item = itemService.create(item);
-                System.out.println(item.getName());
-                Elements elmImageDetail = document.select("#product_gallery .thumbnails .items .item");
-                for (Element elImage: elmImageDetail
-                        ) {
-                    String image = elImage.select("img").attr("src");
-                    ImageItem imageItem = new ImageItem();
-                    imageItem.setImage(image);
-                    imageItem.setItem(item);
-                    imageItem.setActive(true);
-                    imageRepository.save(imageItem);
+                try {
+                    String urlImage = el.select(".post-thumb img").attr("data-src");
+                    String name = el.select(".post-title a").attr("title");
+                    Float price = Float.parseFloat(el.select(".item-content .adr-coupon").attr("data-price")) * 100;
+                    String urlDetail = el.select(".post-title a").attr("href");
+                    document = Jsoup.connect("https://adayroi.com/" + urlDetail).get();
+                    Element elDetail = document.select("#tab_content_product_introduction").first();
+                    String description = elDetail.html();
+                    Item item = new Item();
+                    item.setActive(true);
+                    item.setPrice(price);
+                    item.setAvatar(FileUtil.getImages(urlImage,"/home/vudang/Documents/Sem4/Images/Upload/"));
+                    item.setName(name);
+                    item.setDescription(description);
+                    item.setStatus(true);
+                    item.setQuantity(100);
+                    item.setCategories(categories);
+                    Unit unit = new Unit();
+                    unit.setId(1);
+                    item.setUnit(unit);
+                    Supplier supplier = new Supplier();
+                    supplier.setId(1);
+                    item.setSupplier(supplier);
+                    item = itemService.create(item);
+                    System.out.println(item.getName());
+                    Elements elmImageDetail = document.select("#product_gallery .thumbnails .items .item");
+                    for (Element elImage: elmImageDetail
+                            ) {
+                        try {
+                            String image = elImage.select("img").attr("src");
+                            ImageItem imageItem = new ImageItem();
+                            imageItem.setImage(image);
+                            imageItem.setItem(item);
+                            imageItem.setActive(true);
+                            imageRepository.save(imageItem);
+                        } catch (Exception ex) {
+                            System.err.println("Error: " + ex.getMessage());
+                        }
+                    }
+                } catch (Exception ex) {
+                    System.err.println("Error: " + ex.getMessage());
                 }
+
             }
         } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
         }
         return;
     }
@@ -87,24 +98,49 @@ public class BasicWebCrawler {
             Document document = Jsoup.connect(URL).get();
             Elements catesOnPage = document.select("#segment_navigation__mega_menu__list a");
             for (Element cate : catesOnPage) {
-                Category category = new Category();
-                category.setName(cate.select(".title").text());
-                category.setActive(true);
-                category.setLevelCategory(1);
-                category = categoryService.create(category);
-                Integer parentId = category.getId();
-                document = Jsoup.connect("https://www.adayroi.com" + cate.attr("href")).get();
-                catesOnPage = document.select(".widget-breadcrumb .active .list-unstyled li");
-                for (Element cateSub : catesOnPage) {
-                    category = new Category();
-                    category.setName(cateSub.select("a").text());
+                try {
+
+                    Category category = new Category();
+                    category.setName(cate.select(".title").text());
                     category.setActive(true);
-                    category.setParentId(parentId);
-                    category.setLevelCategory(2);
-                    category = categoryService.create(category);
-                    getItems("https://www.adayroi.com/" + cateSub.select("a").attr("href"),category);
-                    System.out.println(category.getName());
+                    category.setLevelCategory(1);
+                    try {
+                        category = categoryService.create(category);
+                    } catch (Exception ex){
+                        System.err.println("For '" + URL + "': " + ex.getMessage());
+                    }
+
+                    Integer parentId = category.getId();
+
+                    document = Jsoup.connect("https://www.adayroi.com" + cate.attr("href")).get();
+                    catesOnPage = document.select(".widget-breadcrumb .active .list-unstyled li");
+                    for (Element cateSub : catesOnPage) {
+                        try {
+                            List<Category> categories = new ArrayList<>();
+
+                            category = new Category();
+                            category.setName(cateSub.select("a").text());
+                            category.setActive(true);
+                            category.setParentId(parentId);
+                            category.setLevelCategory(2);
+                            try {
+                                categories.add(categoryRepository.findOne(parentId));
+                                category = categoryService.create(category);
+                                categories.add(category);
+                            } catch (Exception ex){
+                                System.err.println("For '" + URL + "': " + ex.getMessage());
+                            }
+                            getItems("https://www.adayroi.com/" + cateSub.select("a").attr("href")
+                                    ,categories);
+                            System.out.println(category.getName());
+                        } catch (Exception ex){
+                            System.err.println("For '" + URL + "': " + ex.getMessage());
+                        }
+                    }
+                } catch (Exception e) {
+                    System.err.println("For '" + URL + "': " + e.getMessage());
                 }
+
             }
         } catch (Exception e) {
             System.err.println("For '" + URL + "': " + e.getMessage());

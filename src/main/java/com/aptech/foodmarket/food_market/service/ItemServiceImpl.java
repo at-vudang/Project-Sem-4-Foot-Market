@@ -154,23 +154,32 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void init() {
-        User user = new User();
-        user.setActive(true);
-        user.setUsername("admin");
+        try {
+            User user = new User();
+            user.setActive(true);
+            user.setUsername("admin");
 
-        userRepository.save(user);
-        System.out.println(user.getId());
-        Supplier supplier = new Supplier();
-        supplier.setActive(true);
-        supplier.setUser(user);
-        //user.setSupplier(supplier);
+            userRepository.save(user);
+            System.out.println(user.getId());
+            Supplier supplier = new Supplier();
+            supplier.setActive(true);
+            supplier.setUser(user);
+            //user.setSupplier(supplier);
 
-        supplierRepository.save(supplier);
-        Unit unit = new Unit();
-        unit.setActive(true);
-        unit.setSyntax("KG");
-        unitRepository.save(unit);
-        //supplierRepository.save(supplier);
+            supplierRepository.save(supplier);
+            Unit unit = new Unit();
+            unit.setActive(true);
+            unit.setSyntax("KG");
+            unitRepository.save(unit);
+            unit = new Unit();
+            unit.setActive(true);
+            unit.setSyntax("GOI");
+            unitRepository.save(unit);
+            //supplierRepository.save(supplier);
+        } catch (Exception ex) {
+
+        }
+
     }
 }
 
