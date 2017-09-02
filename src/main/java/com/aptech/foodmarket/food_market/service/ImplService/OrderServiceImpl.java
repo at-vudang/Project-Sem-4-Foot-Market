@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService{
             } catch (Exception ex) {
             }
             orderItem.setPriceOffical(priceOffical);
-            orderItem.setQuantity(itemOrder.getQuantity());
+            orderItem.setQuantity(itemOrder.getQuantityCart());
             orderItemRepository.save(orderItem);
         }
         return orderRepository.save(order);

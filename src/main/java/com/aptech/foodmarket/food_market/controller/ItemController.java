@@ -1,20 +1,22 @@
 package com.aptech.foodmarket.food_market.controller;
 
 import com.aptech.foodmarket.food_market.model.Item;
+import com.aptech.foodmarket.food_market.model.Order;
 import com.aptech.foodmarket.food_market.model.User;
 import com.aptech.foodmarket.food_market.repository.CategoryRepository;
 import com.aptech.foodmarket.food_market.repository.ItemRepository;
 import com.aptech.foodmarket.food_market.repository.OrderItemRepository;
+import com.aptech.foodmarket.food_market.security.service.JwtAuthenticationResponse;
 import com.aptech.foodmarket.food_market.service.ItemService;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
+import com.aptech.foodmarket.food_market.vo.OrderVO;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,11 +41,16 @@ public class ItemController {
     public Page<ItemVO> getAll(@RequestParam("page") int page, @RequestParam("size") int size) {
 
         Page<ItemVO> resultPage = itemService.findPaginated(page, size);
-//        if (page > resultPage.getTotalPages()) {
-//            throw new NotFoundException();
-//        }
+        if (page > resultPage.getTotalPages()) {
+            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return resultPage;
-        //return itemService.getAll();
+    }
+    @RequestMapping(method = RequestMethod.POST, value = "/getCart")
+    public ResponseEntity<?> getCart(@RequestBody List<Integer> itemIds) {
+        List<ItemVO> itemVOList = itemService.getCart(itemIds);
+        System.out.println(itemVOList.get(1).getId());
+        return ResponseEntity.ok(itemVOList);
     }
 
     @RequestMapping("/getItemByName")
@@ -79,7 +86,6 @@ public class ItemController {
     @RequestMapping("/getItemBest")
     @ResponseBody
     public List<ItemVO> getItemBest() {
-//        return orderItemRepository.getIDBest();
         return itemService.getItemBestSeller(orderItemRepository.getIDBest());
     }
 }

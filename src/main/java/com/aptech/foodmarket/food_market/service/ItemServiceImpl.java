@@ -3,9 +3,11 @@ package com.aptech.foodmarket.food_market.service;
 import com.aptech.foodmarket.food_market.builder.ItemVOBuilder;
 import com.aptech.foodmarket.food_market.builder.SupplierVOBuilder;
 import com.aptech.foodmarket.food_market.builder.UnitVOBuilder;
-import com.aptech.foodmarket.food_market.model.Category;
-import com.aptech.foodmarket.food_market.model.Item;
+import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.repository.ItemRepository;
+import com.aptech.foodmarket.food_market.repository.SupplierRepository;
+import com.aptech.foodmarket.food_market.repository.UnitRepository;
+import com.aptech.foodmarket.food_market.repository.UserRepository;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.SupplierVO;
 import com.aptech.foodmarket.food_market.vo.UnitVO;
@@ -25,6 +27,7 @@ import java.util.List;
 public class ItemServiceImpl implements ItemService {
     @PersistenceContext
     private EntityManager entityManager;
+
     @Autowired
     private ItemRepository itemRepository;
 
@@ -116,4 +119,58 @@ public class ItemServiceImpl implements ItemService {
         });
         return itemsVOItemVOS;
     }
+
+    @Override
+    public List<ItemVO> getCart(List<Integer> itemIds) {
+        List<ItemVO> itemVOS = this.defaultJson(itemRepository.findByIdIn(itemIds));
+        System.out.println(itemVOS.get(1).getId());
+        return itemVOS;
+    }
+
+    @Override
+    public Item create(Item item) {
+        Item newItem = new Item();
+        newItem.setName(item.getName());
+        newItem.setImageItems(item.getImageItems());
+        newItem.setSupplier(item.getSupplier());
+        newItem.setQuantity(item.getQuantity());
+        newItem.setStatus(true);
+        newItem.setDescription(item.getDescription());
+        newItem.setCategories(item.getCategories());
+        newItem.setPrice(item.getPrice());
+        newItem.setAvatar(item.getAvatar());
+        newItem.setUnit(item.getUnit());
+        newItem = itemRepository.save(item);
+        return newItem;
+    }
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private SupplierRepository supplierRepository;
+
+    @Autowired
+    private UnitRepository unitRepository;
+
+    @Override
+    public void init() {
+        User user = new User();
+        user.setActive(true);
+        user.setUsername("admin");
+
+        userRepository.save(user);
+        System.out.println(user.getId());
+        Supplier supplier = new Supplier();
+        supplier.setActive(true);
+        supplier.setUser(user);
+        //user.setSupplier(supplier);
+
+        supplierRepository.save(supplier);
+        Unit unit = new Unit();
+        unit.setActive(true);
+        unit.setSyntax("KG");
+        unitRepository.save(unit);
+        //supplierRepository.save(supplier);
+    }
 }
+

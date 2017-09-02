@@ -30,7 +30,6 @@ public class Supplier {
 
     @OneToOne(optional=false)
     @JoinColumn(name="user_id")
-    @MapsId("id")
     private  User user;
 
     @OneToMany(mappedBy = "supplier")

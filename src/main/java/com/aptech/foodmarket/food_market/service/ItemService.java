@@ -24,4 +24,7 @@ public interface ItemService {
 
     public List<ItemVO> getItemNew( int quantity);
     public Page<ItemVO> findPaginated(int page, int size);
+    public List<ItemVO> getCart(List<Integer> itemIds);
+    public Item create(Item items);
+    public void init();
 }

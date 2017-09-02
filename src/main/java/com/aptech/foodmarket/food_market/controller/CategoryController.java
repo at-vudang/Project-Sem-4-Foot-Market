@@ -1,6 +1,9 @@
 package com.aptech.foodmarket.food_market.controller;
 
+import com.aptech.foodmarket.food_market.crawler.BasicWebCrawler;
+import com.aptech.foodmarket.food_market.model.Category;
 import com.aptech.foodmarket.food_market.model.Item;
+import com.aptech.foodmarket.food_market.repository.CategoryRepository;
 import com.aptech.foodmarket.food_market.service.CategoryService;
 import com.aptech.foodmarket.food_market.service.ItemService;
 import com.aptech.foodmarket.food_market.vo.CategoryVO;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.Basic;
 import java.util.List;
 
 @Controller
@@ -19,6 +23,9 @@ public class CategoryController {
 
     @Autowired
     CategoryService categoryService;
+
+    @Autowired
+    CategoryRepository cataCategoryRepository;
 
     @RequestMapping("/level/{level}")
     @ResponseBody
@@ -42,4 +49,5 @@ public class CategoryController {
     public List<CategoryVO> getCategoriesByParent(@PathVariable Integer parentID) {
         return categoryService.getCategoriesByParent(parentID);
     }
+
 }
