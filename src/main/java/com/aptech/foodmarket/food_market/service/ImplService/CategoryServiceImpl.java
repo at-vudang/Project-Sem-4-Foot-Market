@@ -2,7 +2,6 @@ package com.aptech.foodmarket.food_market.service.ImplService;
 
 import com.aptech.foodmarket.food_market.builder.CategoryVOBuilder;
 import com.aptech.foodmarket.food_market.model.Category;
-import com.aptech.foodmarket.food_market.model.LevelCategory;
 import com.aptech.foodmarket.food_market.repository.CategoryRepository;
 import com.aptech.foodmarket.food_market.service.CategoryService;
 import com.aptech.foodmarket.food_market.vo.CategoryVO;
@@ -17,12 +16,9 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService{
     @Autowired
     private CategoryRepository categoryRepository;
-
     @Override
     public List<CategoryVO> getCategoriesByLevel(Integer level) {
-        LevelCategory levelCategory = new LevelCategory();
-        levelCategory.setId(level);
-        List<Category> categories = categoryRepository.findByLevelCategory(levelCategory);
+        List<Category> categories = categoryRepository.findByLevelCategory(level);
         return this.defaultJson(categories);
     }
 
@@ -64,5 +60,21 @@ public class CategoryServiceImpl implements CategoryService{
         Category category = categoryRepository.findOne(id);
         ItemServiceImpl itemService = new ItemServiceImpl();
         return itemService.defaultJson(category.getItems());
+    }
+
+    @Override
+    public Category create(Category categorie) {
+        try {
+            Category category = new Category();
+            category.setName(categorie.getName());
+            category.setActive(true);
+            category.setLevelCategory(categorie.getLevelCategory());
+            category.setParentId(categorie.getParentId());
+            categoryRepository.save(category);
+            return category;
+        } catch (Exception ex) {
+            return null;
+        }
+
     }
 }

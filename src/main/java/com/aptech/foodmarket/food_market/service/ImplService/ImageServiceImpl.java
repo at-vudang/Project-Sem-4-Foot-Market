@@ -2,7 +2,6 @@ package com.aptech.foodmarket.food_market.service.ImplService;
 
 import com.aptech.foodmarket.food_market.builder.ImageItemVOBuilder;
 import com.aptech.foodmarket.food_market.builder.ItemVOBuilder;
-import com.aptech.foodmarket.food_market.model.ImageItem;
 import com.aptech.foodmarket.food_market.repository.ImageRepository;
 import com.aptech.foodmarket.food_market.service.ImageService;
 import com.aptech.foodmarket.food_market.vo.ImageItemVO;

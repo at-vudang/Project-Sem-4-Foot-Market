@@ -16,16 +16,15 @@ public class Category {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "nvarchar(255)", unique = true, nullable = false)
     private String name;
 
     @Column(name = "description")
     @Lob
     private String description;
 
-    @ManyToOne(optional=false)
-    @JoinColumn(name="level_category_id")
-    private LevelCategory levelCategory;
+    @Column(name = "levelCategory")
+    private Integer levelCategory;
 
     @ManyToMany(mappedBy = "categories")
     private List<Item> items;
@@ -101,11 +100,11 @@ public class Category {
         this.active = active;
     }
 
-    public LevelCategory getLevelCategory() {
+    public Integer getLevelCategory() {
         return levelCategory;
     }
 
-    public void setLevelCategory(LevelCategory levelCategory) {
+    public void setLevelCategory(Integer levelCategory) {
         this.levelCategory = levelCategory;
     }
 

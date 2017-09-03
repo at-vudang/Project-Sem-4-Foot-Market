@@ -14,6 +14,8 @@ public class ItemVO {
     private String avatar;
     private Boolean status;
     private Integer quantity;
+    private String description;
+
     private Date createdAt;
     private Date editedAt;
     private Boolean active;
@@ -79,6 +81,15 @@ public class ItemVO {
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 
     public Date getEditedAt() {
         return editedAt;

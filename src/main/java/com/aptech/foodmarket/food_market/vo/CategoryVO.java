@@ -1,7 +1,5 @@
 package com.aptech.foodmarket.food_market.vo;
 
-import com.aptech.foodmarket.food_market.model.LevelCategory;
-
 import java.util.List;
 
 public class CategoryVO {

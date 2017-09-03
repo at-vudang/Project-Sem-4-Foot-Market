@@ -1,27 +1,24 @@
 package com.aptech.foodmarket.food_market.builder;
 
-import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.SupplierVO;
 import com.aptech.foodmarket.food_market.vo.UnitVO;
 
 import java.util.Date;
-import java.util.List;
 
 public final class ItemVOBuilder {
-
     private Integer id;
     private String name;
     private Float price;
     private String avatar;
     private Boolean status;
     private Integer quantity;
+    private String description;
+    private Date createdAt;
+    private Date editedAt;
+    private Boolean active;
     private UnitVO unit;
     private SupplierVO supplier;
-//    private List<PromotionItem> promotions;
-//    private List<ImageItem> imageItems;
-//    private List<OrderItem> orderItems;
-//    private List<Category> category;
 
     private ItemVOBuilder() {
     }
@@ -60,6 +57,26 @@ public final class ItemVOBuilder {
         return this;
     }
 
+    public ItemVOBuilder withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public ItemVOBuilder withCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public ItemVOBuilder withEditedAt(Date editedAt) {
+        this.editedAt = editedAt;
+        return this;
+    }
+
+    public ItemVOBuilder withActive(Boolean active) {
+        this.active = active;
+        return this;
+    }
+
     public ItemVOBuilder withUnit(UnitVO unit) {
         this.unit = unit;
         return this;
@@ -70,26 +87,6 @@ public final class ItemVOBuilder {
         return this;
     }
 
-//    public ItemVOBuilder withPromotions(List<PromotionItem> promotions) {
-//        this.promotions = promotions;
-//        return this;
-//    }
-//
-//    public ItemVOBuilder withImageItems(List<ImageItem> imageItems) {
-//        this.imageItems = imageItems;
-//        return this;
-//    }
-//
-//    public ItemVOBuilder withOrderItems(List<OrderItem> orderItems) {
-//        this.orderItems = orderItems;
-//        return this;
-//    }
-//
-//    public ItemVOBuilder withCategory(List<Category> category) {
-//        this.category = category;
-//        return this;
-//    }
-
     public ItemVO build() {
         ItemVO itemVO = new ItemVO();
         itemVO.setId(id);
@@ -98,12 +95,12 @@ public final class ItemVOBuilder {
         itemVO.setAvatar(avatar);
         itemVO.setStatus(status);
         itemVO.setQuantity(quantity);
-//        itemVO.setUnit(unit);
-//        itemVO.setSupplier(supplier);
-        //itemVO.setPromotions(promotions);
-//        itemVO.setImageItems(imageItems);
-//        itemVO.setOrderItems(orderItems);
-      //  itemVO.setCategory(category);
+        itemVO.setDescription(description);
+        itemVO.setCreatedAt(createdAt);
+        itemVO.setEditedAt(editedAt);
+        itemVO.setActive(active);
+        itemVO.setUnit(unit);
+        itemVO.setSupplier(supplier);
         return itemVO;
     }
 }
