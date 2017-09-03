@@ -23,8 +23,8 @@ public class MyCommandLineRunner implements ApplicationRunner {
     }
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
-        itemService.init();
-        basicWebCrawler.crawler("https://www.adayroi.com/vinmart");
+//        itemService.init();
+//        basicWebCrawler.crawler("https://www.adayroi.com/vinmart");
     }
 
 }

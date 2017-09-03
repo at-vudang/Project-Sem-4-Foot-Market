@@ -27,4 +27,5 @@ public interface ItemService {
     public List<ItemVO> getCart(List<Integer> itemIds);
     public Item create(Item items);
     public void init();
+    public List<ItemVO> getItemTool(int quantity);
 }
