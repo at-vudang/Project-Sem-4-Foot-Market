@@ -2,6 +2,7 @@ package com.aptech.foodmarket.food_market.builder;
 
 import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
+import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
 import com.aptech.foodmarket.food_market.vo.SupplierVO;
 import com.aptech.foodmarket.food_market.vo.UnitVO;
 
@@ -18,7 +19,7 @@ public final class ItemVOBuilder {
     private Integer quantity;
     private UnitVO unit;
     private SupplierVO supplier;
-//    private List<PromotionItem> promotions;
+    private List<PromotionItemVO> promotions;
 //    private List<ImageItem> imageItems;
 //    private List<OrderItem> orderItems;
 //    private List<Category> category;
@@ -70,11 +71,11 @@ public final class ItemVOBuilder {
         return this;
     }
 
-//    public ItemVOBuilder withPromotions(List<PromotionItem> promotions) {
-//        this.promotions = promotions;
-//        return this;
-//    }
-//
+    public ItemVOBuilder withPromotions(List<PromotionItemVO> promotions) {
+        this.promotions = promotions;
+        return this;
+    }
+
 //    public ItemVOBuilder withImageItems(List<ImageItem> imageItems) {
 //        this.imageItems = imageItems;
 //        return this;
@@ -100,7 +101,7 @@ public final class ItemVOBuilder {
         itemVO.setQuantity(quantity);
 //        itemVO.setUnit(unit);
 //        itemVO.setSupplier(supplier);
-        //itemVO.setPromotions(promotions);
+        itemVO.setPromotions(promotions);
 //        itemVO.setImageItems(imageItems);
 //        itemVO.setOrderItems(orderItems);
       //  itemVO.setCategory(category);
