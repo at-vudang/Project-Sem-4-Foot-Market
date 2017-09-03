@@ -46,7 +46,7 @@ public class BasicWebCrawler {
                 try {
                     String urlImage = el.select(".post-thumb img").attr("data-src");
                     String name = el.select(".post-title a").attr("title");
-                    Float price = Float.parseFloat(el.select(".item-content .adr-coupon").attr("data-price")) * 100;
+                    Float price = Float.parseFloat(el.select(".item-content .adr-coupon").attr("data-price"));
                     String urlDetail = el.select(".post-title a").attr("href");
                     document = Jsoup.connect("https://adayroi.com/" + urlDetail).get();
                     Element elDetail = document.select("#tab_content_product_introduction").first();
@@ -98,20 +98,20 @@ public class BasicWebCrawler {
             Document document = Jsoup.connect(URL).get();
             Elements catesOnPage = document.select("#segment_navigation__mega_menu__list a");
             for (Element cate : catesOnPage) {
-                try {
-
                     Category category = new Category();
                     category.setName(cate.select(".title").text());
                     category.setActive(true);
                     category.setLevelCategory(1);
-                    try {
-                        category = categoryService.create(category);
+                    category = categoryService.create(category);
+                    Integer parentId;
+                    try{
+                        parentId = category.getId();
                     } catch (Exception ex){
                         System.err.println("For '" + URL + "': " + ex.getMessage());
+                        category = categoryRepository.findFirstByName(cate.select(".title").text());
+                        System.out.println(category.getId());
+                        parentId = category.getId();
                     }
-
-                    Integer parentId = category.getId();
-
                     document = Jsoup.connect("https://www.adayroi.com" + cate.attr("href")).get();
                     catesOnPage = document.select(".widget-breadcrumb .active .list-unstyled li");
                     for (Element cateSub : catesOnPage) {
@@ -137,10 +137,6 @@ public class BasicWebCrawler {
                             System.err.println("For '" + URL + "': " + ex.getMessage());
                         }
                     }
-                } catch (Exception e) {
-                    System.err.println("For '" + URL + "': " + e.getMessage());
-                }
-
             }
         } catch (Exception e) {
             System.err.println("For '" + URL + "': " + e.getMessage());

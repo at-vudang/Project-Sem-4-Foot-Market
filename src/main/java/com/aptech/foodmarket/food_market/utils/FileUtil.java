@@ -15,16 +15,16 @@ public class FileUtil {
 //        System.out.println(tar);
 //        System.out.println(name);
 //        //Open a URL Stream
-//        URL url = new URL(src);
-//        InputStream in = url.openStream();
-//
-//        OutputStream out = new BufferedOutputStream(new FileOutputStream(tar + name));
-//
-//        for (int b; (b = in.read()) != -1;) {
-//            out.write(b);
-//        }
-//        out.close();
-//        in.close();
+        URL url = new URL(src);
+        InputStream in = url.openStream();
+
+        OutputStream out = new BufferedOutputStream(new FileOutputStream(tar + name));
+
+        for (int b; (b = in.read()) != -1;) {
+            out.write(b);
+        }
+        out.close();
+        in.close();
         return name;
     }
 }

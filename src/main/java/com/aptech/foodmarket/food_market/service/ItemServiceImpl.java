@@ -4,10 +4,7 @@ import com.aptech.foodmarket.food_market.builder.ItemVOBuilder;
 import com.aptech.foodmarket.food_market.builder.SupplierVOBuilder;
 import com.aptech.foodmarket.food_market.builder.UnitVOBuilder;
 import com.aptech.foodmarket.food_market.model.*;
-import com.aptech.foodmarket.food_market.repository.ItemRepository;
-import com.aptech.foodmarket.food_market.repository.SupplierRepository;
-import com.aptech.foodmarket.food_market.repository.UnitRepository;
-import com.aptech.foodmarket.food_market.repository.UserRepository;
+import com.aptech.foodmarket.food_market.repository.*;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.SupplierVO;
 import com.aptech.foodmarket.food_market.vo.UnitVO;
@@ -27,7 +24,8 @@ import java.util.List;
 public class ItemServiceImpl implements ItemService {
     @PersistenceContext
     private EntityManager entityManager;
-
+    @Autowired
+    private CategoryRepository categoryRepository;
     @Autowired
     private ItemRepository itemRepository;
 
@@ -84,8 +82,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemVO> getItemByCategory(Category cate) {
-        List<Item> items = itemRepository.findAllByCategories(cate);
-        return this.defaultJson(items);
+//        List<Item> items = itemRepository.findAllByCategories(cate);
+//        return this.defaultJson(items);
+        return null;
     }
 
     @Override
@@ -103,6 +102,12 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemVO> getItemPromotion(int quantity) {
         return this.defaultJson(itemRepository.findAllByOrderByPromotionItemsDesc()).subList(0,quantity);
     }
+    @Override
+    public List<ItemVO> getItemTool(int quantity) {
+        Category category = new Category();
+        category = categoryRepository.findOne(44);
+        return this.defaultJson(itemRepository.findAllByCategories(category)).subList(0,quantity);
+    }
 
     @Override
     public List<ItemVO> getItemNew(int quantity) {
@@ -111,13 +116,13 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Page<ItemVO> findPaginated(int page, int size) {
         Page<Item> items = itemRepository.findAll(new PageRequest(page, size));
-        Page<ItemVO> itemsVOItemVOS = items.map(new Converter<Item, ItemVO>() {
+        Page<ItemVO> itemsVOs = items.map(new Converter<Item, ItemVO>() {
             @Override
             public ItemVO convert(Item entity) {
                 return convertVO(entity);
             }
         });
-        return itemsVOItemVOS;
+        return itemsVOs;
     }
 
     @Override

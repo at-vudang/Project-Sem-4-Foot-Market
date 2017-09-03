@@ -2,12 +2,18 @@ package com.aptech.foodmarket.food_market.service.ImplService;
 
 import com.aptech.foodmarket.food_market.builder.CategoryVOBuilder;
 import com.aptech.foodmarket.food_market.model.Category;
+import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.repository.CategoryRepository;
+import com.aptech.foodmarket.food_market.repository.ItemRepository;
 import com.aptech.foodmarket.food_market.service.CategoryService;
+import com.aptech.foodmarket.food_market.service.ItemService;
 import com.aptech.foodmarket.food_market.service.ItemServiceImpl;
 import com.aptech.foodmarket.food_market.vo.CategoryVO;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,12 +30,13 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     public List<CategoryVO> defaultJson(List<Category> categories) {
+
         List<CategoryVO> categoryVOS = new ArrayList<>();
         categories.stream().forEach(item -> {
             categoryVOS.add(CategoryVOBuilder.aCategoryVO().withId(item.getId())
                     .withName(item.getName())
                     .withDescription(item.getDescription())
-                    .withName(item.getName())
+                    .withName(item.getName()).withQuantityItems(item.getItems().size())
                     .build());
         });
         return categoryVOS;
@@ -55,12 +62,23 @@ public class CategoryServiceImpl implements CategoryService{
                 .build();
         return categoryVO;
     }
-
+    @Autowired
+    private ItemRepository itemRepository;
     @Override
-    public List<ItemVO> getItems(Integer id) {
+    public Page<ItemVO> getItems(Integer id, int page, int size) {
         Category category = categoryRepository.findOne(id);
         ItemServiceImpl itemService = new ItemServiceImpl();
-        return itemService.defaultJson(category.getItems());
+        PageRequest pageRequest = new PageRequest(page,size);
+        Page<Item> items = itemRepository.findAllByCategories(category, new PageRequest(page, size));
+        Page<ItemVO> itemsVOs = items.map(new Converter<Item, ItemVO>() {
+            @Override
+            public ItemVO convert(Item entity) {
+                return itemService.convertVO(entity);
+            }
+        });
+        return itemsVOs;
+
+//        return itemService.defaultJson(category.getItems(new PageRequest(page, size)));
     }
 
     @Override

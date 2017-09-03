@@ -11,6 +11,7 @@ public final class CategoryVOBuilder {
     private String description;
     private Integer levelCategory;
     private List<ItemVO> items;
+    private Integer quantityItems;
 
     private CategoryVOBuilder() {
     }
@@ -28,6 +29,11 @@ public final class CategoryVOBuilder {
         this.name = name;
         return this;
     }
+    public CategoryVOBuilder withQuantityItems(Integer quantityItems) {
+        this.quantityItems = quantityItems;
+        return this;
+    }
+
 
     public CategoryVOBuilder withDescription(String description) {
         this.description = description;
@@ -51,6 +57,7 @@ public final class CategoryVOBuilder {
         categoryVO.setDescription(description);
         categoryVO.setLevelCategory(levelCategory);
         categoryVO.setItems(items);
+        categoryVO.setQuantityItems(quantityItems);
         return categoryVO;
     }
 }
