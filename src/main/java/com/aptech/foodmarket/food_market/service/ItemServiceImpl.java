@@ -1,11 +1,13 @@
 package com.aptech.foodmarket.food_market.service;
 
 import com.aptech.foodmarket.food_market.builder.ItemVOBuilder;
+import com.aptech.foodmarket.food_market.builder.PromotionItemVOBuilder;
 import com.aptech.foodmarket.food_market.builder.SupplierVOBuilder;
 import com.aptech.foodmarket.food_market.builder.UnitVOBuilder;
 import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.repository.*;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
+import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
 import com.aptech.foodmarket.food_market.vo.SupplierVO;
 import com.aptech.foodmarket.food_market.vo.UnitVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,14 @@ public class ItemServiceImpl implements ItemService {
                                             .withSyntax(item.getUnit().getSyntax()).build();
             SupplierVO supplierVO = SupplierVOBuilder.aSupplierVO().withId(item.getSupplier().getId())
                                                                     .build();
+            List<PromotionItemVO> promotionItemVOS = new ArrayList<>();
+            for (PromotionItem promotionItem: item.getPromotionItems()
+                 ) {
+                PromotionItemVO promotionItemVO = PromotionItemVOBuilder.aPromotionItemVO()
+                        .withId(promotionItem.getId())
+                        .withPercent(promotionItem.getPercent()).build();
+                promotionItemVOS.add(promotionItemVO);
+            }
             itemVOS.add(ItemVOBuilder.anItemVO().withId(item.getId())
                     .withName(item.getName())
                     .withPrice(item.getPrice())
@@ -47,7 +57,7 @@ public class ItemServiceImpl implements ItemService {
 //                    .withEditedAt(item.getEditedAt())
 //                    .withSupplier(supplierVO)
 //                    .withUnit(unitVO)
-//                    .withPromotions(item.getPromotionItems())
+                    .withPromotions(promotionItemVOS)
 //                    .withImageItems(item.getImageItems())
 //                    .withOrderItems(item.getOrderItems())
 //                    .withCategory(item.getCategories())
@@ -58,11 +68,20 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public ItemVO convertVO(Item item) {
+        List<PromotionItemVO> promotionItemVOS = new ArrayList<>();
+        for (PromotionItem promotionItem: item.getPromotionItems()
+                ) {
+            PromotionItemVO promotionItemVO = PromotionItemVOBuilder.aPromotionItemVO()
+                    .withId(promotionItem.getId())
+                    .withPercent(promotionItem.getPercent()).build();
+            promotionItemVOS.add(promotionItemVO);
+        }
         ItemVO itemVO = ItemVOBuilder.anItemVO().withId(item.getId())
                 .withName(item.getName())
                 .withPrice(item.getPrice())
                 .withAvatar(item.getAvatar())
                 .withQuantity(item.getQuantity())
+                .withPromotions(promotionItemVOS)
                 .build();
         return itemVO;
     }
