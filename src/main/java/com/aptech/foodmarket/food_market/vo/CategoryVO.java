@@ -8,6 +8,15 @@ public class CategoryVO {
     private String description;
     private Integer levelCategory;
     private List<ItemVO> items;
+    private Integer quantityItems;
+
+    public Integer getQuantityItems() {
+        return quantityItems;
+    }
+
+    public void setQuantityItems(Integer quantityItems) {
+        this.quantityItems = quantityItems;
+    }
 
     public List<ItemVO> getItems() {
         return items;

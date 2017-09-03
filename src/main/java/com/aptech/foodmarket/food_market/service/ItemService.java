@@ -32,6 +32,7 @@ public interface ItemService {
     public List<ItemVO> getCart(List<Integer> itemIds);
     public Item create(Item items);
     public void init();
-
     List<CategoryVO> getCategory(Integer id);
+    public List<ItemVO> getItemTool(int quantity);
+
 }

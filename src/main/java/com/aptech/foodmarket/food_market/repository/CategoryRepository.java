@@ -9,4 +9,5 @@ public interface CategoryRepository extends JpaRepository<Category,Integer>{
     List<Category> findByLevelCategory(Integer level);
     List<Category> findByParentId(Integer parentID);
     Category findById(Integer id);
+    Category findFirstByName(String name);
 }

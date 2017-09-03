@@ -82,6 +82,12 @@ public class ItemController {
         return itemService.getItemPromotion(quantity);
     }
 
+    @RequestMapping("/getItemTool")
+    @ResponseBody
+    public List<ItemVO> getItemTool(int quantity) {
+        return itemService.getItemTool(quantity);
+    }
+
     @RequestMapping("/getItemBest")
     @ResponseBody
     public List<ItemVO> getItemBest() {

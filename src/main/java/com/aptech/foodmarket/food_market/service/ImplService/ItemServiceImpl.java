@@ -1,16 +1,15 @@
 package com.aptech.foodmarket.food_market.service.ImplService;
 
 import com.aptech.foodmarket.food_market.builder.ItemVOBuilder;
+import com.aptech.foodmarket.food_market.builder.PromotionItemVOBuilder;
 import com.aptech.foodmarket.food_market.builder.SupplierVOBuilder;
 import com.aptech.foodmarket.food_market.builder.UnitVOBuilder;
 import com.aptech.foodmarket.food_market.model.*;
-import com.aptech.foodmarket.food_market.repository.ItemRepository;
 import com.aptech.foodmarket.food_market.service.ItemService;
-import com.aptech.foodmarket.food_market.repository.SupplierRepository;
-import com.aptech.foodmarket.food_market.repository.UnitRepository;
-import com.aptech.foodmarket.food_market.repository.UserRepository;
 import com.aptech.foodmarket.food_market.vo.CategoryVO;
+import com.aptech.foodmarket.food_market.repository.*;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
+import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
 import com.aptech.foodmarket.food_market.vo.SupplierVO;
 import com.aptech.foodmarket.food_market.vo.UnitVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,8 @@ import java.util.List;
 public class ItemServiceImpl implements ItemService {
     @PersistenceContext
     private EntityManager entityManager;
-
+    @Autowired
+    private CategoryRepository categoryRepository;
     @Autowired
     private ItemRepository itemRepository;
 
@@ -40,6 +40,14 @@ public class ItemServiceImpl implements ItemService {
                                             .withSyntax(item.getUnit().getSyntax()).build();
             SupplierVO supplierVO = SupplierVOBuilder.aSupplierVO().withId(item.getSupplier().getId())
                                                                     .build();
+            List<PromotionItemVO> promotionItemVOS = new ArrayList<>();
+            for (PromotionItem promotionItem: item.getPromotionItems()
+                 ) {
+                PromotionItemVO promotionItemVO = PromotionItemVOBuilder.aPromotionItemVO()
+                        .withId(promotionItem.getId())
+                        .withPercent(promotionItem.getPercent()).build();
+                promotionItemVOS.add(promotionItemVO);
+            }
             itemVOS.add(ItemVOBuilder.anItemVO().withId(item.getId())
                     .withName(item.getName())
                     .withPrice(item.getPrice())
@@ -50,7 +58,7 @@ public class ItemServiceImpl implements ItemService {
 //                    .withEditedAt(item.getEditedAt())
 //                    .withSupplier(supplierVO)
 //                    .withUnit(unitVO)
-//                    .withPromotions(item.getPromotionItems())
+                    .withPromotions(promotionItemVOS)
 //                    .withImageItems(item.getImageItems())
 //                    .withOrderItems(item.getOrderItems())
 //                    .withCategory(item.getCategories())
@@ -61,11 +69,20 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public ItemVO convertVO(Item item) {
+        List<PromotionItemVO> promotionItemVOS = new ArrayList<>();
+        for (PromotionItem promotionItem: item.getPromotionItems()
+                ) {
+            PromotionItemVO promotionItemVO = PromotionItemVOBuilder.aPromotionItemVO()
+                    .withId(promotionItem.getId())
+                    .withPercent(promotionItem.getPercent()).build();
+            promotionItemVOS.add(promotionItemVO);
+        }
         ItemVO itemVO = ItemVOBuilder.anItemVO().withId(item.getId())
                 .withName(item.getName())
                 .withPrice(item.getPrice())
                 .withAvatar(item.getAvatar())
                 .withQuantity(item.getQuantity())
+                .withPromotions(promotionItemVOS)
                 .build();
         return itemVO;
     }
@@ -85,8 +102,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemVO> getItemByCategory(Category cate) {
-        List<Item> items = itemRepository.findAllByCategories(cate);
-        return this.defaultJson(items);
+//        List<Item> items = itemRepository.findAllByCategories(cate);
+//        return this.defaultJson(items);
+        return null;
     }
 
     @Override
@@ -103,6 +121,12 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemVO> getItemPromotion(int quantity) {
         return this.defaultJson(itemRepository.findAllByOrderByPromotionItemsDesc()).subList(0,quantity);
+    }
+    @Override
+    public List<ItemVO> getItemTool(int quantity) {
+        Category category = new Category();
+        category = categoryRepository.findOne(44);
+        return this.defaultJson(itemRepository.findAllByCategories(category)).subList(0,quantity);
     }
 
     @Override
@@ -134,13 +158,13 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Page<ItemVO> findPaginated(int page, int size) {
         Page<Item> items = itemRepository.findAll(new PageRequest(page, size));
-        Page<ItemVO> itemsVOItemVOS = items.map(new Converter<Item, ItemVO>() {
+        Page<ItemVO> itemsVOs = items.map(new Converter<Item, ItemVO>() {
             @Override
             public ItemVO convert(Item entity) {
                 return convertVO(entity);
             }
         });
-        return itemsVOItemVOS;
+        return itemsVOs;
     }
 
     @Override

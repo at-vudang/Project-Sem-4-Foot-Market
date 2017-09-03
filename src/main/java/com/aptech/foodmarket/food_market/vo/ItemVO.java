@@ -21,7 +21,7 @@ public class ItemVO {
     private Boolean active;
     private UnitVO unit;
     private SupplierVO supplier;
-//    private List<PromotionItem> promotions;
+    private List<PromotionItemVO> promotions;
 //    private List<ImageItem> imageItems;
 //    private List<OrderItem> orderItems;
 //    private List<Category> category;
@@ -131,13 +131,13 @@ public class ItemVO {
         this.supplier = supplier;
     }
 
-//    public List<PromotionItem> getPromotions() {
-//        return promotions;
-//    }
-//
-//    public void setPromotions(List<PromotionItem> promotions) {
-//        this.promotions = promotions;
-//    }
+    public List<PromotionItemVO> getPromotions() {
+        return promotions;
+    }
+
+    public void setPromotions(List<PromotionItemVO> promotions) {
+        this.promotions = promotions;
+    }
 
 //    public List<ImageItem> getImageItems() {
 //        return imageItems;
