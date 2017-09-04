@@ -1,10 +1,12 @@
-package com.aptech.foodmarket.food_market.service;
+package com.aptech.foodmarket.food_market.service.ImplService;
 
 import com.aptech.foodmarket.food_market.builder.ItemVOBuilder;
 import com.aptech.foodmarket.food_market.builder.PromotionItemVOBuilder;
 import com.aptech.foodmarket.food_market.builder.SupplierVOBuilder;
 import com.aptech.foodmarket.food_market.builder.UnitVOBuilder;
 import com.aptech.foodmarket.food_market.model.*;
+import com.aptech.foodmarket.food_market.service.ItemService;
+import com.aptech.foodmarket.food_market.vo.CategoryVO;
 import com.aptech.foodmarket.food_market.repository.*;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
@@ -15,8 +17,6 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.Convert;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
@@ -53,6 +53,7 @@ public class ItemServiceImpl implements ItemService {
                     .withPrice(item.getPrice())
                     .withAvatar(item.getAvatar())
                     .withQuantity(item.getQuantity())
+                    .withDescription(item.getDescription())
 //                    .withCreatedAt(item.getCreatedAt())
 //                    .withEditedAt(item.getEditedAt())
 //                    .withSupplier(supplierVO)
@@ -132,6 +133,28 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemVO> getItemNew(int quantity) {
         return this.defaultJson(itemRepository.findAllByOrderByIdDesc()).subList(0,quantity);
     }
+
+
+    @Override
+    public ItemVO getItemById( int id) {
+        Item item = itemRepository.findOne(id);
+        UnitVO unitVO = new UnitVO();
+        unitVO = UnitVOBuilder.anUnitVO().withId(item.getUnit().getId())
+                .withName(item.getUnit().getName())
+                .withSyntax(item.getUnit().getSyntax()).build();
+        SupplierVO supplierVO = SupplierVOBuilder.aSupplierVO().withId(item.getSupplier().getId())
+                .build();
+        return ItemVOBuilder.anItemVO().withId(item.getId())
+                .withName(item.getName())
+                .withPrice(item.getPrice())
+                .withAvatar(item.getAvatar())
+                .withQuantity(item.getQuantity())
+                .withDescription(item.getDescription())
+                .withSupplier(supplierVO)
+                .withUnit(unitVO)
+                .build();
+    }
+
     @Override
     public Page<ItemVO> findPaginated(int page, int size) {
         Page<Item> items = itemRepository.findAll(new PageRequest(page, size));
@@ -204,6 +227,12 @@ public class ItemServiceImpl implements ItemService {
 
         }
 
+    }
+    @Override
+    public List<CategoryVO> getCategory(Integer id){
+        Item item = itemRepository.findOne(id);
+        CategoryServiceImpl categoryService = new CategoryServiceImpl();
+        return categoryService.defaultJson(item.getCategories());
     }
 }
 

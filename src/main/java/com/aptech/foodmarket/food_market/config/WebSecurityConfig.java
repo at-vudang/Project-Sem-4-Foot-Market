@@ -63,7 +63,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         HttpMethod.GET,
                         "/",
-                        "/item/**",
                         "/*.html",
                         "/favicon.ico",
                         "/**/*.html",
@@ -71,10 +70,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).permitAll()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/category/**").permitAll()
+                .antMatchers("/images/**").permitAll()
+                .antMatchers("/item/**").permitAll()
                 .antMatchers("/order/**").permitAll()
                 .antMatchers("/promotion/**").permitAll()
-                .antMatchers("/item/**").permitAll()
-                .antMatchers("/category/**").permitAll()
                 .anyRequest().authenticated();
 
         // Custom JWT based security filter

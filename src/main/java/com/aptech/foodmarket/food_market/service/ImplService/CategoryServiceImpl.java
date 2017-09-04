@@ -6,8 +6,7 @@ import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.repository.CategoryRepository;
 import com.aptech.foodmarket.food_market.repository.ItemRepository;
 import com.aptech.foodmarket.food_market.service.CategoryService;
-import com.aptech.foodmarket.food_market.service.ItemService;
-import com.aptech.foodmarket.food_market.service.ItemServiceImpl;
+
 import com.aptech.foodmarket.food_market.vo.CategoryVO;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
