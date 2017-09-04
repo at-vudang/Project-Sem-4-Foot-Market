@@ -1,6 +1,5 @@
 package com.aptech.foodmarket.food_market.builder;
 
-import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
 import com.aptech.foodmarket.food_market.vo.SupplierVO;
@@ -10,19 +9,24 @@ import java.util.Date;
 import java.util.List;
 
 public final class ItemVOBuilder {
-
     private Integer id;
     private String name;
     private Float price;
     private String avatar;
     private Boolean status;
     private Integer quantity;
+    private String description;
+    private Date createdAt;
+    private Date editedAt;
+    private Boolean active;
     private UnitVO unit;
     private SupplierVO supplier;
+
     private List<PromotionItemVO> promotions;
 //    private List<ImageItem> imageItems;
 //    private List<OrderItem> orderItems;
 //    private List<Category> category;
+
 
     private ItemVOBuilder() {
     }
@@ -58,6 +62,26 @@ public final class ItemVOBuilder {
 
     public ItemVOBuilder withQuantity(Integer quantity) {
         this.quantity = quantity;
+        return this;
+    }
+
+    public ItemVOBuilder withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public ItemVOBuilder withCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public ItemVOBuilder withEditedAt(Date editedAt) {
+        this.editedAt = editedAt;
+        return this;
+    }
+
+    public ItemVOBuilder withActive(Boolean active) {
+        this.active = active;
         return this;
     }
 
@@ -99,6 +123,13 @@ public final class ItemVOBuilder {
         itemVO.setAvatar(avatar);
         itemVO.setStatus(status);
         itemVO.setQuantity(quantity);
+
+        itemVO.setDescription(description);
+        itemVO.setCreatedAt(createdAt);
+        itemVO.setEditedAt(editedAt);
+        itemVO.setActive(active);
+        itemVO.setUnit(unit);
+        itemVO.setSupplier(supplier);
 //        itemVO.setUnit(unit);
 //        itemVO.setSupplier(supplier);
         itemVO.setPromotions(promotions);
