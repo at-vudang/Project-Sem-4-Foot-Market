@@ -30,4 +30,9 @@ public interface ItemRepository extends JpaRepository<Item,Integer>, PagingAndSo
 
     List<Item> findAllByCategories(Category category);
     Page<Item> findAllByCategories(Category category,Pageable pageable);
+    @Query(value="SELECT * FROM items WHERE MATCH(name,description) AGAINST (?1 IN NATURAL LANGUAGE MODE);" ,nativeQuery = true)
+    List<Item> search(String key);
+
+    @Query(value="SELECT a.* FROM items a , tag_categories b where a.id = b.item_id and b.category_id = ?1 and  MATCH(name,description) AGAINST (?2 IN NATURAL LANGUAGE MODE);" ,nativeQuery = true)
+    List<Item> searchWithCategory(int cate_id, String key);
 }
