@@ -131,6 +131,16 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public List<ItemVO> search(String key) {
+        return this.defaultJson(itemRepository.search(key));
+    }
+
+    @Override
+    public List<ItemVO> searchWithCategory(int cate_id, String key) {
+        return this.defaultJson(itemRepository.searchWithCategory(cate_id, key));
+    }
+
+    @Override
     public List<ItemVO> getItemNew(int quantity) {
         return this.defaultJson(itemRepository.findAllByOrderByIdDesc()).subList(0,quantity);
     }

@@ -98,4 +98,17 @@ public class ItemController {
     public List<CategoryVO> getCategories(@PathVariable Integer id) {
         return itemService.getCategory(id);
     }
+
+    @RequestMapping("/search")
+    @ResponseBody
+    public List<ItemVO> search(@RequestParam String key) {
+        System.out.println(key);
+        return itemService.search(key);
+    }
+
+    @RequestMapping("/searchWithCategory")
+    @ResponseBody
+    public List<ItemVO> searchWithCategory(@RequestParam int id, @RequestParam String key) {
+        return itemService.searchWithCategory(id,key);
+    }
 }
