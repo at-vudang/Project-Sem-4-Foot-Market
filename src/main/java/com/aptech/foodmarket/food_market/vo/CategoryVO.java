@@ -9,6 +9,15 @@ public class CategoryVO {
     private Integer levelCategory;
     private List<ItemVO> items;
     private Integer quantityItems;
+    private Integer parentId;
+
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
 
     public Integer getQuantityItems() {
         return quantityItems;

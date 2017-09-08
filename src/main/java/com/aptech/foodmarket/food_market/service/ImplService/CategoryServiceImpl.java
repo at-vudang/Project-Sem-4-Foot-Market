@@ -36,6 +36,7 @@ public class CategoryServiceImpl implements CategoryService{
                     .withName(item.getName())
                     .withDescription(item.getDescription())
                     .withName(item.getName()).withQuantityItems(item.getItems().size())
+                    .withParentId(item.getParentId())
                     .build());
         });
         return categoryVOS;
@@ -50,14 +51,11 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public CategoryVO getCategoryById(Integer id) {
         Category category = categoryRepository.findOne(id);
-        ItemServiceImpl itemService = new ItemServiceImpl();
-        itemService.defaultJson(category.getItems());
-        List<ItemVO> itemVOS = new ArrayList<>();
-
         CategoryVO categoryVO = CategoryVOBuilder.aCategoryVO().withId(id)
                 .withName(category.getName())
                 .withDescription(category.getDescription())
-                .withName(category.getName()).withItems(itemVOS)
+                .withName(category.getName()).withQuantityItems(category.getItems().size())
+                .withParentId(category.getParentId())
                 .build();
         return categoryVO;
     }
