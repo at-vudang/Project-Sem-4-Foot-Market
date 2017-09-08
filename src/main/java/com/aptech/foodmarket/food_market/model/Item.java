@@ -3,6 +3,7 @@ package com.aptech.foodmarket.food_market.model;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -23,24 +24,31 @@ public class Item {
     private Integer id;
 
     @Column(name = "name")
+    @NotNull
     private String name;
 
     @Column(name = "description", columnDefinition = "TEXT")
+    @NotNull
     private String description;
 
     @Column(name = "price")
+    @NotNull
     private Float price;
 
     @Column(name = "avatar")
+    @NotNull
     private String avatar;
 
     @Column(name = "status")
+    @NotNull
     private Boolean status;
 
     @Column(name = "quantity")
+    @NotNull
     private Integer quantity;
 
     @Column(name = "created_at")
+    @NotNull
     private Date createdAt;
 
     @Column(name = "edited_at")

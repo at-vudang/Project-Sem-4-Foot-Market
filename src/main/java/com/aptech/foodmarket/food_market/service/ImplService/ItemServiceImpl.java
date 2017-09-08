@@ -42,7 +42,7 @@ public class ItemServiceImpl implements ItemService {
                                                                     .build();
             List<PromotionItemVO> promotionItemVOS = new ArrayList<>();
             for (PromotionItem promotionItem: item.getPromotionItems()
-                 ) {
+                    ) {
                 PromotionItemVO promotionItemVO = PromotionItemVOBuilder.aPromotionItemVO()
                         .withId(promotionItem.getId())
                         .withPercent(promotionItem.getPercent()).build();
@@ -81,6 +81,7 @@ public class ItemServiceImpl implements ItemService {
                 .withName(item.getName())
                 .withPrice(item.getPrice())
                 .withAvatar(item.getAvatar())
+                .withDescription(item.getDescription())
                 .withQuantity(item.getQuantity())
                 .withPromotions(promotionItemVOS)
                 .build();
@@ -138,21 +139,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemVO getItemById( int id) {
         Item item = itemRepository.findOne(id);
-        UnitVO unitVO = new UnitVO();
-        unitVO = UnitVOBuilder.anUnitVO().withId(item.getUnit().getId())
-                .withName(item.getUnit().getName())
-                .withSyntax(item.getUnit().getSyntax()).build();
-        SupplierVO supplierVO = SupplierVOBuilder.aSupplierVO().withId(item.getSupplier().getId())
-                .build();
-        return ItemVOBuilder.anItemVO().withId(item.getId())
-                .withName(item.getName())
-                .withPrice(item.getPrice())
-                .withAvatar(item.getAvatar())
-                .withQuantity(item.getQuantity())
-                .withDescription(item.getDescription())
-                .withSupplier(supplierVO)
-                .withUnit(unitVO)
-                .build();
+        return convertVO(item);
     }
 
     @Override
@@ -170,7 +157,6 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemVO> getCart(List<Integer> itemIds) {
         List<ItemVO> itemVOS = this.defaultJson(itemRepository.findByIdIn(itemIds));
-        System.out.println(itemVOS.get(1).getId());
         return itemVOS;
     }
 

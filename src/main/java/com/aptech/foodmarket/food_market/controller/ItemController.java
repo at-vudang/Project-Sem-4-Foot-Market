@@ -48,7 +48,6 @@ public class ItemController {
     @RequestMapping(method = RequestMethod.POST, value = "/getCart")
     public ResponseEntity<?> getCart(@RequestBody List<Integer> itemIds) {
         List<ItemVO> itemVOList = itemService.getCart(itemIds);
-        System.out.println(itemVOList.get(1).getId());
         return ResponseEntity.ok(itemVOList);
     }
 
