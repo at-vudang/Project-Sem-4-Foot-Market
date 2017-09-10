@@ -131,8 +131,16 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemVO> search(String key) {
-        return this.defaultJson(itemRepository.search(key));
+    public Page<ItemVO> search(String key,int page, int size) {
+        Page<Item> items = itemRepository.search(key, new PageRequest(page, size));
+        ItemServiceImpl itemService = new ItemServiceImpl();
+        Page<ItemVO> itemsVOs = items.map(new Converter<Item, ItemVO>() {
+            @Override
+            public ItemVO convert(Item entity) {
+                return itemService.convertVO(entity);
+            }
+        });
+        return itemsVOs;
     }
 
     @Override
