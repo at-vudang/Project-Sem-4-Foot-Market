@@ -100,11 +100,12 @@ public class ItemController {
         return itemService.getCategory(id);
     }
 
-    @RequestMapping("/search")
+    @RequestMapping(value = "/search", params = { "key", "page", "size" })
     @ResponseBody
-    public List<ItemVO> search(@RequestParam String key) {
-        System.out.println(key);
-        return itemService.search(key);
+    public Page<ItemVO> search(@RequestParam String key,
+                               @RequestParam int page,
+                               @RequestParam int size) {
+        return itemService.search(key, page, size);
     }
 
     @RequestMapping("/searchWithCategory")
