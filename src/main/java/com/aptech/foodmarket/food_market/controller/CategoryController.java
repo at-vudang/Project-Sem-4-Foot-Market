@@ -29,7 +29,7 @@ public class CategoryController {
     CategoryService categoryService;
 
     @Autowired
-    CategoryRepository cataCategoryRepository;
+    CategoryRepository categoryRepository;
 
     @RequestMapping("/level/{level}")
     @ResponseBody

@@ -12,6 +12,7 @@ public final class CategoryVOBuilder {
     private Integer levelCategory;
     private List<ItemVO> items;
     private Integer quantityItems;
+    private Integer parentId;
 
     private CategoryVOBuilder() {
     }
@@ -22,6 +23,11 @@ public final class CategoryVOBuilder {
 
     public CategoryVOBuilder withId(Integer id) {
         this.id = id;
+        return this;
+    }
+
+    public CategoryVOBuilder withParentId(Integer id) {
+        this.parentId = id;
         return this;
     }
 
@@ -58,6 +64,7 @@ public final class CategoryVOBuilder {
         categoryVO.setLevelCategory(levelCategory);
         categoryVO.setItems(items);
         categoryVO.setQuantityItems(quantityItems);
+        categoryVO.setParentId(parentId);
         return categoryVO;
     }
 }

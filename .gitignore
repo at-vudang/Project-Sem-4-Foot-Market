@@ -24,4 +24,5 @@ dist/
 nbdist/
 .nb-gradle/.idea
 .idea
-src/main/java/resources/application.properties
+src/main/resources/application.properties
+target/classes/application.properties
