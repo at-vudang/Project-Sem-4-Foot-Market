@@ -35,7 +35,7 @@ public interface ItemService {
     List<CategoryVO> getCategory(Integer id);
     public List<ItemVO> getItemTool(int quantity);
 
-    List<ItemVO> search(String key);
+    Page<ItemVO> search(String key, int page, int size);
 
     List<ItemVO> searchWithCategory(int cate_id, String key);
 
