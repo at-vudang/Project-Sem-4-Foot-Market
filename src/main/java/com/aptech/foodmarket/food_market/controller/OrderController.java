@@ -29,7 +29,7 @@ public class OrderController {
         return "hello";
     }
     @RequestMapping(method = RequestMethod.POST, value = "/create")
-    public ResponseEntity<Order> getCategoriesByLevel(@RequestBody OrderVO orderVO) {
+    public ResponseEntity<Order> createOrder(@RequestBody OrderVO orderVO) {
         return new ResponseEntity<Order>(orderService.createOrder(orderVO), HttpStatus.OK);
     }
     @RequestMapping(method = RequestMethod.POST, value = "/getUrl")

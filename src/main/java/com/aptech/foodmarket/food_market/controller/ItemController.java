@@ -1,11 +1,14 @@
 package com.aptech.foodmarket.food_market.controller;
 
+import com.aptech.foodmarket.food_market.model.Item;
+import com.aptech.foodmarket.food_market.model.Order;
 import com.aptech.foodmarket.food_market.repository.CategoryRepository;
 import com.aptech.foodmarket.food_market.repository.ItemRepository;
 import com.aptech.foodmarket.food_market.repository.OrderItemRepository;
 import com.aptech.foodmarket.food_market.service.ItemService;
 import com.aptech.foodmarket.food_market.vo.CategoryVO;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
+import com.aptech.foodmarket.food_market.vo.OrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -110,5 +113,10 @@ public class ItemController {
     @ResponseBody
     public List<ItemVO> searchWithCategory(@RequestParam int id, @RequestParam String key) {
         return itemService.searchWithCategory(id,key);
+    }
+    @RequestMapping(method = RequestMethod.POST, value = "/create")
+    public ResponseEntity<Item> createItem(@RequestBody Item item) {
+        System.out.println(item.getCategories());
+        return new ResponseEntity<Item>(itemService.createItem(item), HttpStatus.OK);
     }
 }

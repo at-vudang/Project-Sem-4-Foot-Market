@@ -38,5 +38,5 @@ public interface ItemService {
     List<ItemVO> search(String key);
 
     List<ItemVO> searchWithCategory(int cate_id, String key);
-
+    Item createItem(Item item);
 }

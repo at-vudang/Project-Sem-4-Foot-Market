@@ -195,6 +195,10 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private UnitRepository unitRepository;
 
+    @Autowired
+    private ImageRepository imageRepository;
+
+
     @Override
     public void init() {
         try {
@@ -229,6 +233,22 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findOne(id);
         CategoryServiceImpl categoryService = new CategoryServiceImpl();
         return categoryService.defaultJson(item.getCategories());
+    }
+
+    @Override
+    public Item createItem(Item item) {
+        item.setActive(true);
+        item = itemRepository.save(item);
+        for (ImageItem imageItem: item.getImageItems()
+             ) {
+            ImageItem newImageItem = new ImageItem();
+            newImageItem.setItem(item);
+            newImageItem.setImage("/" + imageItem.getImage());
+            newImageItem.setActive(true);
+            imageRepository.save(newImageItem);
+        }
+        item = itemRepository.findOne(item.getId());
+        return item;
     }
 }
 

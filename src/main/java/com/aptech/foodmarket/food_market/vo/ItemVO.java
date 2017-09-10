@@ -22,7 +22,7 @@ public class ItemVO {
     private UnitVO unit;
     private SupplierVO supplier;
     private List<PromotionItemVO> promotions;
-//    private List<ImageItem> imageItems;
+    private List<ImageItemVO> imageItems;
 //    private List<OrderItem> orderItems;
 //    private List<Category> category;
 
@@ -139,13 +139,13 @@ public class ItemVO {
         this.promotions = promotions;
     }
 
-//    public List<ImageItem> getImageItems() {
-//        return imageItems;
-//    }
-//
-//    public void setImageItems(List<ImageItem> imageItems) {
-//        this.imageItems = imageItems;
-//    }
+    public List<ImageItemVO> getImageItems() {
+        return imageItems;
+    }
+
+    public void setImageItems(List<ImageItemVO> imageItems) {
+        this.imageItems = imageItems;
+    }
 //
 //    public List<OrderItem> getOrderItems() {
 //        return orderItems;
