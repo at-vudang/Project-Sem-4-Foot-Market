@@ -1,19 +1,22 @@
 package com.aptech.foodmarket.food_market.controller;
 
 import com.aptech.foodmarket.food_market.model.User;
-import com.aptech.foodmarket.food_market.repository.UserRepository;
-import com.aptech.foodmarket.food_market.service.UserService;
+import com.aptech.foodmarket.food_market.service.ImplService.UserServiceImpl;
+import com.aptech.foodmarket.food_market.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
     /**
      * GET /create  --> Create a new user and save it in the database.
      */
@@ -91,5 +94,10 @@ public class UserController {
 //    }
 
     // Private fields
+
+    @RequestMapping(method = RequestMethod.POST, value = "/createUser")
+    public ResponseEntity<User> getCategoriesByLevel(@RequestBody UserVO userVO) {
+        return new ResponseEntity<User>(userService.createUser(userVO), HttpStatus.OK);
+    }
 
 }
