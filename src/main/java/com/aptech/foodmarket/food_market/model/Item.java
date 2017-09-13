@@ -48,7 +48,6 @@ public class Item {
     private Integer quantity;
 
     @Column(name = "expired_at")
-    @NotNull
     private Date expiredAt;
 
     @Column(name = "created_at")

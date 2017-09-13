@@ -36,20 +36,4 @@ public class UserService {
         user.setPassword(getPasswordEncoder().encode(user.getPassword()));
         userRepository.save(user);
     }
-//    public User findByUserName(String username){
-//       return userRepository.findByUsername(username);
-//    }
-//    @Override
-//    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-//        User user =  userRepository.findByUsername(s);
-//        if(user == null) {
-//            throw new UsernameNotFoundException(String.format("The username %s doesn't exist", s));
-//        }
-//        List<GrantedAuthority> authorities = new ArrayList<>();
-//        authorities.add(new SimpleGrantedAuthority("ADMIN2"));
-//        UserDetails userDetails = new org.springframework.security.core.userdetails.
-//                User(user.getUsername(), user.getPassword(), authorities);
-//
-//        return userDetails;
-//    }
 }

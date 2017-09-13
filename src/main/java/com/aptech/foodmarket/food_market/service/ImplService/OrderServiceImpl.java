@@ -17,6 +17,8 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private OrderItemRepository orderItemRepository;
     @Autowired
     private ItemRepository itemRepository;
@@ -32,7 +34,8 @@ public class OrderServiceImpl implements OrderService{
         order.setNote(orderVO.getNote());
         order.setStatus(Byte.parseByte("2"));
         order.setTransportedAt(orderVO.getTransportedAt());
-        order.setUser(new User(orderVO.getUserId()));
+        User user = userRepository.findOne(orderVO.getUserId());
+        order.setUser(user);
         order.setPromotion(new Promotion(1));
         order.setShip(new Ship(1));
         order = orderRepository.save(order);
@@ -40,7 +43,7 @@ public class OrderServiceImpl implements OrderService{
             OrderItem orderItem = new OrderItem();
             orderItem.setOrder(order);
             orderItem.setActive(true);
-            Item item = itemRepository.findOne(itemOrder.getId());
+            Item item = itemRepository.findOne(itemOrder.getIdItem());
             orderItem.setItem(item);
             Double priceOffical = item.getPrice().doubleValue();
             try {
@@ -49,12 +52,15 @@ public class OrderServiceImpl implements OrderService{
                                 orderVO.getPromotionId(),item.getId()
                         );
                 Double percent = (promotionItemVO.getPercent()/100.0);
-                priceOffical = priceOffical + priceOffical * percent;
+                priceOffical = priceOffical - priceOffical * percent;
             } catch (Exception ex) {
             }
             orderItem.setPriceOffical(priceOffical);
             orderItem.setQuantity(itemOrder.getQuantityCart());
             orderItemRepository.save(orderItem);
+            item.setQuantity(item.getQuantity() - itemOrder.getQuantityCart());
+            itemRepository.save(item);
+
         }
         return orderRepository.save(order);
     }
