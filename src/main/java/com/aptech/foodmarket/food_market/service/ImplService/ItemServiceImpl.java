@@ -30,7 +30,14 @@ public class ItemServiceImpl implements ItemService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ItemRepository itemRepository;
-
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private SupplierRepository supplierRepository;
+    @Autowired
+    private UnitRepository unitRepository;
+    @Autowired
+    private ImageRepository imageRepository;
     public List<ItemVO> defaultJson(List<Item> items) {
         List<ItemVO> itemVOS = new ArrayList<>();
         items.stream().forEach(item -> {
@@ -149,6 +156,31 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public ItemVO create(ItemVO itemVO) {
+        Item item = new Item();
+        item.setName(itemVO.getName());
+        item.setAvatar(itemVO.getAvatar());
+        item.setDescription(itemVO.getDescription());
+        item.setPrice(itemVO.getPrice());
+        item.setQuantity(itemVO.getQuantity());
+        item.setStatus(true);
+        item.setUnit(unitRepository.findOne(itemVO.getUnit().getId()));
+        item.setActive(true);
+        List<Category> list =itemVO.getCategory();
+        item.setCategories(list);
+        item.setSupplier(supplierRepository.findOne(itemVO.getId()));
+        item = itemRepository.save(item);
+        for (ImageItem imageItem:itemVO.getImageItems()) {
+            ImageItem imageItem1 = new ImageItem();
+            imageItem1.setItem(item);
+            imageItem1.setImage(imageItem.getImage());
+            imageItem1.setActive(true);
+            imageRepository.save(imageItem1);
+        }
+        return this.convertVO(item);
+    }
+
+    @Override
     public List<ItemVO> getItemNew(int quantity) {
         return this.defaultJson(itemRepository.findAllByOrderByIdDesc()).subList(0,quantity);
     }
@@ -194,14 +226,7 @@ public class ItemServiceImpl implements ItemService {
         newItem = itemRepository.save(item);
         return newItem;
     }
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private SupplierRepository supplierRepository;
-
-    @Autowired
-    private UnitRepository unitRepository;
 
     @Override
     public void init() {

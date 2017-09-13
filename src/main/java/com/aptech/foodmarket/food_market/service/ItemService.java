@@ -39,4 +39,6 @@ public interface ItemService {
 
     List<ItemVO> searchWithCategory(int cate_id, String key);
 
+    public ItemVO create(ItemVO itemVO);
+
 }

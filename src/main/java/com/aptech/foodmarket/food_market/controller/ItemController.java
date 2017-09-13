@@ -112,4 +112,9 @@ public class ItemController {
     public List<ItemVO> searchWithCategory(@RequestParam int id, @RequestParam String key) {
         return itemService.searchWithCategory(id,key);
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/create")
+    public ResponseEntity<ItemVO> getCategoriesByLevel(@RequestBody ItemVO itemVO) {
+        return new ResponseEntity<ItemVO>(itemService.create(itemVO), HttpStatus.OK);
+    }
 }

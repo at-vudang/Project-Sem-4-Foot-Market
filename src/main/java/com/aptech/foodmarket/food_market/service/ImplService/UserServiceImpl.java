@@ -5,6 +5,7 @@ import com.aptech.foodmarket.food_market.model.User;
 import com.aptech.foodmarket.food_market.repository.UserRepository;
 import com.aptech.foodmarket.food_market.service.UserService;
 import com.aptech.foodmarket.food_market.vo.UserVO;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -36,9 +37,9 @@ public class UserServiceImpl implements UserService{
         return new BCryptPasswordEncoder();
     }
 
-    public void save(User user){
+    public User save(User user){
         user.setPassword(getPasswordEncoder().encode(user.getPassword()));
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Override
@@ -51,10 +52,12 @@ public class UserServiceImpl implements UserService{
         user.setBirthday(userVO.getBirthday());
         user.setEmail(userVO.getEmail());
         user.setGender(userVO.getGender());
+        user.setAvatar(userVO.getAvatar());
         user.setActive(true);
         List<Authority> list = new ArrayList<>();
         user.setAuthorities(list);
-        return userRepository.save(user);
+        return this.save(user);
+
     }
 //    public User findByUserName(String username){
 //       return userRepository.findByUsername(username);
