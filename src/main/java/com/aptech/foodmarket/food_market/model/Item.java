@@ -47,6 +47,9 @@ public class Item {
     @NotNull
     private Integer quantity;
 
+    @Column(name = "expired_at")
+    private Date expiredAt;
+
     @Column(name = "created_at")
     @NotNull
     private Date createdAt;
@@ -140,6 +143,14 @@ public class Item {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Date getExpiredAt() {
+        return expiredAt;
+    }
+
+    public void setExpiredAt(Date expiredAt) {
+        this.expiredAt = expiredAt;
     }
 
     public Date getCreatedAt() {

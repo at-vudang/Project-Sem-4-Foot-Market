@@ -1,9 +1,6 @@
 package com.aptech.foodmarket.food_market.builder;
 
-import com.aptech.foodmarket.food_market.vo.ItemVO;
-import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
-import com.aptech.foodmarket.food_market.vo.SupplierVO;
-import com.aptech.foodmarket.food_market.vo.UnitVO;
+import com.aptech.foodmarket.food_market.vo.*;
 
 import java.util.Date;
 import java.util.List;
@@ -23,7 +20,7 @@ public final class ItemVOBuilder {
     private SupplierVO supplier;
 
     private List<PromotionItemVO> promotions;
-//    private List<ImageItem> imageItems;
+    private List<ImageItemVO> imageItems;
 //    private List<OrderItem> orderItems;
 //    private List<Category> category;
 

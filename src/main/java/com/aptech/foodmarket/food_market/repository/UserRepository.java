@@ -1,5 +1,6 @@
 package com.aptech.foodmarket.food_market.repository;
 
+import com.aptech.foodmarket.food_market.model.Order;
 import com.aptech.foodmarket.food_market.model.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +21,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT * FROM USERS WHERE EMAIL_ADDRESS = ?1", nativeQuery = true)
     User findByEmailAddress(String emailAddress);
 
+    User findByOrders(Order order);
 }
