@@ -128,7 +128,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemVO> getItemTool(int quantity) {
         Category category = new Category();
         category = categoryRepository.findOne(44);
-        return this.defaultJson(itemRepository.findAllByCategories(category)).subList(0,quantity);
+        return this.defaultJson(itemRepository.findAllByCategoriesIsContaining(category)).subList(0,quantity);
     }
 
     @Override

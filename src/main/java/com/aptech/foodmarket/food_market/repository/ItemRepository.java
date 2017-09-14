@@ -29,8 +29,8 @@ public interface ItemRepository extends JpaRepository<Item,Integer>, PagingAndSo
 
     List<Item> findByIdIn(List<Integer> ids);
 
-    List<Item> findAllByCategories(Category category);
-    Page<Item> findAllByCategories(Category category,Pageable pageable);
+    List<Item> findAllByCategoriesIsContaining(Category category);
+    Page<Item> findAllByCategoriesIsContaining(Category category,Pageable pageable);
 
     @Query(value="SELECT * FROM items WHERE MATCH(name,description) AGAINST  (?1 IN NATURAL LANGUAGE MODE) ORDER BY ?#{#pageable}" ,nativeQuery = true)
     Page<Item> search(String key,Pageable pageable);
