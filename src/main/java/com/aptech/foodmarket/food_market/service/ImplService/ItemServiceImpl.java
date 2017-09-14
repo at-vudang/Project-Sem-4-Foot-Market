@@ -1,17 +1,14 @@
 package com.aptech.foodmarket.food_market.service.ImplService;
 
+import com.aptech.foodmarket.food_market.EntityNotFoundException;
 import com.aptech.foodmarket.food_market.builder.ItemVOBuilder;
 import com.aptech.foodmarket.food_market.builder.PromotionItemVOBuilder;
 import com.aptech.foodmarket.food_market.builder.SupplierVOBuilder;
 import com.aptech.foodmarket.food_market.builder.UnitVOBuilder;
 import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.service.ItemService;
-import com.aptech.foodmarket.food_market.vo.CategoryVO;
+import com.aptech.foodmarket.food_market.vo.*;
 import com.aptech.foodmarket.food_market.repository.*;
-import com.aptech.foodmarket.food_market.vo.ItemVO;
-import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
-import com.aptech.foodmarket.food_market.vo.SupplierVO;
-import com.aptech.foodmarket.food_market.vo.UnitVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
@@ -30,6 +27,8 @@ public class ItemServiceImpl implements ItemService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     public List<ItemVO> defaultJson(List<Item> items) {
         List<ItemVO> itemVOS = new ArrayList<>();
@@ -123,6 +122,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemVO> getItemPromotion(int quantity) {
         return this.defaultJson(itemRepository.findAllByOrderByPromotionItemsDesc()).subList(0,quantity);
     }
+
     @Override
     public List<ItemVO> getItemTool(int quantity) {
         Category category = new Category();
@@ -203,6 +203,10 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private UnitRepository unitRepository;
 
+    @Autowired
+    private ImageRepository imageRepository;
+
+
     @Override
     public void init() {
         try {
@@ -237,6 +241,22 @@ public class ItemServiceImpl implements ItemService {
         Item item = itemRepository.findOne(id);
         CategoryServiceImpl categoryService = new CategoryServiceImpl();
         return categoryService.defaultJson(item.getCategories());
+    }
+
+    @Override
+    public Item createItem(Item item) {
+        item.setActive(true);
+        item = itemRepository.save(item);
+        for (ImageItem imageItem: item.getImageItems()
+             ) {
+            ImageItem newImageItem = new ImageItem();
+            newImageItem.setItem(item);
+            newImageItem.setImage("/" + imageItem.getImage());
+            newImageItem.setActive(true);
+            imageRepository.save(newImageItem);
+        }
+        item = itemRepository.findOne(item.getId());
+        return item;
     }
 }
 

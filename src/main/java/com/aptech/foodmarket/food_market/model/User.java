@@ -5,6 +5,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @Where(clause="is_active = 1")
-public class User {
+public class User implements Serializable{
     public User() {
     }
     public User(Integer id) {

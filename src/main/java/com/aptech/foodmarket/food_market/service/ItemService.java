@@ -1,9 +1,11 @@
 package com.aptech.foodmarket.food_market.service;
 
+import com.aptech.foodmarket.food_market.EntityNotFoundException;
 import com.aptech.foodmarket.food_market.model.Category;
 import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.vo.CategoryVO;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
+import com.aptech.foodmarket.food_market.vo.OrderItemVO;
 import org.springframework.data.domain.Page;
 
 import java.lang.reflect.Array;
@@ -38,5 +40,5 @@ public interface ItemService {
     Page<ItemVO> search(String key, int page, int size);
 
     List<ItemVO> searchWithCategory(int cate_id, String key);
-
+    Item createItem(Item item);
 }
