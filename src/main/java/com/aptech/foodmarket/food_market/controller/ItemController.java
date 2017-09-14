@@ -6,6 +6,7 @@ import com.aptech.foodmarket.food_market.model.Order;
 import com.aptech.foodmarket.food_market.repository.CategoryRepository;
 import com.aptech.foodmarket.food_market.repository.ItemRepository;
 import com.aptech.foodmarket.food_market.repository.OrderItemRepository;
+import com.aptech.foodmarket.food_market.service.CategoryService;
 import com.aptech.foodmarket.food_market.service.ItemService;
 import com.aptech.foodmarket.food_market.vo.CategoryVO;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
@@ -39,17 +40,32 @@ public class ItemController {
 
     @Autowired
     ItemService itemService;
+    @Autowired
+    CategoryService categoryService;
 
-    @RequestMapping(value = "/all",params = { "page", "size" },
+    @RequestMapping(value = "/all",
             method = RequestMethod.GET)
     @ResponseBody
-    public Page<ItemVO> getAll(@RequestParam("page") int page, @RequestParam("size") int size) {
-
-        Page<ItemVO> resultPage = itemService.findPaginated(page, size);
-        if (page > resultPage.getTotalPages()) {
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public Page<ItemVO> getAll(@RequestParam("page") int page,
+                               @RequestParam("size") int size,
+                               @RequestParam("sort") String sort,
+                               @RequestParam(value = "category", required=false) String category
+                               ) {
+        if (category == null) {
+            Page<ItemVO> resultPage = itemService.findPaginated(page, size, sort);
+            if (page > resultPage.getTotalPages()) {
+                new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            return resultPage;
+        } else {
+            Integer categoryId = Integer.parseInt(category);
+            Page<ItemVO> resultPage = categoryService.getItems(categoryId, page, size, sort);
+            if (page > resultPage.getTotalPages()) {
+                new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            return resultPage;
         }
-        return resultPage;
+
     }
     @RequestMapping(method = RequestMethod.POST, value = "/getCart")
     public ResponseEntity<?> getCart(@RequestBody List<Integer> itemIds) {

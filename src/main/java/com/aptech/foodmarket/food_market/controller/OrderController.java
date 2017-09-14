@@ -29,8 +29,8 @@ public class OrderController {
         return "hello";
     }
     @RequestMapping(method = RequestMethod.POST, value = "/create")
-    public ResponseEntity<Order> createOrder(@RequestBody OrderVO orderVO) {
-        return new ResponseEntity<Order>(orderService.createOrder(orderVO), HttpStatus.OK);
+    public ResponseEntity<OrderVO> createOrder(@RequestBody OrderVO orderVO) {
+        return new ResponseEntity<OrderVO>(orderService.createOrder(orderVO), HttpStatus.OK);
     }
     @RequestMapping(method = RequestMethod.POST, value = "/getUrl")
     public ResponseEntity<String> getCart(@RequestBody Payment payment) {

@@ -29,7 +29,7 @@ public interface ItemService {
 
     public ItemVO getItemById( int id);
 
-    public Page<ItemVO> findPaginated(int page, int size);
+    public Page<ItemVO> findPaginated(int page, int size, String sort);
 
     public List<ItemVO> getCart(List<Integer> itemIds);
     public Item create(Item items);

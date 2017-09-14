@@ -12,6 +12,10 @@ import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -49,7 +53,6 @@ public class UserServiceImpl implements UserService {
         user.setPassword(getPasswordEncoder().encode(user.getPassword()));
         return userRepository.save(user);
     }
-
     @Override
     public User createUser(UserVO userVO) {
         User user = new User();
@@ -113,6 +116,36 @@ public class UserServiceImpl implements UserService {
 //
 //        return userDetails;
 //    }
+    public Page<UserVO> getAllUser(int page,int size) {
+        Page<User> users = userRepository.findAll(new PageRequest(page, size));
+        Page<UserVO> userVOS = users.map(new Converter<User, UserVO>() {
+            @Override
+            public UserVO convert(User entity) {
+                return convertVO(entity);
+            }
+        });
+        return userVOS;
+    }
+
+    @Override
+    public Page<UserVO> getUserByAuthority(Integer authorityID,int page,int size, String sort) {
+        String direction = sort.substring(0,1);
+        String keySort = sort.substring(1,sort.length());
+        Authority authority = new Authority();
+        authority.setId(authorityID);
+        Page<User> users = userRepository.findAllByAuthorities(authority,
+                new PageRequest(page, size,
+                        direction.equals("-") ? Sort.Direction.DESC : Sort.Direction.ASC,
+                        keySort));
+        Page<UserVO> userVOS = users.map(new Converter<User, UserVO>() {
+            @Override
+            public UserVO convert(User entity) {
+                return convertVO(entity);
+            }
+        });
+        return userVOS;
+    }
+
     public UserVO convertVO(User user) {
         UserVO userVO = UserVOBuilder.anUserVO().withId(user.getId())
                 .withActive(user.getActive()).withAddress(user.getAddress())
@@ -122,5 +155,4 @@ public class UserServiceImpl implements UserService {
                 .withFullName(user.getFullName()).build();
         return userVO;
     }
-
 }

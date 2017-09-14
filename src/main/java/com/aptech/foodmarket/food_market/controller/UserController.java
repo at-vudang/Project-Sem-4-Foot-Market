@@ -2,8 +2,10 @@ package com.aptech.foodmarket.food_market.controller;
 
 import com.aptech.foodmarket.food_market.model.User;
 import com.aptech.foodmarket.food_market.service.ImplService.UserServiceImpl;
+import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -108,4 +110,12 @@ public class UserController {
         return userService.getDetailUser(user_token);
     }
 
+    @RequestMapping(value = "/getUsersByAuthority/{id}", params = {"page", "size","sort" })
+    @ResponseBody
+    public Page<UserVO> search(@PathVariable Integer id,
+                               @RequestParam int page,
+                               @RequestParam int size,
+                               @RequestParam String sort) {
+        return userService.getUserByAuthority(id, page, size, sort);
+    }
 }

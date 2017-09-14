@@ -100,4 +100,5 @@ public class OrderVO {
     public void setAddress(String address) {
         this.address = address;
     }
+
 }
