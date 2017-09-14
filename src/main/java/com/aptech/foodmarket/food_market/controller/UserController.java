@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/user")
@@ -96,8 +93,19 @@ public class UserController {
     // Private fields
 
     @RequestMapping(method = RequestMethod.POST, value = "/createUser")
-    public ResponseEntity<User> getCategoriesByLevel(@RequestBody UserVO userVO) {
+    public ResponseEntity<User> createUser(@RequestBody UserVO userVO) {
         return new ResponseEntity<User>(userService.createUser(userVO), HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/update")
+    public ResponseEntity<UserVO> updateUser(@RequestHeader(value="Access-token") String user_token, @RequestBody UserVO userVO) {
+        return new ResponseEntity<UserVO>(userService.update(user_token, userVO), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/getUserDetail")
+    @ResponseBody
+    public UserVO getDetailUser(@RequestHeader(value="Access-token") String user_token){
+        return userService.getDetailUser(user_token);
     }
 
 }

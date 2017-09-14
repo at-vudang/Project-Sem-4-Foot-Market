@@ -1,8 +1,11 @@
 package com.aptech.foodmarket.food_market.service.ImplService;
 
+import com.aptech.foodmarket.food_market.builder.UserVOBuilder;
 import com.aptech.foodmarket.food_market.model.Authority;
 import com.aptech.foodmarket.food_market.model.User;
 import com.aptech.foodmarket.food_market.repository.UserRepository;
+import com.aptech.foodmarket.food_market.security.JwtTokenUtil;
+import com.aptech.foodmarket.food_market.security.JwtUser;
 import com.aptech.foodmarket.food_market.service.UserService;
 import com.aptech.foodmarket.food_market.vo.UserVO;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
@@ -25,19 +28,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @PersistenceContext
     private EntityManager entityManager;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Bean
-    public PasswordEncoder getPasswordEncoder(){
+    public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    public User save(User user){
+    public User save(User user) {
         user.setPassword(getPasswordEncoder().encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -59,7 +67,37 @@ public class UserServiceImpl implements UserService{
         return this.save(user);
 
     }
-//    public User findByUserName(String username){
+
+    @Override
+    public UserVO update(String token, UserVO userVO) {
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        if ( username!= null) {
+            // JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
+            User user = userRepository.findByUsername(username);
+            if (user != null ) {
+                user.setFullName(userVO.getFullName());
+                user.setAddress(userVO.getAddress());
+                user.setBirthday(userVO.getBirthday());
+                user.setEmail(userVO.getEmail());
+                user.setGender(userVO.getGender());
+                user.setAvatar(userVO.getAvatar());
+                return this.convertVO(userRepository.save(user));
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public UserVO getDetailUser(String user_token) {
+        String username = jwtTokenUtil.getUsernameFromToken(user_token);
+        if ( username!= null) {
+            User user = userRepository.findByUsername(username);
+            return this.convertVO(user);
+        }
+        return null;
+    }
+
+    //    public User findByUserName(String username){
 //       return userRepository.findByUsername(username);
 //    }
 //    @Override
@@ -75,4 +113,14 @@ public class UserServiceImpl implements UserService{
 //
 //        return userDetails;
 //    }
+    public UserVO convertVO(User user) {
+        UserVO userVO = UserVOBuilder.anUserVO().withId(user.getId())
+                .withActive(user.getActive()).withAddress(user.getAddress())
+                .withBirthday(user.getBirthday()).withAvatar(user.getAvatar())
+                .withEmail(user.getEmail()).withCreditCard(user.getCreditCard())
+                .withUsername(user.getUsername())
+                .withFullName(user.getFullName()).build();
+        return userVO;
+    }
+
 }
