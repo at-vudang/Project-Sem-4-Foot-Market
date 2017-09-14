@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -161,8 +162,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Page<ItemVO> findPaginated(int page, int size) {
-        Page<Item> items = itemRepository.findAll(new PageRequest(page, size));
+    public Page<ItemVO> findPaginated(int page, int size, String sort) {
+        String direction = sort.substring(0,1);
+        String keySort = sort.substring(1,sort.length());
+        Page<Item> items = itemRepository.findAll(new PageRequest(page, size,
+                direction.equals("-") ? Sort.Direction.DESC : Sort.Direction.ASC,
+                keySort));
         Page<ItemVO> itemsVOs = items.map(new Converter<Item, ItemVO>() {
             @Override
             public ItemVO convert(Item entity) {
