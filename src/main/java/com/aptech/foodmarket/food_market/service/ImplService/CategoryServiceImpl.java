@@ -67,7 +67,7 @@ public class CategoryServiceImpl implements CategoryService{
         Category category = categoryRepository.findOne(id);
         ItemServiceImpl itemService = new ItemServiceImpl();
         PageRequest pageRequest = new PageRequest(page,size);
-        Page<Item> items = itemRepository.findAllByCategories(category, new PageRequest(page, size));
+        Page<Item> items = itemRepository.findAllByCategoriesIsContaining(category, new PageRequest(page, size));
         Page<ItemVO> itemsVOs = items.map(new Converter<Item, ItemVO>() {
             @Override
             public ItemVO convert(Item entity) {
@@ -75,8 +75,6 @@ public class CategoryServiceImpl implements CategoryService{
             }
         });
         return itemsVOs;
-
-//        return itemService.defaultJson(category.getItems(new PageRequest(page, size)));
     }
 
     @Override
@@ -86,7 +84,7 @@ public class CategoryServiceImpl implements CategoryService{
         Category category = categoryRepository.findOne(id);
         ItemServiceImpl itemService = new ItemServiceImpl();
         PageRequest pageRequest = new PageRequest(page,size);
-        Page<Item> items = itemRepository.findAllByCategories(category, new PageRequest(page, size,
+        Page<Item> items = itemRepository.findAllByCategoriesIsContaining(category, new PageRequest(page, size,
                 direction.equals("-") ? Sort.Direction.DESC : Sort.Direction.ASC,
                 keySort));
         Page<ItemVO> itemsVOs = items.map(new Converter<Item, ItemVO>() {

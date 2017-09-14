@@ -48,9 +48,9 @@ public class CategoryController {
                                      @RequestParam("page") int page,
                                      @RequestParam("size") int size) {
         Page<ItemVO> resultPage = categoryService.getItems(id,page, size);
-        if (page > resultPage.getTotalPages()) {
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+//        if (page > resultPage.getTotalPages()) {
+//            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
         return resultPage;
     }
 
