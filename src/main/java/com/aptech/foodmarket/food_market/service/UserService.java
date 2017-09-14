@@ -8,5 +8,5 @@ import org.springframework.data.domain.Page;
 public interface UserService {
     public User createUser(UserVO userVO);
     public Page<UserVO> getAllUser(int page, int size);
-    public Page<UserVO> getUserByAuthority(Integer authorityID, int page, int size);
+    public Page<UserVO> getUserByAuthority(Integer authorityID, int page, int size, String sort);
 }

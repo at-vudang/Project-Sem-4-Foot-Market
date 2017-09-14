@@ -98,11 +98,12 @@ public class UserController {
     public ResponseEntity<User> getCategoriesByLevel(@RequestBody UserVO userVO) {
         return new ResponseEntity<User>(userService.createUser(userVO), HttpStatus.OK);
     }
-    @RequestMapping(value = "/getUsersByAuthority/{id}", params = {"page", "size" })
+    @RequestMapping(value = "/getUsersByAuthority/{id}", params = {"page", "size","sort" })
     @ResponseBody
     public Page<UserVO> search(@PathVariable Integer id,
                                @RequestParam int page,
-                               @RequestParam int size) {
-        return userService.getUserByAuthority(id, page, size);
+                               @RequestParam int size,
+                               @RequestParam String sort) {
+        return userService.getUserByAuthority(id, page, size, sort);
     }
 }
