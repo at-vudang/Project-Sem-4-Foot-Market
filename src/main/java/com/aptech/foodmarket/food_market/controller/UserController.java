@@ -2,15 +2,14 @@ package com.aptech.foodmarket.food_market.controller;
 
 import com.aptech.foodmarket.food_market.model.User;
 import com.aptech.foodmarket.food_market.service.ImplService.UserServiceImpl;
+import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/user")
@@ -99,5 +98,11 @@ public class UserController {
     public ResponseEntity<User> getCategoriesByLevel(@RequestBody UserVO userVO) {
         return new ResponseEntity<User>(userService.createUser(userVO), HttpStatus.OK);
     }
-
+    @RequestMapping(value = "/getUsersByAuthority/{id}", params = {"page", "size" })
+    @ResponseBody
+    public Page<UserVO> search(@PathVariable Integer id,
+                               @RequestParam int page,
+                               @RequestParam int size) {
+        return userService.getUserByAuthority(id, page, size);
+    }
 }

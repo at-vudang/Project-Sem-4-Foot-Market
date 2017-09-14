@@ -5,5 +5,5 @@ import com.aptech.foodmarket.food_market.vo.CategoryVO;
 import com.aptech.foodmarket.food_market.vo.OrderVO;
 
 public interface OrderService {
-    public Order createOrder(OrderVO order);
+    public OrderVO createOrder(OrderVO order);
 }

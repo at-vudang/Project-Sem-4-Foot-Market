@@ -1,9 +1,13 @@
 package com.aptech.foodmarket.food_market.service.ImplService;
 
+import com.aptech.foodmarket.food_market.builder.ItemVOBuilder;
+import com.aptech.foodmarket.food_market.builder.OrderVOBuilder;
+import com.aptech.foodmarket.food_market.builder.PromotionItemVOBuilder;
 import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.repository.*;
 import com.aptech.foodmarket.food_market.service.OrderService;
 import com.aptech.foodmarket.food_market.service.PromotionItemService;
+import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.OrderItemVO;
 import com.aptech.foodmarket.food_market.vo.OrderVO;
 import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
@@ -11,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService{
@@ -24,8 +30,23 @@ public class OrderServiceImpl implements OrderService{
     private ItemRepository itemRepository;
     @Autowired
     private PromotionItemService promotionItemService;
+    private OrderItemServiceImpl orderItemService;
+    public OrderVO convertVO(Order order) {
+        List<OrderItemVO> orderItemVOS = new ArrayList<>();
+        for (OrderItem orderItem:order.getOrderItems()
+             ) {
+            orderItemVOS.add(orderItemService.convertVO(orderItem));
+        }
+        OrderVO orderVO = OrderVOBuilder.anOrderVO().withId(order.getId()).withAddress(order.getAddress())
+                .withName(order.getName()).withNote(order.getNote())
+                .withPhone(order.getPhone()).withPromotionId(order.getPromotion().getId())
+                .withShipId(order.getShip().getId()).withTransportedAt(order.getTransportedAt())
+                .withUserId(order.getUser().getId()).withOrderItems(orderItemVOS)
+                .build();
+        return orderVO;
+    }
     @Override
-    public Order createOrder(OrderVO orderVO) {
+    public OrderVO createOrder(OrderVO orderVO) {
         Order order = new Order();
         order.setName(orderVO.getName());
         order.setActive(true);
@@ -62,6 +83,6 @@ public class OrderServiceImpl implements OrderService{
             itemRepository.save(item);
 
         }
-        return orderRepository.save(order);
+        return convertVO(orderRepository.save(order));
     }
 }
