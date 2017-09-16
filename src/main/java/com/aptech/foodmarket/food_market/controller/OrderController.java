@@ -6,11 +6,13 @@ import com.aptech.foodmarket.food_market.model.Order;
 import com.aptech.foodmarket.food_market.model.Promotion;
 import com.aptech.foodmarket.food_market.model.Ship;
 import com.aptech.foodmarket.food_market.model.User;
+import com.aptech.foodmarket.food_market.repository.UserRepository;
 import com.aptech.foodmarket.food_market.service.CategoryService;
 import com.aptech.foodmarket.food_market.service.OrderService;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.OrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,8 @@ import java.util.List;
 public class OrderController {
     @Autowired
     OrderService orderService;
+    @Autowired
+    UserRepository userRepository;
     @RequestMapping("/")
     @ResponseBody
     public String getAll() {
@@ -46,5 +50,13 @@ public class OrderController {
                 payment.url_detail);
         System.out.println(url);
         return new ResponseEntity<String>(url, HttpStatus.OK);
+    }
+    @RequestMapping(value = "/getOrderByUser/{id}", params = {"page", "size" })
+    @ResponseBody
+    public Page<OrderVO> getOrderByUser(@PathVariable Integer id,
+                               @RequestParam int page,
+                               @RequestParam int size) {
+        User user = userRepository.findOne(id);
+        return orderService.getOrderByUser(user, page, size);
     }
 }
