@@ -21,7 +21,7 @@ public class ImageController {
 
     @RequestMapping("/item/{id}")
     @ResponseBody
-    public List<ImageItemVO> getCategoriesByLevel(@PathVariable Integer id) {
+    public List<ImageItemVO> getImageByItemId(@PathVariable Integer id) {
         return imageService.getImageOfItem(id);
     }
 }

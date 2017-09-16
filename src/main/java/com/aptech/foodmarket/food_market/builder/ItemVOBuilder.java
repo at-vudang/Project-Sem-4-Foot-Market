@@ -98,10 +98,10 @@ public final class ItemVOBuilder {
         return this;
     }
 
-//    public ItemVOBuilder withImageItems(List<ImageItem> imageItems) {
-//        this.imageItems = imageItems;
-//        return this;
-//    }
+    public ItemVOBuilder withImageItems(List<ImageItemVO> imageItems) {
+        this.imageItems = imageItems;
+        return this;
+    }
 //
 //    public ItemVOBuilder withOrderItems(List<OrderItem> orderItems) {
 //        this.orderItems = orderItems;
@@ -131,7 +131,7 @@ public final class ItemVOBuilder {
 //        itemVO.setUnit(unit);
 //        itemVO.setSupplier(supplier);
         itemVO.setPromotions(promotions);
-//        itemVO.setImageItems(imageItems);
+        itemVO.setImageItems(imageItems);
 //        itemVO.setOrderItems(orderItems);
         itemVO.setCategory(category);
         return itemVO;
