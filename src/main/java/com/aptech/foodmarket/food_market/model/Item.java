@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Where(clause = "is_active")
@@ -84,7 +85,7 @@ public class Item {
             inverseJoinColumns = @JoinColumn(name = "category_id",
                     referencedColumnName = "id"))
 
-    private List<Category> categories;
+    private Set<Category> categories;
 
     @PrePersist
     protected void onCreate() {
@@ -209,11 +210,11 @@ public class Item {
         this.orderItems = orderItems;
     }
 
-    public List<Category> getCategories() {
+    public Set<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(Set<Category> categories) {
         this.categories = categories;
     }
 

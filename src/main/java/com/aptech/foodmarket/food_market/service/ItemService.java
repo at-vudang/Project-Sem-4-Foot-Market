@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 
 import java.lang.reflect.Array;
 import java.util.List;
+import java.util.Set;
 
 public interface ItemService {
 
@@ -34,7 +35,7 @@ public interface ItemService {
     public List<ItemVO> getCart(List<Integer> itemIds);
     public Item create(Item items);
     public void init();
-    List<CategoryVO> getCategory(Integer id);
+    Set<CategoryVO> getCategory(Integer id);
     public List<ItemVO> getItemTool(int quantity);
 
     Page<ItemVO> search(String key, int page, int size);

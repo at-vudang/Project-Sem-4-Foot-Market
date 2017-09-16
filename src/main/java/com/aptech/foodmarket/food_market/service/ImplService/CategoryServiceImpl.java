@@ -17,21 +17,23 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CategoryServiceImpl implements CategoryService{
     @Autowired
     private CategoryRepository categoryRepository;
     @Override
-    public List<CategoryVO> getCategoriesByLevel(Integer level) {
-        List<Category> categories = categoryRepository.findByLevelCategory(level);
+    public Set<CategoryVO> getCategoriesByLevel(Integer level) {
+        Set<Category> categories = categoryRepository.findByLevelCategory(level);
         return this.defaultJson(categories);
     }
 
-    public List<CategoryVO> defaultJson(List<Category> categories) {
+    public Set<CategoryVO> defaultJson(Set<Category> categories) {
 
-        List<CategoryVO> categoryVOS = new ArrayList<>();
+        Set<CategoryVO> categoryVOS = new HashSet<>();
         categories.stream().forEach(item -> {
             categoryVOS.add(CategoryVOBuilder.aCategoryVO().withId(item.getId())
                     .withName(item.getName())
@@ -44,8 +46,8 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public List<CategoryVO> getCategoriesByParent(Integer parentID) {
-        List<Category> categories = categoryRepository.findByParentId(parentID);
+    public Set<CategoryVO> getCategoriesByParent(Integer parentID) {
+        Set<Category> categories = categoryRepository.findByParentId(parentID);
         return this.defaultJson(categories);
     }
 

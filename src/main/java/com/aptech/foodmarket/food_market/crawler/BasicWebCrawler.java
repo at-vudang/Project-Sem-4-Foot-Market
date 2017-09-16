@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.repository.CategoryRepository;
@@ -36,7 +37,7 @@ public class BasicWebCrawler {
     public BasicWebCrawler() {
         links = new HashSet<String>();
     }
-    public void getItems(String url, List<Category> categories) {
+    public void getItems(String url, Set<Category> categories) {
         List<Item> items = new ArrayList<>();
         try {
             Document document = Jsoup.connect(url).get();
@@ -116,7 +117,7 @@ public class BasicWebCrawler {
                     catesOnPage = document.select(".widget-breadcrumb .active .list-unstyled li");
                     for (Element cateSub : catesOnPage) {
                         try {
-                            List<Category> categories = new ArrayList<>();
+                            Set<Category> categories = new HashSet<>();
 
                             category = new Category();
                             category.setName(cateSub.select("a").text());

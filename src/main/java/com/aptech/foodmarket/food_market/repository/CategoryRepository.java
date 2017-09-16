@@ -4,10 +4,11 @@ import com.aptech.foodmarket.food_market.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CategoryRepository extends JpaRepository<Category,Integer>{
-    List<Category> findByLevelCategory(Integer level);
-    List<Category> findByParentId(Integer parentID);
+    Set<Category> findByLevelCategory(Integer level);
+    Set<Category> findByParentId(Integer parentID);
     Category findById(Integer id);
     Category findFirstByName(String name);
 }
