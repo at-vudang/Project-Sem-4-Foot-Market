@@ -33,6 +33,7 @@ public class OrderServiceImpl implements OrderService{
     private ItemRepository itemRepository;
     @Autowired
     private PromotionItemService promotionItemService;
+    @Autowired
     private OrderItemServiceImpl orderItemService;
     public OrderVO convertVO(Order order) {
         List<OrderItemVO> orderItemVOS = new ArrayList<>();
@@ -95,9 +96,19 @@ public class OrderServiceImpl implements OrderService{
         Page<OrderVO> orderVOS = orders.map(new Converter<Order, OrderVO>() {
             @Override
             public OrderVO convert(Order order) {
-                return convertVO(order);
+                return convertVOWithoutOrderItem(order);
             }
         });
         return orderVOS;
+    }
+
+    public OrderVO convertVOWithoutOrderItem(Order order) {
+        OrderVO orderVO = OrderVOBuilder.anOrderVO().withId(order.getId()).withAddress(order.getAddress())
+                .withName(order.getName()).withNote(order.getNote())
+                .withPhone(order.getPhone()).withPromotionId(order.getPromotion().getId())
+                .withShipId(order.getShip().getId()).withTransportedAt(order.getTransportedAt())
+                .withUserId(order.getUser().getId())
+                .build();
+        return orderVO;
     }
 }
