@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidParameterException;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/item")
@@ -117,7 +118,7 @@ public class ItemController {
 
     @RequestMapping("/getCategory/{id}")
     @ResponseBody
-    public List<CategoryVO> getCategories(@PathVariable Integer id) {
+    public Set<CategoryVO> getCategories(@PathVariable Integer id) {
         return itemService.getCategory(id);
     }
 
