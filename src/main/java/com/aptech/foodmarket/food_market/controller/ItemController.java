@@ -3,9 +3,11 @@ package com.aptech.foodmarket.food_market.controller;
 import com.aptech.foodmarket.food_market.EntityNotFoundException;
 import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.model.Order;
+import com.aptech.foodmarket.food_market.model.Supplier;
 import com.aptech.foodmarket.food_market.repository.CategoryRepository;
 import com.aptech.foodmarket.food_market.repository.ItemRepository;
 import com.aptech.foodmarket.food_market.repository.OrderItemRepository;
+import com.aptech.foodmarket.food_market.repository.SupplierRepository;
 import com.aptech.foodmarket.food_market.service.CategoryService;
 import com.aptech.foodmarket.food_market.service.ItemService;
 import com.aptech.foodmarket.food_market.vo.CategoryVO;
@@ -25,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.InvalidParameterException;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/item")
@@ -42,6 +45,8 @@ public class ItemController {
     ItemService itemService;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    SupplierRepository supplierRepository;
 
     @RequestMapping(value = "/all",
             method = RequestMethod.GET)
@@ -117,7 +122,7 @@ public class ItemController {
 
     @RequestMapping("/getCategory/{id}")
     @ResponseBody
-    public List<CategoryVO> getCategories(@PathVariable Integer id) {
+    public Set<CategoryVO> getCategories(@PathVariable Integer id) {
         return itemService.getCategory(id);
     }
 
@@ -139,5 +144,17 @@ public class ItemController {
     public ResponseEntity<Item> createItem(@RequestBody Item item) {
         System.out.println(item.getCategories());
         return new ResponseEntity<Item>(itemService.createItem(item), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/getItemBySupplier/{id}", params = {"page", "size"})
+    @ResponseBody
+    public Page<ItemVO> getgetItemBySupplier(@PathVariable Integer id,
+                                             @RequestParam int page,
+                                             @RequestParam int size) {
+        Supplier supplier = supplierRepository.findOne(id);
+        if (supplier != null) {
+            return itemService.getItemBySuplier(supplier, page, size);
+        }
+        return null;
     }
 }

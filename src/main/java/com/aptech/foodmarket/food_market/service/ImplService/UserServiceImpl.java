@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(getPasswordEncoder().encode(user.getPassword()));
         return userRepository.save(user);
     }
+
     @Override
     public User createUser(UserVO userVO) {
         User user = new User();
@@ -74,10 +75,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVO update(String token, UserVO userVO) {
         String username = jwtTokenUtil.getUsernameFromToken(token);
-        if ( username!= null) {
+        if (username != null) {
             // JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
             User user = userRepository.findByUsername(username);
-            if (user != null ) {
+            if (user != null) {
                 user.setFullName(userVO.getFullName());
                 user.setAddress(userVO.getAddress());
                 user.setBirthday(userVO.getBirthday());
@@ -93,7 +94,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVO getDetailUser(String user_token) {
         String username = jwtTokenUtil.getUsernameFromToken(user_token);
-        if ( username!= null) {
+        if (username != null) {
             User user = userRepository.findByUsername(username);
             return this.convertVO(user);
         }
@@ -116,7 +117,7 @@ public class UserServiceImpl implements UserService {
 //
 //        return userDetails;
 //    }
-    public Page<UserVO> getAllUser(int page,int size) {
+    public Page<UserVO> getAllUser(int page, int size) {
         Page<User> users = userRepository.findAll(new PageRequest(page, size));
         Page<UserVO> userVOS = users.map(new Converter<User, UserVO>() {
             @Override
@@ -128,9 +129,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserVO> getUserByAuthority(Integer authorityID,int page,int size, String sort) {
-        String direction = sort.substring(0,1);
-        String keySort = sort.substring(1,sort.length());
+    public Page<UserVO> getUserByAuthority(Integer authorityID, int page, int size, String sort) {
+        String direction = sort.substring(0, 1);
+        String keySort = sort.substring(1, sort.length());
         Authority authority = new Authority();
         authority.setId(authorityID);
         Page<User> users = userRepository.findAllByAuthorities(authority,
@@ -144,6 +145,21 @@ public class UserServiceImpl implements UserService {
             }
         });
         return userVOS;
+    }
+
+    @Override
+    public UserVO updateUserByAdmin(UserVO userVO) {
+        User user = userRepository.findOne(userVO.getId());
+        if (user != null) {
+            user.setFullName(userVO.getFullName());
+            user.setAddress(userVO.getAddress());
+            user.setBirthday(userVO.getBirthday());
+            user.setEmail(userVO.getEmail());
+            user.setGender(userVO.getGender());
+            user.setAvatar(userVO.getAvatar());
+            return this.convertVO(userRepository.save(user));
+        }
+        return null;
     }
 
     public UserVO convertVO(User user) {

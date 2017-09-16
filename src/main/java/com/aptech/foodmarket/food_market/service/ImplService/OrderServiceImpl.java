@@ -12,6 +12,9 @@ import com.aptech.foodmarket.food_market.vo.OrderItemVO;
 import com.aptech.foodmarket.food_market.vo.OrderVO;
 import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -30,6 +33,7 @@ public class OrderServiceImpl implements OrderService{
     private ItemRepository itemRepository;
     @Autowired
     private PromotionItemService promotionItemService;
+    @Autowired
     private OrderItemServiceImpl orderItemService;
     public OrderVO convertVO(Order order) {
         List<OrderItemVO> orderItemVOS = new ArrayList<>();
@@ -84,5 +88,27 @@ public class OrderServiceImpl implements OrderService{
 
         }
         return convertVO(orderRepository.save(order));
+    }
+
+    @Override
+    public Page<OrderVO> getOrderByUser(User user, int page, int size) {
+        Page<Order> orders = orderRepository.findAllByUser(user, new PageRequest(page, size));
+        Page<OrderVO> orderVOS = orders.map(new Converter<Order, OrderVO>() {
+            @Override
+            public OrderVO convert(Order order) {
+                return convertVOWithoutOrderItem(order);
+            }
+        });
+        return orderVOS;
+    }
+
+    public OrderVO convertVOWithoutOrderItem(Order order) {
+        OrderVO orderVO = OrderVOBuilder.anOrderVO().withId(order.getId()).withAddress(order.getAddress())
+                .withName(order.getName()).withNote(order.getNote())
+                .withPhone(order.getPhone()).withPromotionId(order.getPromotion().getId())
+                .withShipId(order.getShip().getId()).withTransportedAt(order.getTransportedAt())
+                .withUserId(order.getUser().getId())
+                .build();
+        return orderVO;
     }
 }

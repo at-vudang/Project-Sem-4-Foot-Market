@@ -12,4 +12,6 @@ public interface UserService {
 
     public Page<UserVO> getAllUser(int page, int size);
     public Page<UserVO> getUserByAuthority(Integer authorityID, int page, int size, String sort);
+
+    public UserVO updateUserByAdmin(UserVO userVO);
 }

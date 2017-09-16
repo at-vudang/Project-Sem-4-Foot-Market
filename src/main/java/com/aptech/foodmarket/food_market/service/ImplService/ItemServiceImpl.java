@@ -1,10 +1,7 @@
 package com.aptech.foodmarket.food_market.service.ImplService;
 
 import com.aptech.foodmarket.food_market.EntityNotFoundException;
-import com.aptech.foodmarket.food_market.builder.ItemVOBuilder;
-import com.aptech.foodmarket.food_market.builder.PromotionItemVOBuilder;
-import com.aptech.foodmarket.food_market.builder.SupplierVOBuilder;
-import com.aptech.foodmarket.food_market.builder.UnitVOBuilder;
+import com.aptech.foodmarket.food_market.builder.*;
 import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.service.ItemService;
 import com.aptech.foodmarket.food_market.vo.*;
@@ -18,7 +15,9 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -36,6 +35,8 @@ public class ItemServiceImpl implements ItemService {
     private UnitRepository unitRepository;
 
     private OrderRepository orderRepository;
+    @Autowired
+    private ImageServiceImpl imageService;
 
 
     public List<ItemVO> defaultJson(List<Item> items) {
@@ -84,6 +85,24 @@ public class ItemServiceImpl implements ItemService {
                     .withPercent(promotionItem.getPercent()).build();
             promotionItemVOS.add(promotionItemVO);
         }
+        Set<CategoryVO> categoryVOSet = new HashSet<>();
+        for(Category category: item.getCategories()){
+            CategoryVO categoryVO = CategoryVOBuilder.aCategoryVO()
+                    .withId(category.getId())
+                    .withLevelCategory(category.getLevelCategory())
+                    .withParentId(category.getParentId())
+                    .withDescription(category.getDescription())
+                    .withName(category.getName())
+                    .build();
+            categoryVOSet.add(categoryVO);
+        }
+        List<ImageItemVO> imageItemVOS = new ArrayList<>();
+        for (ImageItem imageItem: item.getImageItems()) {
+            ImageItemVO imageItemVO = new ImageItemVO();
+            imageItemVO.setId(imageItem.getId());
+            imageItemVO.setImage(imageItem.getImage());
+            imageItemVOS.add(imageItemVO);
+        }
         ItemVO itemVO = ItemVOBuilder.anItemVO().withId(item.getId())
                 .withName(item.getName())
                 .withPrice(item.getPrice())
@@ -91,6 +110,8 @@ public class ItemServiceImpl implements ItemService {
                 .withDescription(item.getDescription())
                 .withQuantity(item.getQuantity())
                 .withPromotions(promotionItemVOS)
+                .withCategory(categoryVOSet)
+                .withImageItems(imageItemVOS)
                 .build();
         return itemVO;
     }
@@ -135,7 +156,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemVO> getItemTool(int quantity) {
         Category category = new Category();
         category = categoryRepository.findOne(44);
-        return this.defaultJson(itemRepository.findAllByCategories(category)).subList(0,quantity);
+        return this.defaultJson(itemRepository.findAllByCategoriesIsContaining(category)).subList(0,quantity);
     }
 
     @Override
@@ -267,7 +288,7 @@ public class ItemServiceImpl implements ItemService {
 
     }
     @Override
-    public List<CategoryVO> getCategory(Integer id){
+    public Set<CategoryVO> getCategory(Integer id){
         Item item = itemRepository.findOne(id);
         CategoryServiceImpl categoryService = new CategoryServiceImpl();
         return categoryService.defaultJson(item.getCategories());
@@ -287,6 +308,18 @@ public class ItemServiceImpl implements ItemService {
         }
         item = itemRepository.findOne(item.getId());
         return item;
+    }
+
+    @Override
+    public Page<ItemVO> getItemBySuplier(Supplier supplier, int page, int size) {
+        Page<Item> items = itemRepository.findAllBySupplier(supplier, new PageRequest(page, size));
+        Page<ItemVO> itemVOS = items.map(new Converter<Item, ItemVO>() {
+            @Override
+            public ItemVO convert(Item item) {
+                return convertVO(item);
+            }
+        });
+        return itemVOS;
     }
 }
 

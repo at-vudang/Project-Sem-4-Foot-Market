@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.Basic;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/category")
@@ -33,7 +34,7 @@ public class CategoryController {
 
     @RequestMapping("/level/{level}")
     @ResponseBody
-    public List<CategoryVO> getCategoriesByLevel(@PathVariable Integer level) {
+    public Set<CategoryVO> getCategoriesByLevel(@PathVariable Integer level) {
         return categoryService.getCategoriesByLevel(level);
     }
 
@@ -48,15 +49,15 @@ public class CategoryController {
                                      @RequestParam("page") int page,
                                      @RequestParam("size") int size) {
         Page<ItemVO> resultPage = categoryService.getItems(id,page, size);
-        if (page > resultPage.getTotalPages()) {
-            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+//        if (page > resultPage.getTotalPages()) {
+//            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
         return resultPage;
     }
 
     @RequestMapping("/parents/{parentID}")
     @ResponseBody
-    public List<CategoryVO> getCategoriesByParent(@PathVariable Integer parentID) {
+    public Set<CategoryVO> getCategoriesByParent(@PathVariable Integer parentID) {
         return categoryService.getCategoriesByParent(parentID);
     }
 

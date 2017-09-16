@@ -4,6 +4,7 @@ import com.aptech.foodmarket.food_market.vo.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public final class ItemVOBuilder {
     private Integer id;
@@ -22,8 +23,7 @@ public final class ItemVOBuilder {
     private List<PromotionItemVO> promotions;
     private List<ImageItemVO> imageItems;
 //    private List<OrderItem> orderItems;
-    private List<CategoryVO> category;
-
+    private Set<CategoryVO> category;
 
     private ItemVOBuilder() {
     }
@@ -97,17 +97,17 @@ public final class ItemVOBuilder {
         return this;
     }
 
-//    public ItemVOBuilder withImageItems(List<ImageItem> imageItems) {
-//        this.imageItems = imageItems;
-//        return this;
-//    }
+    public ItemVOBuilder withImageItems(List<ImageItemVO> imageItems) {
+        this.imageItems = imageItems;
+        return this;
+    }
 //
 //    public ItemVOBuilder withOrderItems(List<OrderItem> orderItems) {
 //        this.orderItems = orderItems;
 //        return this;
 //    }
 
-    public ItemVOBuilder withCategory(List<CategoryVO> category) {
+    public ItemVOBuilder withCategory(Set<CategoryVO> category) {
         this.category = category;
         return this;
     }
@@ -130,7 +130,7 @@ public final class ItemVOBuilder {
 //        itemVO.setUnit(unit);
 //        itemVO.setSupplier(supplier);
         itemVO.setPromotions(promotions);
-//        itemVO.setImageItems(imageItems);
+        itemVO.setImageItems(imageItems);
 //        itemVO.setOrderItems(orderItems);
         itemVO.setCategory(category);
         return itemVO;

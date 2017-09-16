@@ -2,6 +2,7 @@ package com.aptech.foodmarket.food_market.repository;
 
 import com.aptech.foodmarket.food_market.model.Category;
 import com.aptech.foodmarket.food_market.model.Item;
+import com.aptech.foodmarket.food_market.model.Supplier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,8 +30,8 @@ public interface ItemRepository extends JpaRepository<Item,Integer>, PagingAndSo
 
     List<Item> findByIdIn(List<Integer> ids);
 
-    List<Item> findAllByCategories(Category category);
-    Page<Item> findAllByCategories(Category category,Pageable pageable);
+    List<Item> findAllByCategoriesIsContaining(Category category);
+    Page<Item> findAllByCategoriesIsContaining(Category category,Pageable pageable);
 
     @Query(value="SELECT * FROM items WHERE MATCH(name,description) AGAINST  (?1 IN NATURAL LANGUAGE MODE) ORDER BY ?#{#pageable}" ,nativeQuery = true)
     Page<Item> search(String key,Pageable pageable);
@@ -40,4 +41,6 @@ public interface ItemRepository extends JpaRepository<Item,Integer>, PagingAndSo
 
     @Query("select p from #{#entityName} p where p.name = ?1")
     List<Item> findByCategory(String name, Pageable p);
+
+    Page<Item> findAllBySupplier(Supplier supplier, Pageable pageable);
 }

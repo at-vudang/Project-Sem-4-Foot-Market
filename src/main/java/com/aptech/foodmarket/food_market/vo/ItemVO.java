@@ -5,6 +5,7 @@ import com.aptech.foodmarket.food_market.model.*;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public class ItemVO {
 
@@ -24,7 +25,7 @@ public class ItemVO {
     private List<PromotionItemVO> promotions;
     private List<ImageItemVO> imageItems;
 //    private List<OrderItem> orderItems;
-    private List<CategoryVO> category;
+    private Set<CategoryVO> category;
 
     public Integer getId() {
         return id;
@@ -156,11 +157,11 @@ public class ItemVO {
 //        this.orderItems = orderItems;
 //    }
 
-    public List<CategoryVO> getCategory() {
+    public Set<CategoryVO> getCategory() {
         return category;
     }
 
-    public void setCategory(List<CategoryVO> category) {
+    public void setCategory(Set<CategoryVO> category) {
         this.category = category;
     }
 }
