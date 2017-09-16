@@ -89,7 +89,13 @@ public class ItemServiceImpl implements ItemService {
                     .build();
             categoryVOSet.add(categoryVO);
         }
-        List<ImageItemVO> imageItemVOS = imageService.getImageOfItem(item.getId());
+        List<ImageItemVO> imageItemVOS = new ArrayList<>();
+        for (ImageItem imageItem: item.getImageItems()) {
+            ImageItemVO imageItemVO = new ImageItemVO();
+            imageItemVO.setId(imageItem.getId());
+            imageItemVO.setImage(imageItem.getImage());
+            imageItemVOS.add(imageItemVO);
+        }
         ItemVO itemVO = ItemVOBuilder.anItemVO().withId(item.getId())
                 .withName(item.getName())
                 .withPrice(item.getPrice())
