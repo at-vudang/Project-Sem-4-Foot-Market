@@ -2,6 +2,7 @@ package com.aptech.foodmarket.food_market.repository;
 
 import com.aptech.foodmarket.food_market.model.Category;
 import com.aptech.foodmarket.food_market.model.Item;
+import com.aptech.foodmarket.food_market.model.Supplier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,4 +41,6 @@ public interface ItemRepository extends JpaRepository<Item,Integer>, PagingAndSo
 
     @Query("select p from #{#entityName} p where p.name = ?1")
     List<Item> findByCategory(String name, Pageable p);
+
+    Page<Item> findAllBySupplier(Supplier supplier, Pageable pageable);
 }

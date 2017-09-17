@@ -4,8 +4,11 @@ import com.aptech.foodmarket.food_market.builder.UserVOBuilder;
 import com.aptech.foodmarket.food_market.model.Authority;
 import com.aptech.foodmarket.food_market.model.User;
 import com.aptech.foodmarket.food_market.repository.UserRepository;
+import com.aptech.foodmarket.food_market.security.JwtTokenUtil;
+import com.aptech.foodmarket.food_market.security.JwtUser;
 import com.aptech.foodmarket.food_market.service.UserService;
 import com.aptech.foodmarket.food_market.vo.UserVO;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,22 +32,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @PersistenceContext
     private EntityManager entityManager;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Bean
-    public PasswordEncoder getPasswordEncoder(){
+    public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    public void save(User user){
+    public User save(User user) {
         user.setPassword(getPasswordEncoder().encode(user.getPassword()));
-        userRepository.save(user);
+        return userRepository.save(user);
     }
+
     @Override
     public User createUser(UserVO userVO) {
         User user = new User();
@@ -55,14 +64,60 @@ public class UserServiceImpl implements UserService{
         user.setBirthday(userVO.getBirthday());
         user.setEmail(userVO.getEmail());
         user.setGender(userVO.getGender());
+        user.setAvatar(userVO.getAvatar());
         user.setActive(true);
         List<Authority> list = new ArrayList<>();
         user.setAuthorities(list);
-        return userRepository.save(user);
+        return this.save(user);
+
     }
 
     @Override
-    public Page<UserVO> getAllUser(int page,int size) {
+    public UserVO update(String token, UserVO userVO) {
+        String username = jwtTokenUtil.getUsernameFromToken(token);
+        if (username != null) {
+            // JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
+            User user = userRepository.findByUsername(username);
+            if (user != null) {
+                user.setFullName(userVO.getFullName());
+                user.setAddress(userVO.getAddress());
+                user.setBirthday(userVO.getBirthday());
+                user.setEmail(userVO.getEmail());
+                user.setGender(userVO.getGender());
+                user.setAvatar(userVO.getAvatar());
+                return this.convertVO(userRepository.save(user));
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public UserVO getDetailUser(String user_token) {
+        String username = jwtTokenUtil.getUsernameFromToken(user_token);
+        if (username != null) {
+            User user = userRepository.findByUsername(username);
+            return this.convertVO(user);
+        }
+        return null;
+    }
+
+    //    public User findByUserName(String username){
+//       return userRepository.findByUsername(username);
+//    }
+//    @Override
+//    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+//        User user =  userRepository.findByUsername(s);
+//        if(user == null) {
+//            throw new UsernameNotFoundException(String.format("The username %s doesn't exist", s));
+//        }
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority("ADMIN2"));
+//        UserDetails userDetails = new org.springframework.security.core.userdetails.
+//                User(user.getUsername(), user.getPassword(), authorities);
+//
+//        return userDetails;
+//    }
+    public Page<UserVO> getAllUser(int page, int size) {
         Page<User> users = userRepository.findAll(new PageRequest(page, size));
         Page<UserVO> userVOS = users.map(new Converter<User, UserVO>() {
             @Override
@@ -74,9 +129,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Page<UserVO> getUserByAuthority(Integer authorityID,int page,int size, String sort) {
-        String direction = sort.substring(0,1);
-        String keySort = sort.substring(1,sort.length());
+    public Page<UserVO> getUserByAuthority(Integer authorityID, int page, int size, String sort) {
+        String direction = sort.substring(0, 1);
+        String keySort = sort.substring(1, sort.length());
         Authority authority = new Authority();
         authority.setId(authorityID);
         Page<User> users = userRepository.findAllByAuthorities(authority,
@@ -91,6 +146,22 @@ public class UserServiceImpl implements UserService{
         });
         return userVOS;
     }
+
+    @Override
+    public UserVO updateUserByAdmin(UserVO userVO) {
+        User user = userRepository.findOne(userVO.getId());
+        if (user != null) {
+            user.setFullName(userVO.getFullName());
+            user.setAddress(userVO.getAddress());
+            user.setBirthday(userVO.getBirthday());
+            user.setEmail(userVO.getEmail());
+            user.setGender(userVO.getGender());
+            user.setAvatar(userVO.getAvatar());
+            return this.convertVO(userRepository.save(user));
+        }
+        return null;
+    }
+
     public UserVO convertVO(User user) {
         UserVO userVO = UserVOBuilder.anUserVO().withId(user.getId())
                 .withActive(user.getActive()).withAddress(user.getAddress())

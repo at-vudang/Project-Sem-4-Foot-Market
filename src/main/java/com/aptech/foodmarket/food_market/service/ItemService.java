@@ -3,6 +3,7 @@ package com.aptech.foodmarket.food_market.service;
 import com.aptech.foodmarket.food_market.EntityNotFoundException;
 import com.aptech.foodmarket.food_market.model.Category;
 import com.aptech.foodmarket.food_market.model.Item;
+import com.aptech.foodmarket.food_market.model.Supplier;
 import com.aptech.foodmarket.food_market.vo.CategoryVO;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.OrderItemVO;
@@ -41,5 +42,8 @@ public interface ItemService {
     Page<ItemVO> search(String key, int page, int size);
 
     List<ItemVO> searchWithCategory(int cate_id, String key);
+
     Item createItem(Item item);
+
+    public Page<ItemVO> getItemBySuplier(Supplier supplier, int page, int size);
 }
