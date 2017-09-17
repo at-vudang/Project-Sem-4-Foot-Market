@@ -25,7 +25,6 @@ public final class ItemVOBuilder {
 //    private List<OrderItem> orderItems;
     private Set<CategoryVO> category;
 
-
     private ItemVOBuilder() {
     }
 
@@ -107,7 +106,7 @@ public final class ItemVOBuilder {
 //        this.orderItems = orderItems;
 //        return this;
 //    }
-//
+
     public ItemVOBuilder withCategory(Set<CategoryVO> category) {
         this.category = category;
         return this;
