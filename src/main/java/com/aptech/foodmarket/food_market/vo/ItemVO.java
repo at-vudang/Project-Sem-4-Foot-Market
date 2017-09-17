@@ -116,14 +116,6 @@ public class ItemVO {
         this.unit = unit;
     }
 
-    //    public UnitVO getUnit() {
-//        return unit;
-//    }
-//
-//    public void setUnit(UnitVO unit) {
-//        this.unit = unit;
-//    }
-//
     public SupplierVO getSupplier() {
         return supplier;
     }

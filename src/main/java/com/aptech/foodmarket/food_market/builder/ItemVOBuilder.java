@@ -128,8 +128,8 @@ public final class ItemVOBuilder {
         itemVO.setActive(active);
         itemVO.setUnit(unit);
         itemVO.setSupplier(supplier);
-//        itemVO.setUnit(unit);
-//        itemVO.setSupplier(supplier);
+        itemVO.setUnit(unit);
+        itemVO.setSupplier(supplier);
         itemVO.setPromotions(promotions);
         itemVO.setImageItems(imageItems);
 //        itemVO.setOrderItems(orderItems);

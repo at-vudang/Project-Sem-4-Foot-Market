@@ -89,6 +89,10 @@ public class ItemServiceImpl implements ItemService {
                     .build();
             categoryVOSet.add(categoryVO);
         }
+        UnitVO unitVO = UnitVOBuilder.anUnitVO().withId(item.getUnit().getId())
+                .withName(item.getUnit().getName())
+                .withSyntax(item.getUnit().getSyntax())
+                .build();
         List<ImageItemVO> imageItemVOS = new ArrayList<>();
         for (ImageItem imageItem: item.getImageItems()) {
             ImageItemVO imageItemVO = new ImageItemVO();
@@ -104,7 +108,7 @@ public class ItemServiceImpl implements ItemService {
                 .withQuantity(item.getQuantity())
                 .withPromotions(promotionItemVOS)
                 .withCategory(categoryVOSet)
-                .withImageItems(imageItemVOS)
+                .withImageItems(imageItemVOS).withUnit(unitVO)
                 .build();
         return itemVO;
     }
