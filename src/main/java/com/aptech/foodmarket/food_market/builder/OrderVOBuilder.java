@@ -3,12 +3,13 @@ package com.aptech.foodmarket.food_market.builder;
 import com.aptech.foodmarket.food_market.vo.OrderItemVO;
 import com.aptech.foodmarket.food_market.vo.OrderVO;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public final class OrderVOBuilder {
     private Integer id;
-    private String name;
+    private String name = "";
     private String address;
     private String phone;
     private String note;
@@ -16,7 +17,8 @@ public final class OrderVOBuilder {
     private Integer userId;
     private Integer promotionId;
     private Integer shipId;
-    private List<OrderItemVO> orderItems;
+    private Double total = 0.0;
+    private List<OrderItemVO> orderItems = new ArrayList<>();
 
     private OrderVOBuilder() {
     }
@@ -69,6 +71,10 @@ public final class OrderVOBuilder {
         this.shipId = shipId;
         return this;
     }
+    public OrderVOBuilder withTotal(Double total) {
+        this.total = total;
+        return this;
+    }
 
     public OrderVOBuilder withOrderItems(List<OrderItemVO> orderItems) {
         this.orderItems = orderItems;
@@ -87,6 +93,7 @@ public final class OrderVOBuilder {
         orderVO.setPromotionId(promotionId);
         orderVO.setShipId(shipId);
         orderVO.setOrderItems(orderItems);
+        orderVO.setTotal(total);
         return orderVO;
     }
 }

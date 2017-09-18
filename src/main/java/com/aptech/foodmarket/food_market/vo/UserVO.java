@@ -1,8 +1,11 @@
 package com.aptech.foodmarket.food_market.vo;
 
+import com.aptech.foodmarket.food_market.model.Authority;
 import com.aptech.foodmarket.food_market.model.Supplier;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 public class UserVO {
 
@@ -20,6 +23,24 @@ public class UserVO {
     private Date editedAt;
     private Supplier supplier;
     private Boolean active;
+    private Set<AuthorityVO> authorities;
+    private List<OrderVO> orders;
+
+    public List<OrderVO> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderVO> orders) {
+        this.orders = orders;
+    }
+
+    public Set<AuthorityVO> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<AuthorityVO> authorities) {
+        this.authorities = authorities;
+    }
 
     public Integer getId() {
         return id;

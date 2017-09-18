@@ -4,11 +4,12 @@ import com.aptech.foodmarket.food_market.model.OrderItem;
 import com.aptech.foodmarket.food_market.model.Promotion;
 import com.aptech.foodmarket.food_market.model.Ship;
 import com.aptech.foodmarket.food_market.model.User;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
-
+@JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
 public class OrderVO {
     private Integer id;
     private String name;
@@ -16,9 +17,19 @@ public class OrderVO {
     private String phone;
     private String note;
     private Date transportedAt;
+    private Double total;
     private Integer userId;
     private Integer promotionId;
     private Integer shipId;
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
     private List<OrderItemVO> orderItems;
 
     public Integer getId() {

@@ -2,11 +2,14 @@ package com.aptech.foodmarket.food_market.service.ImplService;
 
 import com.aptech.foodmarket.food_market.builder.UserVOBuilder;
 import com.aptech.foodmarket.food_market.model.Authority;
+import com.aptech.foodmarket.food_market.model.Order;
 import com.aptech.foodmarket.food_market.model.User;
 import com.aptech.foodmarket.food_market.repository.UserRepository;
 import com.aptech.foodmarket.food_market.security.JwtTokenUtil;
 import com.aptech.foodmarket.food_market.security.JwtUser;
 import com.aptech.foodmarket.food_market.service.UserService;
+import com.aptech.foodmarket.food_market.vo.AuthorityVO;
+import com.aptech.foodmarket.food_market.vo.OrderVO;
 import com.aptech.foodmarket.food_market.vo.UserVO;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.hibernate.SessionFactory;
@@ -29,7 +32,9 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -43,6 +48,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private OrderServiceImpl orderService;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -66,8 +74,7 @@ public class UserServiceImpl implements UserService {
         user.setGender(userVO.getGender());
         user.setAvatar(userVO.getAvatar());
         user.setActive(true);
-        List<Authority> list = new ArrayList<>();
-        user.setAuthorities(list);
+        //user.setAuthorities(userVO.getAuthorities());
         return this.save(user);
 
     }
@@ -162,13 +169,33 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public UserVO getUserById(Integer id) {
+        return convertVO(userRepository.findOne(id));
+    }
+
     public UserVO convertVO(User user) {
+        Set<AuthorityVO> authorityVOS = new HashSet<>();
+        for (Authority authority: user.getAuthorities()
+             ) {
+            AuthorityVO authorityVO = new AuthorityVO();
+            authorityVO.setId(authority.getId());
+            authorityVO.setName(authority.getName());
+            authorityVOS.add(authorityVO);
+        }
+        List<OrderVO> orderVOS = new ArrayList<>();
+        for (Order order: user.getOrders()){
+            orderVOS.add(orderService.convertVOWithoutOrderItem(order));
+        }
         UserVO userVO = UserVOBuilder.anUserVO().withId(user.getId())
                 .withActive(user.getActive()).withAddress(user.getAddress())
                 .withBirthday(user.getBirthday()).withAvatar(user.getAvatar())
                 .withEmail(user.getEmail()).withCreditCard(user.getCreditCard())
                 .withUsername(user.getUsername())
-                .withFullName(user.getFullName()).build();
+                .withGender(user.getGender())
+                .withAuthorities(authorityVOS)
+                .withFullName(user.getFullName())
+                .withOrder(orderVOS).build();
         return userVO;
     }
 }

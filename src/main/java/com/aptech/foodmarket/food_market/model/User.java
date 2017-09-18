@@ -1,5 +1,6 @@
 package com.aptech.foodmarket.food_market.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Where;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by nydiarra on 06/05/17.
@@ -49,6 +51,7 @@ public class User implements Serializable{
     private Boolean gender;
 
     @Column(name = "birthday")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date birthday;
 
     @Column(name = "avatar")
@@ -77,13 +80,13 @@ public class User implements Serializable{
             name = "USER_AUTHORITY",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
-    private List<Authority> authorities;
+    private Set<Authority> authorities;
 
-    public List<Authority> getAuthorities() {
+    public Set<Authority> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(List<Authority> authorities) {
+    public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
     @Column(name = "last_rest_pass_date")
