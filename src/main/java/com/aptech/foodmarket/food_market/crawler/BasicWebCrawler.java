@@ -45,7 +45,8 @@ public class BasicWebCrawler {
             for (Element el: itemElements
                  ) {
                 try {
-                    String urlImage = el.select(".post-thumb img").attr("data-src");
+                    String urlImage = el.select(".post-thumb img").attr("data-other-src");
+                    System.out.println(urlImage);
                     String name = el.select(".post-title a").attr("title");
                     Float price = Float.parseFloat(el.select(".item-content .adr-coupon").attr("data-price"));
                     String urlDetail = el.select(".post-title a").attr("href");
@@ -75,7 +76,7 @@ public class BasicWebCrawler {
                         try {
                             String image = elImage.select("img").attr("src");
                             ImageItem imageItem = new ImageItem();
-                            imageItem.setImage(image);
+                            imageItem.setImage(FileUtil.getImages(image,"/home/vudang/Documents/Sem4/Images/Upload/"));
                             imageItem.setItem(item);
                             imageItem.setActive(true);
                             imageRepository.save(imageItem);
