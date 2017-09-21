@@ -1,62 +1,28 @@
-package com.aptech.foodmarket.food_market.model;
+package com.aptech.foodmarket.food_market.vo;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-
-import javax.persistence.*;
+import com.aptech.foodmarket.food_market.model.Order;
+import com.aptech.foodmarket.food_market.model.PromotionItem;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Where(clause = "is_active")
-@Table(name = "promotions")
-@SQLDelete(sql="UPDATE pr SET is_active = 0 WHERE id = ?")
-
-public class Promotion {
-    public Promotion(Integer id) {
-        this.id = id;
-    }
-    public Promotion() {
-    }
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+public class PromotionVO {
     private Integer id;
 
-    @Column(name = "title")
     private String title;
 
-    @Column(name = "from_at")
     private Date fromAt;
 
-    @Column(name = "end_at")
     private Date endAt;
 
-    @Column(name = "created_at")
     private Date createdAt;
 
-    @Column(name = "edited_at")
     private Date editedAt;
 
-    @Column(name = "is_active")
     private Boolean active;
 
-    @OneToMany(mappedBy = "promotion")
     private List<PromotionItem> promotionItems;
 
-    @OneToMany(mappedBy = "promotion")
     private List<Order> orders;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = new Date();
-        editedAt = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        editedAt = new Date();
-    }
 
     public Integer getId() {
         return id;
@@ -106,6 +72,14 @@ public class Promotion {
         this.editedAt = editedAt;
     }
 
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
     public List<PromotionItem> getPromotionItems() {
         return promotionItems;
     }
@@ -120,13 +94,5 @@ public class Promotion {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
-    }
-
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
     }
 }

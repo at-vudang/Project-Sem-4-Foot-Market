@@ -46,4 +46,8 @@ public interface ItemService {
     Item createItem(Item item);
 
     public Page<ItemVO> getItemBySuplier(Supplier supplier, int page, int size);
+    public Page<ItemVO> getItemOrderByStatus(int page, int size);
+
+    ItemVO deleteItem(int id);
+
 }

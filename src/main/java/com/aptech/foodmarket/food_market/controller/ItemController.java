@@ -157,4 +157,16 @@ public class ItemController {
         }
         return null;
     }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{id}")
+    public void deleteItem(@PathVariable Integer id) {
+        itemService.deleteItem(id);
+    }
+
+    @RequestMapping(value = "/getItemByOrderByStatus", params = {"page", "size"})
+    @ResponseBody
+    public Page<ItemVO> getgetItemBySupplier(@RequestParam int page,
+                                             @RequestParam int size) {
+            return itemService.getItemOrderByStatus(page, size);
+    }
 }

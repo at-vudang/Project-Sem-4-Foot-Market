@@ -14,10 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -33,10 +30,12 @@ public class ItemServiceImpl implements ItemService {
     private SupplierRepository supplierRepository;
     @Autowired
     private UnitRepository unitRepository;
-
+    @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private ImageServiceImpl imageService;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
 
     public List<ItemVO> defaultJson(List<Item> items) {
@@ -320,6 +319,38 @@ public class ItemServiceImpl implements ItemService {
             }
         });
         return itemVOS;
+    }
+
+    @Override
+    public Page<ItemVO> getItemOrderByStatus(int page, int size) {
+        Page<Item> items = itemRepository.findAllByOrderByStatusAsc(new PageRequest(page,size));
+        if( items != null) {
+            Page<ItemVO> itemVOS = items.map(new Converter<Item, ItemVO>() {
+                @Override
+                public ItemVO convert(Item item) {
+                    return convertVO(item);
+                }
+            });
+            return itemVOS;
+        }
+        return null;
+    }
+
+    @Override
+    public ItemVO deleteItem(int id) {
+
+//        List<OrderItem> orderItems = orderItemRepository.findAllByItem(item);
+//        for (OrderItem orderItem: orderItems) {
+//            orderItemRepository.delete(orderItem);
+//        }
+//        List<ImageItem> imageItems = imageRepository.findAllByItem_Id(id);
+//        for (ImageItem imageItem: imageItems) {
+//            imageRepository.delete(imageItem);
+//        }
+        itemRepository.delete(id);
+        Item item = itemRepository.findOne(id);
+        ItemVO itemVO = this.convertVO(item);
+        return itemVO;
     }
 }
 

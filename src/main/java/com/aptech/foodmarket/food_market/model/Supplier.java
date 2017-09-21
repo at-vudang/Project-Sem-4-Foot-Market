@@ -1,5 +1,6 @@
 package com.aptech.foodmarket.food_market.model;
 
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -9,6 +10,8 @@ import java.util.List;
 @Entity
 @Table(name = "suppliers")
 @Where(clause="is_active = 1")
+@SQLDelete(sql="UPDATE s SET is_active = 0 WHERE id = ?")
+
 public class Supplier {
 
     @Id

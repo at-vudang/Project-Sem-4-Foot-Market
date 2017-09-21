@@ -162,6 +162,17 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public UserVO updatePassword(int id, String newPassword) {
+        User user = userRepository.findOne(id);
+        if(user != null) {
+            user.setPassword(newPassword);
+            user = userRepository.save(user);
+            return convertVO(user);
+        }
+        return null;
+    }
+
     public UserVO convertVO(User user) {
         UserVO userVO = UserVOBuilder.anUserVO().withId(user.getId())
                 .withActive(user.getActive()).withAddress(user.getAddress())
