@@ -19,7 +19,7 @@ public final class OrderVOBuilder {
     private Integer shipId;
     private Double total = 0.0;
     private List<OrderItemVO> orderItems = new ArrayList<>();
-
+    private Byte status;
     private OrderVOBuilder() {
     }
 
@@ -71,6 +71,10 @@ public final class OrderVOBuilder {
         this.shipId = shipId;
         return this;
     }
+    public OrderVOBuilder withStatus(Byte status) {
+        this.status = status;
+        return this;
+    }
     public OrderVOBuilder withTotal(Double total) {
         this.total = total;
         return this;
@@ -94,6 +98,7 @@ public final class OrderVOBuilder {
         orderVO.setShipId(shipId);
         orderVO.setOrderItems(orderItems);
         orderVO.setTotal(total);
+        orderVO.setStatus(status);
         return orderVO;
     }
 }

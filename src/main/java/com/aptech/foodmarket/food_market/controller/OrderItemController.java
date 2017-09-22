@@ -50,7 +50,7 @@ public class OrderItemController {
     public List<OrderItemVO> getItemByOrder(@PathVariable Integer id, HttpServletRequest request)  throws EntityNotFoundException {
 //        throw new javax.persistence.EntityNotFoundException();
         String token = request.getHeader(tokenHeader);
-        String username = jwtTokenUtil.getEmailFromToken(token);
+        String username = jwtTokenUtil.getUsernameFromToken(token);
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
         System.out.println(user.getId());
         Order order = new Order();

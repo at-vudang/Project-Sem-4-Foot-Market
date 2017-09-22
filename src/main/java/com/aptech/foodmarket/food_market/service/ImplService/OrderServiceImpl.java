@@ -47,6 +47,7 @@ public class OrderServiceImpl implements OrderService{
                 .withPhone(order.getPhone()).withPromotionId(order.getPromotion().getId())
                 .withShipId(order.getShip().getId()).withTransportedAt(order.getTransportedAt())
                 .withUserId(order.getUser().getId()).withOrderItems(orderItemVOS)
+                .withStatus(order.getStatus())
                 .build();
         return orderVO;
     }
@@ -116,7 +117,7 @@ public class OrderServiceImpl implements OrderService{
                 .withPhone(order.getPhone()).withPromotionId(order.getPromotion().getId())
                 .withShipId(order.getShip().getId()).withTransportedAt(order.getTransportedAt())
                 .withUserId(order.getUser().getId())
-                .withTotal(total)
+                .withTotal(total).withStatus(order.getStatus())
                 .build();
         return orderVO;
     }

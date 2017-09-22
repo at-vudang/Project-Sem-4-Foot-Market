@@ -13,7 +13,7 @@ public class PromotionItemVO {
     private Date editedAt;
     private Boolean active;
     private Promotion promotion;
-    private Item item;
+    private ItemVO item;
 
     public Integer getId() {
         return id;
@@ -63,11 +63,11 @@ public class PromotionItemVO {
         this.promotion = promotion;
     }
 
-    public Item getItem() {
+    public ItemVO getItem() {
         return item;
     }
 
-    public void setItem(Item item) {
+    public void setItem(ItemVO item) {
         this.item = item;
     }
 }

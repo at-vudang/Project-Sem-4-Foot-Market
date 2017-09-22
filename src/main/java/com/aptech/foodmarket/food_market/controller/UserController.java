@@ -97,8 +97,8 @@ public class UserController {
     // Private fields
 
     @RequestMapping(method = RequestMethod.POST, value = "/createUser")
-    public ResponseEntity<User> createUser(@RequestBody UserVO userVO) {
-        return new ResponseEntity<User>(userService.createUser(userVO), HttpStatus.OK);
+    public ResponseEntity<UserVO> createUser(@RequestBody UserVO userVO) {
+        return new ResponseEntity<UserVO>(userService.createUser(userVO), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/update")
@@ -107,7 +107,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/updateByAdmin")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserVO> updateUserByAdmin(@RequestBody UserVO userVO) {
         return new ResponseEntity<UserVO>(userService.updateUserByAdmin(userVO), HttpStatus.OK);
     }
@@ -122,6 +122,12 @@ public class UserController {
     @ResponseBody
     public UserVO getUserById(@PathVariable Integer id){
         return userService.getUserById(id);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public UserVO deleteUser(@PathVariable Integer id){
+        return userService.delete(id);
     }
 
     @RequestMapping(value = "/getUsersByAuthority/{id}", params = {"page", "size","sort" })

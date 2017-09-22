@@ -2,6 +2,7 @@ package com.aptech.foodmarket.food_market.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -16,6 +17,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "users")
+@SQLDelete(sql="UPDATE users SET is_active = 0 WHERE id = ?")
 @Where(clause="is_active = 1")
 public class User implements Serializable{
     public User() {
@@ -32,9 +34,11 @@ public class User implements Serializable{
     private String username;
 
     @Column(name = "email", unique = true)
+    @NotNull
     private String email;
 
     @Column(name = "password")
+    @NotNull
     @JsonIgnore
     private String password;
 
@@ -48,6 +52,7 @@ public class User implements Serializable{
     private String address;
 
     @Column(name = "gender")
+    @NotNull
     private Boolean gender;
 
     @Column(name = "birthday")

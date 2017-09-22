@@ -141,9 +141,15 @@ public class ItemController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/create")
-    public ResponseEntity<Item> createItem(@RequestBody Item item) {
+    public ResponseEntity<ItemVO> createItem(@RequestBody Item item) {
+//        System.out.println(item.getCategories());
+        return new ResponseEntity<ItemVO>(itemService.createItem(item), HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/update")
+    public ResponseEntity<ItemVO> updateItem(@RequestBody Item item) {
         System.out.println(item.getCategories());
-        return new ResponseEntity<Item>(itemService.createItem(item), HttpStatus.OK);
+        return new ResponseEntity<ItemVO>(itemService.updateItem(item), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/getItemBySupplier/{id}", params = {"page", "size"})

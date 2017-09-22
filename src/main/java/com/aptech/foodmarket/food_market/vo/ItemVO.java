@@ -25,7 +25,7 @@ public class ItemVO {
     private List<PromotionItemVO> promotions;
     private List<ImageItemVO> imageItems;
 //    private List<OrderItem> orderItems;
-    private Set<CategoryVO> category;
+    private Set<CategoryVO> categories;
 
     public Integer getId() {
         return id;
@@ -150,10 +150,10 @@ public class ItemVO {
 //    }
 
     public Set<CategoryVO> getCategory() {
-        return category;
+        return categories;
     }
 
     public void setCategory(Set<CategoryVO> category) {
-        this.category = category;
+        this.categories = category;
     }
 }

@@ -21,6 +21,15 @@ public class OrderVO {
     private Integer userId;
     private Integer promotionId;
     private Integer shipId;
+    private Byte status;
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
 
     public Double getTotal() {
         return total;

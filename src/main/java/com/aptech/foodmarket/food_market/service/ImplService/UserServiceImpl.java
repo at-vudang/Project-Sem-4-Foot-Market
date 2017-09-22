@@ -4,6 +4,7 @@ import com.aptech.foodmarket.food_market.builder.UserVOBuilder;
 import com.aptech.foodmarket.food_market.model.Authority;
 import com.aptech.foodmarket.food_market.model.Order;
 import com.aptech.foodmarket.food_market.model.User;
+import com.aptech.foodmarket.food_market.repository.AuthorityRepository;
 import com.aptech.foodmarket.food_market.repository.UserRepository;
 import com.aptech.foodmarket.food_market.security.JwtTokenUtil;
 import com.aptech.foodmarket.food_market.security.JwtUser;
@@ -44,6 +45,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private AuthorityRepository authorityRepository;
+    @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
@@ -63,19 +66,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserVO userVO) {
+    public UserVO createUser(UserVO userVO) {
         User user = new User();
         user.setUsername(userVO.getUsername());
         user.setPassword(userVO.getPassword());
         user.setFullName(userVO.getFullName());
         user.setAddress(userVO.getAddress());
         user.setBirthday(userVO.getBirthday());
+        user.setCreditCard(userVO.getCreditCard());
         user.setEmail(userVO.getEmail());
         user.setGender(userVO.getGender());
         user.setAvatar(userVO.getAvatar());
         user.setActive(true);
-        //user.setAuthorities(userVO.getAuthorities());
-        return this.save(user);
+        Set<Authority> authorities = new HashSet<>();
+        for (AuthorityVO authorityVO:userVO.getAuthorities()
+             ) {
+            Authority authority = authorityRepository.findOne(authorityVO.getId());
+            authorities.add(authority);
+        }
+        user.setAuthorities(authorities);
+        return convertVO(this.save(user));
 
     }
 
@@ -159,11 +169,20 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findOne(userVO.getId());
         if (user != null) {
             user.setFullName(userVO.getFullName());
+            user.setUsername(userVO.getUsername());
             user.setAddress(userVO.getAddress());
             user.setBirthday(userVO.getBirthday());
+            user.setCreditCard(userVO.getCreditCard());
             user.setEmail(userVO.getEmail());
             user.setGender(userVO.getGender());
             user.setAvatar(userVO.getAvatar());
+            Set<Authority> authorities = new HashSet<>();
+            for (AuthorityVO authorityVO:userVO.getAuthorities()
+                    ) {
+                Authority authority = authorityRepository.findOne(authorityVO.getId());
+                authorities.add(authority);
+            }
+            user.setAuthorities(authorities);
             return this.convertVO(userRepository.save(user));
         }
         return null;
@@ -176,16 +195,20 @@ public class UserServiceImpl implements UserService {
 
     public UserVO convertVO(User user) {
         Set<AuthorityVO> authorityVOS = new HashSet<>();
-        for (Authority authority: user.getAuthorities()
-             ) {
-            AuthorityVO authorityVO = new AuthorityVO();
-            authorityVO.setId(authority.getId());
-            authorityVO.setName(authority.getName());
-            authorityVOS.add(authorityVO);
+        if (user.getAuthorities() != null) {
+            for (Authority authority: user.getAuthorities()
+                    ) {
+                AuthorityVO authorityVO = new AuthorityVO();
+                authorityVO.setId(authority.getId());
+                authorityVO.setName(authority.getName());
+                authorityVOS.add(authorityVO);
+            }
         }
         List<OrderVO> orderVOS = new ArrayList<>();
-        for (Order order: user.getOrders()){
-            orderVOS.add(orderService.convertVOWithoutOrderItem(order));
+        if (user.getOrders() != null) {
+            for (Order order: user.getOrders()){
+                orderVOS.add(orderService.convertVOWithoutOrderItem(order));
+            }
         }
         UserVO userVO = UserVOBuilder.anUserVO().withId(user.getId())
                 .withActive(user.getActive()).withAddress(user.getAddress())
@@ -196,6 +219,14 @@ public class UserServiceImpl implements UserService {
                 .withAuthorities(authorityVOS)
                 .withFullName(user.getFullName())
                 .withOrder(orderVOS).build();
+        return userVO;
+    }
+
+    @Override
+    public UserVO delete(Integer id) {
+        User user = userRepository.findOne(id);
+        UserVO userVO = convertVO(user);
+        userRepository.delete(user);
         return userVO;
     }
 }

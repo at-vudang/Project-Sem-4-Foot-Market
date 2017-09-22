@@ -2,6 +2,7 @@ package com.aptech.foodmarket.food_market.builder;
 
 import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.model.Promotion;
+import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
 
 import java.util.Date;
@@ -13,7 +14,7 @@ public final class PromotionItemVOBuilder {
     private Date editedAt;
     private Boolean active;
     private Promotion promotion;
-    private Item item;
+    private ItemVO item;
 
     private PromotionItemVOBuilder() {
     }
@@ -52,7 +53,7 @@ public final class PromotionItemVOBuilder {
         return this;
     }
 
-    public PromotionItemVOBuilder withItem(Item item) {
+    public PromotionItemVOBuilder withItem(ItemVO item) {
         this.item = item;
         return this;
     }

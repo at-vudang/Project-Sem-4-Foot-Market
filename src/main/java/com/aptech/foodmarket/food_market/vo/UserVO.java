@@ -15,7 +15,7 @@ public class UserVO {
     private String password;
     private String fullName;
     private String address;
-    private Boolean gender;
+    private Boolean gender = true;
     private Date birthday;
     private String avatar;
     private String creditCard;
