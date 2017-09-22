@@ -43,15 +43,17 @@ public class CategoryController {
     public CategoryVO getCategoriesById(@PathVariable Integer id) {
         return categoryService.getCategoryById(id);
     }
-    @RequestMapping(value = "/items/{id}", params = { "page", "size" })
+    @RequestMapping(value = "/items/{id}")
     @ResponseBody
     public Page<ItemVO> getItemsById(@PathVariable Integer id,
                                      @RequestParam("page") int page,
-                                     @RequestParam("size") int size) {
-        Page<ItemVO> resultPage = categoryService.getItems(id,page, size);
-//        if (page > resultPage.getTotalPages()) {
-//            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//        }
+                                     @RequestParam("size") int size,
+                                     @RequestParam(value = "sort", required=false) String sort) {
+
+        Page<ItemVO> resultPage = categoryService.getItems(id,page, size, sort);
+        if (page > resultPage.getTotalPages()) {
+            new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return resultPage;
     }
 

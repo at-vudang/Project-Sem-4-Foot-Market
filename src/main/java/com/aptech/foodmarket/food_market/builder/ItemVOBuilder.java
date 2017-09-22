@@ -23,7 +23,7 @@ public final class ItemVOBuilder {
     private List<PromotionItemVO> promotions;
     private List<ImageItemVO> imageItems;
 //    private List<OrderItem> orderItems;
-    private Set<CategoryVO> category;
+    private Set<CategoryVO> categories;
 
     private ItemVOBuilder() {
     }
@@ -107,8 +107,8 @@ public final class ItemVOBuilder {
 //        return this;
 //    }
 
-    public ItemVOBuilder withCategory(Set<CategoryVO> category) {
-        this.category = category;
+    public ItemVOBuilder withCategory(Set<CategoryVO> categories) {
+        this.categories = categories;
         return this;
     }
 
@@ -127,12 +127,12 @@ public final class ItemVOBuilder {
         itemVO.setActive(active);
         itemVO.setUnit(unit);
         itemVO.setSupplier(supplier);
-//        itemVO.setUnit(unit);
-//        itemVO.setSupplier(supplier);
+        itemVO.setUnit(unit);
+        itemVO.setSupplier(supplier);
         itemVO.setPromotions(promotions);
         itemVO.setImageItems(imageItems);
 //        itemVO.setOrderItems(orderItems);
-        itemVO.setCategory(category);
+        itemVO.setCategory(categories);
         return itemVO;
     }
 }

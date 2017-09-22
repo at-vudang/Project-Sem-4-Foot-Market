@@ -43,7 +43,8 @@ public interface ItemService {
 
     List<ItemVO> searchWithCategory(int cate_id, String key);
 
-    Item createItem(Item item);
+    ItemVO createItem(Item item);
+    ItemVO updateItem(Item item);
 
     public Page<ItemVO> getItemBySuplier(Supplier supplier, int page, int size);
 }
