@@ -2,11 +2,15 @@ package com.aptech.foodmarket.food_market.service.ImplService;
 
 import com.aptech.foodmarket.food_market.builder.UserVOBuilder;
 import com.aptech.foodmarket.food_market.model.Authority;
+import com.aptech.foodmarket.food_market.model.Order;
 import com.aptech.foodmarket.food_market.model.User;
+import com.aptech.foodmarket.food_market.repository.AuthorityRepository;
 import com.aptech.foodmarket.food_market.repository.UserRepository;
 import com.aptech.foodmarket.food_market.security.JwtTokenUtil;
 import com.aptech.foodmarket.food_market.security.JwtUser;
 import com.aptech.foodmarket.food_market.service.UserService;
+import com.aptech.foodmarket.food_market.vo.AuthorityVO;
+import com.aptech.foodmarket.food_market.vo.OrderVO;
 import com.aptech.foodmarket.food_market.vo.UserVO;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.hibernate.SessionFactory;
@@ -29,7 +33,9 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -39,10 +45,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private AuthorityRepository authorityRepository;
+    @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private OrderServiceImpl orderService;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -55,20 +66,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(UserVO userVO) {
+    public UserVO createUser(UserVO userVO) {
         User user = new User();
         user.setUsername(userVO.getUsername());
         user.setPassword(userVO.getPassword());
         user.setFullName(userVO.getFullName());
         user.setAddress(userVO.getAddress());
         user.setBirthday(userVO.getBirthday());
+        user.setCreditCard(userVO.getCreditCard());
         user.setEmail(userVO.getEmail());
         user.setGender(userVO.getGender());
         user.setAvatar(userVO.getAvatar());
         user.setActive(true);
-        List<Authority> list = new ArrayList<>();
-        user.setAuthorities(list);
-        return this.save(user);
+        Set<Authority> authorities = new HashSet<>();
+        for (AuthorityVO authorityVO:userVO.getAuthorities()
+             ) {
+            Authority authority = authorityRepository.findOne(authorityVO.getId());
+            authorities.add(authority);
+        }
+        user.setAuthorities(authorities);
+        return convertVO(this.save(user));
 
     }
 
@@ -152,11 +169,20 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findOne(userVO.getId());
         if (user != null) {
             user.setFullName(userVO.getFullName());
+            user.setUsername(userVO.getUsername());
             user.setAddress(userVO.getAddress());
             user.setBirthday(userVO.getBirthday());
+            user.setCreditCard(userVO.getCreditCard());
             user.setEmail(userVO.getEmail());
             user.setGender(userVO.getGender());
             user.setAvatar(userVO.getAvatar());
+            Set<Authority> authorities = new HashSet<>();
+            for (AuthorityVO authorityVO:userVO.getAuthorities()
+                    ) {
+                Authority authority = authorityRepository.findOne(authorityVO.getId());
+                authorities.add(authority);
+            }
+            user.setAuthorities(authorities);
             return this.convertVO(userRepository.save(user));
         }
         return null;
@@ -165,21 +191,51 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserVO updatePassword(int id, String newPassword) {
         User user = userRepository.findOne(id);
-        if(user != null) {
+        if (user != null) {
             user.setPassword(newPassword);
             user = userRepository.save(user);
             return convertVO(user);
         }
         return null;
     }
+    public UserVO getUserById(Integer id) {
+        return convertVO(userRepository.findOne(id));
+    }
 
     public UserVO convertVO(User user) {
+        Set<AuthorityVO> authorityVOS = new HashSet<>();
+        if (user.getAuthorities() != null) {
+            for (Authority authority: user.getAuthorities()
+                    ) {
+                AuthorityVO authorityVO = new AuthorityVO();
+                authorityVO.setId(authority.getId());
+                authorityVO.setName(authority.getName());
+                authorityVOS.add(authorityVO);
+            }
+        }
+        List<OrderVO> orderVOS = new ArrayList<>();
+        if (user.getOrders() != null) {
+            for (Order order: user.getOrders()){
+                orderVOS.add(orderService.convertVOWithoutOrderItem(order));
+            }
+        }
         UserVO userVO = UserVOBuilder.anUserVO().withId(user.getId())
                 .withActive(user.getActive()).withAddress(user.getAddress())
                 .withBirthday(user.getBirthday()).withAvatar(user.getAvatar())
                 .withEmail(user.getEmail()).withCreditCard(user.getCreditCard())
                 .withUsername(user.getUsername())
-                .withFullName(user.getFullName()).build();
+                .withGender(user.getGender())
+                .withAuthorities(authorityVOS)
+                .withFullName(user.getFullName())
+                .withOrder(orderVOS).build();
+        return userVO;
+    }
+
+    @Override
+    public UserVO delete(Integer id) {
+        User user = userRepository.findOne(id);
+        UserVO userVO = convertVO(user);
+        userRepository.delete(user);
         return userVO;
     }
 }

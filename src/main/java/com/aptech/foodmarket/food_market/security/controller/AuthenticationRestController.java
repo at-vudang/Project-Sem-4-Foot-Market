@@ -1,5 +1,7 @@
 package com.aptech.foodmarket.food_market.security.controller;
 
+import com.aptech.foodmarket.food_market.model.User;
+import com.aptech.foodmarket.food_market.repository.UserRepository;
 import com.aptech.foodmarket.food_market.security.JwtAuthenticationRequest;
 import com.aptech.foodmarket.food_market.security.JwtTokenUtil;
 import com.aptech.foodmarket.food_market.security.JwtUser;
@@ -37,22 +39,25 @@ public class AuthenticationRestController {
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private UserDetailsService userDetailsService;
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
-
+        User user = userRepository.findByEmail(authenticationRequest.getUsername());
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        authenticationRequest.getUsername(),
+                        user.getUsername(),
                         authenticationRequest.getPassword()
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Reload password post-security so we can generate token
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails, device);
         final Long expire = jwtTokenUtil.getExpiration();
         // Return the token

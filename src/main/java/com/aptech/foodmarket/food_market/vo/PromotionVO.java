@@ -1,28 +1,18 @@
 package com.aptech.foodmarket.food_market.vo;
 
-import com.aptech.foodmarket.food_market.model.Order;
+import com.aptech.foodmarket.food_market.model.Item;
+import com.aptech.foodmarket.food_market.model.Promotion;
 import com.aptech.foodmarket.food_market.model.PromotionItem;
 import java.util.Date;
 import java.util.List;
 
 public class PromotionVO {
     private Integer id;
-
     private String title;
-
     private Date fromAt;
-
     private Date endAt;
-
-    private Date createdAt;
-
-    private Date editedAt;
-
     private Boolean active;
-
-    private List<PromotionItem> promotionItems;
-
-    private List<Order> orders;
+    private List<PromotionItemVO> promotionItems;
 
     public Integer getId() {
         return id;
@@ -56,22 +46,6 @@ public class PromotionVO {
         this.endAt = endAt;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getEditedAt() {
-        return editedAt;
-    }
-
-    public void setEditedAt(Date editedAt) {
-        this.editedAt = editedAt;
-    }
-
     public Boolean getActive() {
         return active;
     }
@@ -80,19 +54,11 @@ public class PromotionVO {
         this.active = active;
     }
 
-    public List<PromotionItem> getPromotionItems() {
+    public List<PromotionItemVO> getPromotionItems() {
         return promotionItems;
     }
 
-    public void setPromotionItems(List<PromotionItem> promotionItems) {
+    public void setPromotionItems(List<PromotionItemVO> promotionItems) {
         this.promotionItems = promotionItems;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
     }
 }

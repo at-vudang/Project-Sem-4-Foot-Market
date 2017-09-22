@@ -1,5 +1,6 @@
 package com.aptech.foodmarket.food_market.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -9,15 +10,15 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by nydiarra on 06/05/17.
  */
 @Entity
 @Table(name = "users")
+@SQLDelete(sql="UPDATE users SET is_active = 0 WHERE id = ?")
 @Where(clause="is_active = 1")
-@SQLDelete(sql="UPDATE items SET is_active = 0 WHERE id = ?")
-
 public class User implements Serializable{
     public User() {
     }
@@ -33,9 +34,11 @@ public class User implements Serializable{
     private String username;
 
     @Column(name = "email", unique = true)
+    @NotNull
     private String email;
 
     @Column(name = "password")
+    @NotNull
     @JsonIgnore
     private String password;
 
@@ -49,9 +52,11 @@ public class User implements Serializable{
     private String address;
 
     @Column(name = "gender")
+    @NotNull
     private Boolean gender;
 
     @Column(name = "birthday")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date birthday;
 
     @Column(name = "avatar")
@@ -80,13 +85,13 @@ public class User implements Serializable{
             name = "USER_AUTHORITY",
             joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
-    private List<Authority> authorities;
+    private Set<Authority> authorities;
 
-    public List<Authority> getAuthorities() {
+    public Set<Authority> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(List<Authority> authorities) {
+    public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
     @Column(name = "last_rest_pass_date")

@@ -35,6 +35,7 @@ public class OrderServiceImpl implements OrderService{
     private PromotionItemService promotionItemService;
     @Autowired
     private OrderItemServiceImpl orderItemService;
+
     public OrderVO convertVO(Order order) {
         List<OrderItemVO> orderItemVOS = new ArrayList<>();
         for (OrderItem orderItem:order.getOrderItems()
@@ -46,6 +47,7 @@ public class OrderServiceImpl implements OrderService{
                 .withPhone(order.getPhone()).withPromotionId(order.getPromotion().getId())
                 .withShipId(order.getShip().getId()).withTransportedAt(order.getTransportedAt())
                 .withUserId(order.getUser().getId()).withOrderItems(orderItemVOS)
+                .withStatus(order.getStatus())
                 .build();
         return orderVO;
     }
@@ -118,11 +120,19 @@ public class OrderServiceImpl implements OrderService{
     }
 
     public OrderVO convertVOWithoutOrderItem(Order order) {
+        Double total = 0.0;
+        for (OrderItem orderItem: order.getOrderItems()
+             ) {
+            if (orderItem.getPriceOffical() != null) {
+                total += orderItem.getPriceOffical();
+            }
+        }
         OrderVO orderVO = OrderVOBuilder.anOrderVO().withId(order.getId()).withAddress(order.getAddress())
                 .withName(order.getName()).withNote(order.getNote())
                 .withPhone(order.getPhone()).withPromotionId(order.getPromotion().getId())
                 .withShipId(order.getShip().getId()).withTransportedAt(order.getTransportedAt())
                 .withUserId(order.getUser().getId())
+                .withTotal(total).withStatus(order.getStatus())
                 .build();
         return orderVO;
     }

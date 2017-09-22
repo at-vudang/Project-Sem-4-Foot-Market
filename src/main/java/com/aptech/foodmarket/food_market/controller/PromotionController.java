@@ -1,18 +1,19 @@
 package com.aptech.foodmarket.food_market.controller;
 
-import com.aptech.foodmarket.food_market.model.PromotionItem;
-import com.aptech.foodmarket.food_market.repository.PromotionItemRepository;
-import com.aptech.foodmarket.food_market.service.CategoryService;
+import com.aptech.foodmarket.food_market.model.Promotion;
 import com.aptech.foodmarket.food_market.service.PromotionItemService;
-import com.aptech.foodmarket.food_market.vo.CategoryVO;
-import com.aptech.foodmarket.food_market.vo.ItemVO;
+import com.aptech.foodmarket.food_market.service.PromotionService;
 import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
+import com.aptech.foodmarket.food_market.vo.PromotionVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ public class PromotionController {
 
     @Autowired
     PromotionItemService promotionItemService;
+    @Autowired
+    PromotionService promotionService;
 
     @RequestMapping("/{id}")
     @ResponseBody
@@ -32,8 +35,15 @@ public class PromotionController {
         return promotionItemVO;
     }
 
+
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{id}")
     public void deleteItem(@PathVariable Integer id) {
         promotionItemService.deleteItem(id);
     }
+
+    @RequestMapping(method = RequestMethod.POST, value = "")
+    public ResponseEntity<PromotionVO> createPromotion(@RequestBody Promotion promotion) {
+        return new ResponseEntity<PromotionVO>(promotionService.create(promotion), HttpStatus.OK);
+    }
+
 }

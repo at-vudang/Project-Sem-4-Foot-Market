@@ -1,7 +1,7 @@
 package com.aptech.foodmarket.food_market.builder;
 
-import com.aptech.foodmarket.food_market.model.Order;
 import com.aptech.foodmarket.food_market.model.PromotionItem;
+import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
 import com.aptech.foodmarket.food_market.vo.PromotionVO;
 
 import java.util.Date;
@@ -12,11 +12,8 @@ public final class PromotionVOBuilder {
     private String title;
     private Date fromAt;
     private Date endAt;
-    private Date createdAt;
-    private Date editedAt;
     private Boolean active;
-    private List<PromotionItem> promotionItems;
-    private List<Order> orders;
+    private List<PromotionItemVO> promotionItems;
 
     private PromotionVOBuilder() {
     }
@@ -45,28 +42,13 @@ public final class PromotionVOBuilder {
         return this;
     }
 
-    public PromotionVOBuilder withCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
-    public PromotionVOBuilder withEditedAt(Date editedAt) {
-        this.editedAt = editedAt;
-        return this;
-    }
-
     public PromotionVOBuilder withActive(Boolean active) {
         this.active = active;
         return this;
     }
 
-    public PromotionVOBuilder withPromotionItems(List<PromotionItem> promotionItems) {
+    public PromotionVOBuilder withPromotionItems(List<PromotionItemVO> promotionItems) {
         this.promotionItems = promotionItems;
-        return this;
-    }
-
-    public PromotionVOBuilder withOrders(List<Order> orders) {
-        this.orders = orders;
         return this;
     }
 
@@ -76,11 +58,8 @@ public final class PromotionVOBuilder {
         promotionVO.setTitle(title);
         promotionVO.setFromAt(fromAt);
         promotionVO.setEndAt(endAt);
-        promotionVO.setCreatedAt(createdAt);
-        promotionVO.setEditedAt(editedAt);
         promotionVO.setActive(active);
         promotionVO.setPromotionItems(promotionItems);
-        promotionVO.setOrders(orders);
         return promotionVO;
     }
 }

@@ -95,6 +95,10 @@ public class ItemServiceImpl implements ItemService {
                     .build();
             categoryVOSet.add(categoryVO);
         }
+        UnitVO unitVO = UnitVOBuilder.anUnitVO().withId(item.getUnit().getId())
+                .withName(item.getUnit().getName())
+                .withSyntax(item.getUnit().getSyntax())
+                .build();
         List<ImageItemVO> imageItemVOS = new ArrayList<>();
         for (ImageItem imageItem: item.getImageItems()) {
             ImageItemVO imageItemVO = new ImageItemVO();
@@ -110,7 +114,7 @@ public class ItemServiceImpl implements ItemService {
                 .withQuantity(item.getQuantity())
                 .withPromotions(promotionItemVOS)
                 .withCategory(categoryVOSet)
-                .withImageItems(imageItemVOS)
+                .withImageItems(imageItemVOS).withUnit(unitVO)
                 .build();
         return itemVO;
     }
@@ -294,7 +298,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item createItem(Item item) {
+    public ItemVO createItem(Item item) {
         item.setActive(true);
         item = itemRepository.save(item);
         for (ImageItem imageItem: item.getImageItems()
@@ -306,7 +310,32 @@ public class ItemServiceImpl implements ItemService {
             imageRepository.save(newImageItem);
         }
         item = itemRepository.findOne(item.getId());
-        return item;
+        return convertVO(item);
+    }
+
+    @Override
+    public ItemVO updateItem(Item item) {
+        Item itemUpdate = itemRepository.findOne(item.getId());
+        itemUpdate.setAvatar(item.getAvatar());
+        itemUpdate.setName(item.getName());
+        itemUpdate.setUnit(item.getUnit());
+        itemUpdate.setPrice(item.getPrice());
+        itemUpdate.setQuantity(item.getQuantity());
+        itemUpdate.setDescription(item.getDescription());
+        itemUpdate.setCategories(item.getCategories());
+        itemRepository.save(itemUpdate);
+        List<ImageItem> imageItems = itemUpdate.getImageItems();
+        imageRepository.delete(imageItems);
+        for (ImageItem imageItem: item.getImageItems()
+                ) {
+            ImageItem newImageItem = new ImageItem();
+            newImageItem.setItem(item);
+            newImageItem.setImage("/" + imageItem.getImage());
+            newImageItem.setActive(true);
+            imageRepository.save(newImageItem);
+        }
+        item = itemRepository.findOne(item.getId());
+        return convertVO(item);
     }
 
     @Override

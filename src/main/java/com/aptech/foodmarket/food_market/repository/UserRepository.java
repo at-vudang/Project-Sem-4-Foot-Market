@@ -21,9 +21,9 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
     User findByUsername(String username);
-    @Query(value = "SELECT * FROM USERS WHERE EMAIL_ADDRESS = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM USERS WHERE email = ?1", nativeQuery = true)
     User findByEmailAddress(String emailAddress);
-
+    User findByEmail(String email);
     User findByOrders(Order order);
     Page<User> findAllByAuthorities(Authority authority, Pageable pageable);
 }

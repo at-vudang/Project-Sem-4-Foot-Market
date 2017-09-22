@@ -81,14 +81,19 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public Page<ItemVO> getItems(Integer id, int page, int size, String sort) {
-        String direction = sort.substring(0,1);
-        String keySort = sort.substring(1,sort.length());
+
         Category category = categoryRepository.findOne(id);
         ItemServiceImpl itemService = new ItemServiceImpl();
-        PageRequest pageRequest = new PageRequest(page,size);
-        Page<Item> items = itemRepository.findAllByCategoriesIsContaining(category, new PageRequest(page, size,
-                direction.equals("-") ? Sort.Direction.DESC : Sort.Direction.ASC,
-                keySort));
+        Page<Item> items;
+        if (sort != null && sort.equals("") && (sort.charAt(0) == '+' || sort.charAt(0) == '-')) {
+            String direction = sort.substring(0,1);
+            String keySort = sort.substring(1,sort.length());
+            items = itemRepository.findAllByCategoriesIsContaining(category, new PageRequest(page, size,
+                    direction.equals("-") ? Sort.Direction.DESC : Sort.Direction.ASC,
+                    keySort));
+        } else {
+            items = itemRepository.findAllByCategoriesIsContaining(category, new PageRequest(page, size));
+        }
         Page<ItemVO> itemsVOs = items.map(new Converter<Item, ItemVO>() {
             @Override
             public ItemVO convert(Item entity) {

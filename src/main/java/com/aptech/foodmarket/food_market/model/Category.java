@@ -55,6 +55,8 @@ public class Category {
         editedAt = new Date();
     }
 
+    @PreRemove
+    protected  void onRemove() {}
     public Integer getId() {
         return id;
     }
