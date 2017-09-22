@@ -102,6 +102,21 @@ public class OrderServiceImpl implements OrderService{
         return orderVOS;
     }
 
+    @Override
+    public Page<OrderVO> getOrderByStatus(byte status, int page, int size) {
+        Page<Order> orders = orderRepository.findAllByStatus(status, new PageRequest(page, size));
+        if (orders != null) {
+            Page<OrderVO> orderVOS = orders.map(new Converter<Order, OrderVO>() {
+                @Override
+                public OrderVO convert(Order order) {
+                    return convertVOWithoutOrderItem(order);
+                }
+            });
+            return orderVOS;
+        }
+        return null;
+    }
+
     public OrderVO convertVOWithoutOrderItem(Order order) {
         OrderVO orderVO = OrderVOBuilder.anOrderVO().withId(order.getId()).withAddress(order.getAddress())
                 .withName(order.getName()).withNote(order.getNote())
@@ -109,6 +124,14 @@ public class OrderServiceImpl implements OrderService{
                 .withShipId(order.getShip().getId()).withTransportedAt(order.getTransportedAt())
                 .withUserId(order.getUser().getId())
                 .build();
+        return orderVO;
+    }
+
+    @Override
+    public OrderVO deleteItem(int id) {
+        Order order = orderRepository.findOne(id);
+        OrderVO orderVO = this.convertVO(order);
+        orderRepository.delete(id);
         return orderVO;
     }
 }

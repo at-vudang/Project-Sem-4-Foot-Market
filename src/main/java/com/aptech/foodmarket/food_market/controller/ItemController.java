@@ -163,10 +163,11 @@ public class ItemController {
         itemService.deleteItem(id);
     }
 
-    @RequestMapping(value = "/getItemByOrderByStatus", params = {"page", "size"})
+    @RequestMapping(value = "/getItemByStatus", params = {"status", "page", "size"})
     @ResponseBody
-    public Page<ItemVO> getgetItemBySupplier(@RequestParam int page,
+    public Page<ItemVO> getgetItemBySupplier(@RequestParam int status,
+                                                @RequestParam int page,
                                              @RequestParam int size) {
-            return itemService.getItemOrderByStatus(page, size);
+            return itemService.getItemByStatus(status, page, size);
     }
 }

@@ -24,4 +24,23 @@ public class PromotionItemServiceImpl implements PromotionItemService {
                 .build();
         return promotionItemVO;
     }
+
+    @Override
+    public PromotionItemVO deleteItem(int id) {
+        PromotionItem promotionItem = promotionItemRepository.findOne(id);
+        PromotionItemVO promotionItemVO = this.convertVO(promotionItem);
+        promotionItemRepository.delete(id);
+        return promotionItemVO;
+    }
+
+    public PromotionItemVO convertVO(PromotionItem promotionItem) {
+        PromotionItemVO promotionItemVO = PromotionItemVOBuilder.aPromotionItemVO()
+                .withId(promotionItem.getId())
+                .withPromotion(promotionItem.getPromotion())
+                .withPercent(promotionItem.getPercent())
+                .withItem(promotionItem.getItem())
+                .withCreatedAt(promotionItem.getCreatedAt())
+                .build();
+        return promotionItemVO;
+    }
 }

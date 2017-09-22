@@ -59,4 +59,15 @@ public class OrderController {
         User user = userRepository.findOne(id);
         return orderService.getOrderByUser(user, page, size);
     }
+    @RequestMapping(value = "/getOrderByStatus", params = {"status", "page", "size" })
+    @ResponseBody
+    public Page<OrderVO> getOrderByStatus(@RequestParam byte status,
+                                        @RequestParam int page,
+                                        @RequestParam int size) {
+        return orderService.getOrderByStatus(status, page, size);
+    }
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{id}")
+    public void deleteItem(@PathVariable Integer id) {
+        orderService.deleteItem(id);
+    }
 }

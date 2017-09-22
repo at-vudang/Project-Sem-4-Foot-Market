@@ -41,4 +41,22 @@ public class UnitServiceImpl implements UnitService {
         }
         return unitVOs;
     }
+
+    @Override
+    public UnitVO deleteItem(int id) {
+        Unit unit = unitRepository.findOne(id);
+        UnitVO unitVO = this.convertVO(unit);
+        unitRepository.delete(id);
+        return unitVO;
+    }
+
+    public UnitVO convertVO(Unit unit) {
+        UnitVO unitVO = UnitVOBuilder.anUnitVO()
+                .withId(unit.getId())
+                .withName(unit.getName())
+                .withSyntax(unit.getSyntax())
+                .withItems(unit.getItems())
+                .build();
+        return unitVO;
+    }
 }

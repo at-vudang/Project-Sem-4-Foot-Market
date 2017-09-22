@@ -115,4 +115,22 @@ public class CategoryServiceImpl implements CategoryService{
         }
 
     }
+    @Override
+    public CategoryVO deleteItem(int id) {
+        Category cate = categoryRepository.findOne(id);
+        CategoryVO categoryVO = this.convertVO(cate);
+        categoryRepository.delete(id);
+        return categoryVO;
+    }
+
+    public CategoryVO convertVO(Category category) {
+        CategoryVO categoryVO = CategoryVOBuilder.aCategoryVO()
+                .withId(category.getId())
+                .withLevelCategory(category.getLevelCategory())
+                .withParentId(category.getParentId())
+                .withDescription(category.getDescription())
+                .withName(category.getName())
+                .build();
+        return categoryVO;
+    }
 }

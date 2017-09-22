@@ -61,4 +61,9 @@ public class OrderItemController {
         }
         return new ArrayList<>();
     }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{id}")
+    public void deleteItem(@PathVariable Integer id) {
+        orderItemService.deleteItem(id);
+    }
 }

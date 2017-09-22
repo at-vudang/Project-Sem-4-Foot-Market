@@ -322,8 +322,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Page<ItemVO> getItemOrderByStatus(int page, int size) {
-        Page<Item> items = itemRepository.findAllByOrderByStatusAsc(new PageRequest(page,size));
+    public Page<ItemVO> getItemByStatus(int status, int page, int size) {
+        Page<Item> items = itemRepository.findAllByStatus(status, new PageRequest(page,size));
         if( items != null) {
             Page<ItemVO> itemVOS = items.map(new Converter<Item, ItemVO>() {
                 @Override
@@ -338,18 +338,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemVO deleteItem(int id) {
-
-//        List<OrderItem> orderItems = orderItemRepository.findAllByItem(item);
-//        for (OrderItem orderItem: orderItems) {
-//            orderItemRepository.delete(orderItem);
-//        }
-//        List<ImageItem> imageItems = imageRepository.findAllByItem_Id(id);
-//        for (ImageItem imageItem: imageItems) {
-//            imageRepository.delete(imageItem);
-//        }
-        itemRepository.delete(id);
         Item item = itemRepository.findOne(id);
         ItemVO itemVO = this.convertVO(item);
+        itemRepository.delete(id);
         return itemVO;
     }
 }

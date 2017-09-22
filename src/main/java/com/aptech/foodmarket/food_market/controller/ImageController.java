@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -23,5 +24,10 @@ public class ImageController {
     @ResponseBody
     public List<ImageItemVO> getImageByItemId(@PathVariable Integer id) {
         return imageService.getImageOfItem(id);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{id}")
+    public void deleteItem(@PathVariable Integer id) {
+        imageService.deleteItem(id);
     }
 }

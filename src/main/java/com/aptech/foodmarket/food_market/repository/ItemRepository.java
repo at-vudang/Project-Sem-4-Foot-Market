@@ -44,5 +44,5 @@ public interface ItemRepository extends JpaRepository<Item,Integer>, PagingAndSo
 
     Page<Item> findAllBySupplier(Supplier supplier, Pageable pageable);
 
-    Page<Item> findAllByOrderByStatusAsc(Pageable pageable);
+    Page<Item> findAllByStatus(int status, Pageable pageable);
 }
