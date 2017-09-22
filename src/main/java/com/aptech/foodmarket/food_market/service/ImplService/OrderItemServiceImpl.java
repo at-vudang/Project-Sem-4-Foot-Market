@@ -2,6 +2,8 @@ package com.aptech.foodmarket.food_market.service.ImplService;
 
 import com.aptech.foodmarket.food_market.EntityNotFoundException;
 import com.aptech.foodmarket.food_market.builder.ItemVOBuilder;
+import com.aptech.foodmarket.food_market.builder.OrderItemVOBuilder;
+import com.aptech.foodmarket.food_market.builder.OrderVOBuilder;
 import com.aptech.foodmarket.food_market.builder.PromotionItemVOBuilder;
 import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.repository.ItemRepository;
@@ -54,4 +56,12 @@ public class OrderItemServiceImpl implements OrderItemService{
         }
         return orderItemVOS;
     }
+    @Override
+    public OrderItemVO deleteItem(int id) {
+        OrderItem orderItem = orderItemRepository.findOne(id);
+        OrderItemVO orderItemVO = this.convertVO(orderItem);
+        orderItemRepository.delete(id);
+        return orderItemVO;
+    }
+
 }

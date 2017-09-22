@@ -1,12 +1,9 @@
 package com.aptech.foodmarket.food_market.service.ImplService;
 
-import com.aptech.foodmarket.food_market.builder.PromotionItemVOBuilder;
 import com.aptech.foodmarket.food_market.builder.PromotionVOBuilder;
 import com.aptech.foodmarket.food_market.model.Promotion;
 import com.aptech.foodmarket.food_market.model.PromotionItem;
-import com.aptech.foodmarket.food_market.repository.PromotionItemRepository;
 import com.aptech.foodmarket.food_market.repository.PromotionRepository;
-import com.aptech.foodmarket.food_market.service.PromotionItemService;
 import com.aptech.foodmarket.food_market.service.PromotionService;
 import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
 import com.aptech.foodmarket.food_market.vo.PromotionVO;
@@ -86,7 +83,13 @@ public class PromotionServiceImpl implements PromotionService {
         });
         return promotionVOS;
     }
-
+    @Override
+    public PromotionVO deleteItem(int id) {
+        Promotion promotion = promotionRepository.findOne(id);
+        PromotionVO promotionVO = this.convertVO(promotion);
+        promotionRepository.delete(id);
+        return promotionVO;
+    }
     public PromotionVO convertVO(Promotion promotion) {
         List<PromotionItemVO> promotionItemVOS = new ArrayList<>();
         if (promotion.getPromotionItems() != null) {

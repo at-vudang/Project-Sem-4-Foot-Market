@@ -1,12 +1,9 @@
 package com.aptech.foodmarket.food_market.service.ImplService;
 
-import com.aptech.foodmarket.food_market.builder.CategoryVOBuilder;
 import com.aptech.foodmarket.food_market.builder.PromotionItemVOBuilder;
-import com.aptech.foodmarket.food_market.builder.PromotionVOBuilder;
 import com.aptech.foodmarket.food_market.model.PromotionItem;
 import com.aptech.foodmarket.food_market.repository.PromotionItemRepository;
 import com.aptech.foodmarket.food_market.service.PromotionItemService;
-import com.aptech.foodmarket.food_market.vo.CategoryVO;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +41,12 @@ public class PromotionItemServiceImpl implements PromotionItemService {
         }
         return promotionItemVOS;
     }
-
+    public PromotionItemVO deleteItem(int id) {
+        PromotionItem promotionItem = promotionItemRepository.findOne(id);
+        PromotionItemVO promotionItemVO = this.convertVO(promotionItem);
+        promotionItemRepository.delete(id);
+        return promotionItemVO;
+    }
     public PromotionItemVO convertVO(PromotionItem promotionItem) {
         PromotionItemVO promotionItemVO = PromotionItemVOBuilder.aPromotionItemVO()
                 .withPercent(promotionItem.getPercent())

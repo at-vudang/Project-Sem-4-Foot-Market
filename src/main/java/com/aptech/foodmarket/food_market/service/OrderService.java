@@ -12,4 +12,7 @@ import java.util.List;
 public interface OrderService {
     public OrderVO createOrder(OrderVO order);
     public Page<OrderVO> getOrderByUser(User user, int page, int size);
+    public Page<OrderVO> getOrderByStatus(byte status, int page, int size);
+    OrderVO deleteItem(int id);
+
 }

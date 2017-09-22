@@ -138,4 +138,9 @@ public class UserController {
                                @RequestParam String sort) {
         return userService.getUserByAuthority(id, page, size, sort);
     }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/changePassword/{id}", params = {"newPassword"})
+    public ResponseEntity<UserVO> updateUser( @PathVariable Integer id, @RequestParam String newPassword) {
+        return new ResponseEntity<UserVO>(userService.updatePassword(id, newPassword), HttpStatus.OK);
+    }
 }

@@ -3,14 +3,10 @@ package com.aptech.foodmarket.food_market.vo;
 import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.model.Promotion;
 import com.aptech.foodmarket.food_market.model.PromotionItem;
-
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
 import java.util.Date;
 import java.util.List;
 
 public class PromotionVO {
-
     private Integer id;
     private String title;
     private Date fromAt;

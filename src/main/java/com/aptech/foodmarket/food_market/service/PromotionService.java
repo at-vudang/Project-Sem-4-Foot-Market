@@ -13,4 +13,5 @@ public interface PromotionService {
     PromotionVO update(Promotion promotion);
     Page<PromotionVO> getAll(int page, int size, String sort);
     Page<PromotionVO> getByDate(Date date, int page, int size, String sort);
+    PromotionVO deleteItem(int id);
 }

@@ -189,6 +189,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserVO updatePassword(int id, String newPassword) {
+        User user = userRepository.findOne(id);
+        if (user != null) {
+            user.setPassword(newPassword);
+            user = userRepository.save(user);
+            return convertVO(user);
+        }
+        return null;
+    }
     public UserVO getUserById(Integer id) {
         return convertVO(userRepository.findOne(id));
     }

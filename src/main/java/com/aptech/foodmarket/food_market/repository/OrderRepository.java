@@ -11,4 +11,6 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order,Integer>{
         Page<Order> findAllByUser(User user, Pageable pageable);
+
+        Page<Order> findAllByStatus(byte status, Pageable pageable);
 }

@@ -1,5 +1,6 @@
 package com.aptech.foodmarket.food_market.model;
 
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -10,6 +11,8 @@ import java.util.List;
 @Entity
 @Where(clause = "is_active")
 @Table(name = "categories")
+@SQLDelete(sql="UPDATE categories SET is_active = 0 WHERE id = ?")
+
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

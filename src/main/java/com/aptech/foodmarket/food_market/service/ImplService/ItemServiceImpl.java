@@ -14,10 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -33,10 +30,12 @@ public class ItemServiceImpl implements ItemService {
     private SupplierRepository supplierRepository;
     @Autowired
     private UnitRepository unitRepository;
-
+    @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private ImageServiceImpl imageService;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
 
     public List<ItemVO> defaultJson(List<Item> items) {
@@ -349,6 +348,29 @@ public class ItemServiceImpl implements ItemService {
             }
         });
         return itemVOS;
+    }
+
+    @Override
+    public Page<ItemVO> getItemByStatus(int status, int page, int size) {
+        Page<Item> items = itemRepository.findAllByStatus(status, new PageRequest(page,size));
+        if( items != null) {
+            Page<ItemVO> itemVOS = items.map(new Converter<Item, ItemVO>() {
+                @Override
+                public ItemVO convert(Item item) {
+                    return convertVO(item);
+                }
+            });
+            return itemVOS;
+        }
+        return null;
+    }
+
+    @Override
+    public ItemVO deleteItem(int id) {
+        Item item = itemRepository.findOne(id);
+        ItemVO itemVO = this.convertVO(item);
+        itemRepository.delete(id);
+        return itemVO;
     }
 }
 

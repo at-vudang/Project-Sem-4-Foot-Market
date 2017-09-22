@@ -17,4 +17,6 @@ public interface CategoryService {
     public Page<ItemVO> getItems(Integer id, int page, int size, String sort);
     public Page<ItemVO> getItems(Integer id, int page, int size);
     public Category create(Category categories);
+    CategoryVO deleteItem(int id);
+
 }
