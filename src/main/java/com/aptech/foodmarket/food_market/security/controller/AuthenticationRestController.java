@@ -59,6 +59,7 @@ public class AuthenticationRestController {
                         authenticationRequest.getPassword()
                 )
         );
+        if (authentication == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Reload password post-security so we can generate token
