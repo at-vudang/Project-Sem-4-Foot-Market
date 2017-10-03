@@ -40,6 +40,7 @@ public class OrderItemServiceImpl implements OrderItemService{
         orderItemVO.setId(orderItem.getId());
         orderItemVO.setQuantityCart(orderItem.getQuantity());
         orderItemVO.setPriceOffical(orderItem.getPriceOffical());
+        orderItemVO.setCreateAt(orderItem.getCreatedAt());
         ItemVO itemVO = new ItemVO();
         itemVO = itemService.convertVO(orderItem.getItem());
         orderItemVO.setItemVO(itemVO);

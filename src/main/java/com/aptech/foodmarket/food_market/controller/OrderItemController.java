@@ -61,6 +61,11 @@ public class OrderItemController {
         }
         return new ArrayList<>();
     }
+    @RequestMapping("/admin/getItemByOrder/{id}")
+    @ResponseBody
+    public List<OrderItemVO> getItemByOrderAdmin(@PathVariable Integer id, HttpServletRequest request)  throws EntityNotFoundException {
+            return orderItemService.getItemByOrder(id);
+    }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{id}")
     public void deleteItem(@PathVariable Integer id) {

@@ -33,7 +33,7 @@ public class OrderController {
         return "hello";
     }
     @RequestMapping(method = RequestMethod.POST, value = "/create")
-    public ResponseEntity<OrderVO> createOrder(@RequestBody OrderVO orderVO) {
+    public ResponseEntity<OrderVO> createOrder(@RequestBody OrderVO orderVO) throws Exception {
         return new ResponseEntity<OrderVO>(orderService.createOrder(orderVO), HttpStatus.OK);
     }
     @RequestMapping(method = RequestMethod.POST, value = "/getUrl")
@@ -55,19 +55,33 @@ public class OrderController {
     @ResponseBody
     public Page<OrderVO> getOrderByUser(@PathVariable Integer id,
                                @RequestParam int page,
-                               @RequestParam int size) {
+                               @RequestParam int size,
+                                @RequestParam(value = "sort", required=false) String sort) {
         User user = userRepository.findOne(id);
-        return orderService.getOrderByUser(user, page, size);
+        return orderService.getOrderByUser(user, page, size, sort);
+    }
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public OrderVO getOrderById(@PathVariable Integer id) {
+        return orderService.getByID(id);
     }
     @RequestMapping(value = "/getOrderByStatus", params = {"status", "page", "size" })
     @ResponseBody
     public Page<OrderVO> getOrderByStatus(@RequestParam byte status,
                                         @RequestParam int page,
-                                        @RequestParam int size) {
-        return orderService.getOrderByStatus(status, page, size);
+                                        @RequestParam int size,
+                                          @RequestParam(value = "sort", required=false) String sort) {
+        return orderService.getOrderByStatus(status, page, size, sort);
     }
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{id}")
-    public void deleteItem(@PathVariable Integer id) {
-        orderService.deleteItem(id);
+    @ResponseBody
+    public OrderVO deleteItem(@PathVariable Integer id) {
+        return orderService.deleteItem(id);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/{id}/status/{status}")
+    @ResponseBody
+    public OrderVO updateStatus(@PathVariable Integer id,@PathVariable Byte status) {
+       return orderService.updateStatus(id,status);
     }
 }

@@ -23,10 +23,13 @@ public class PromotionItemServiceImpl implements PromotionItemService {
     public PromotionItemVO getPromotionItemByPromotionAndItem(Integer promotionId, Integer itemId) {
         PromotionItem promotionItem = promotionItemRepository.
                 findByPromotionIdAndItemId(promotionId, itemId);
-        PromotionItemVO promotionItemVO = PromotionItemVOBuilder.aPromotionItemVO()
-                .withId(promotionItem.getId())
-                .withPercent(promotionItem.getPercent())
-                .build();
+        PromotionItemVO promotionItemVO = new PromotionItemVO();
+        if (promotionItem != null) {
+             promotionItemVO = PromotionItemVOBuilder.aPromotionItemVO()
+                    .withId(promotionItem.getId())
+                    .withPercent(promotionItem.getPercent())
+                    .build();
+        }
         return promotionItemVO;
     }
 

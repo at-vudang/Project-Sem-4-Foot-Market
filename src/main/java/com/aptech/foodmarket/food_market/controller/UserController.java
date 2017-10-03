@@ -95,7 +95,7 @@ public class UserController {
 //    }
 
     // Private fields
-
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.POST, value = "/createUser")
     public ResponseEntity<UserVO> createUser(@RequestBody UserVO userVO) {
         return new ResponseEntity<UserVO>(userService.createUser(userVO), HttpStatus.OK);
@@ -107,7 +107,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/updateByAdmin")
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<UserVO> updateUserByAdmin(@RequestBody UserVO userVO) {
         return new ResponseEntity<UserVO>(userService.updateUserByAdmin(userVO), HttpStatus.OK);
     }
