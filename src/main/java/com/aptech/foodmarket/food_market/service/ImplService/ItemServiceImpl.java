@@ -1,26 +1,22 @@
 package com.aptech.foodmarket.food_market.service.ImplService;
 
-import com.aptech.foodmarket.food_market.builder.ItemVOBuilder;
-import com.aptech.foodmarket.food_market.builder.PromotionItemVOBuilder;
-import com.aptech.foodmarket.food_market.builder.SupplierVOBuilder;
-import com.aptech.foodmarket.food_market.builder.UnitVOBuilder;
+import com.aptech.foodmarket.food_market.EntityNotFoundException;
+import com.aptech.foodmarket.food_market.builder.*;
 import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.service.ItemService;
-import com.aptech.foodmarket.food_market.vo.CategoryVO;
+import com.aptech.foodmarket.food_market.vo.*;
 import com.aptech.foodmarket.food_market.repository.*;
-import com.aptech.foodmarket.food_market.vo.ItemVO;
-import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
-import com.aptech.foodmarket.food_market.vo.SupplierVO;
-import com.aptech.foodmarket.food_market.vo.UnitVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -30,6 +26,19 @@ public class ItemServiceImpl implements ItemService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private SupplierRepository supplierRepository;
+    @Autowired
+    private UnitRepository unitRepository;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private ImageServiceImpl imageService;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
 
     public List<ItemVO> defaultJson(List<Item> items) {
         List<ItemVO> itemVOS = new ArrayList<>();
@@ -77,6 +86,28 @@ public class ItemServiceImpl implements ItemService {
                     .withPercent(promotionItem.getPercent()).build();
             promotionItemVOS.add(promotionItemVO);
         }
+        Set<CategoryVO> categoryVOSet = new HashSet<>();
+        for(Category category: item.getCategories()){
+            CategoryVO categoryVO = CategoryVOBuilder.aCategoryVO()
+                    .withId(category.getId())
+                    .withLevelCategory(category.getLevelCategory())
+                    .withParentId(category.getParentId())
+                    .withDescription(category.getDescription())
+                    .withName(category.getName())
+                    .build();
+            categoryVOSet.add(categoryVO);
+        }
+        UnitVO unitVO = UnitVOBuilder.anUnitVO().withId(item.getUnit().getId())
+                .withName(item.getUnit().getName())
+                .withSyntax(item.getUnit().getSyntax())
+                .build();
+        List<ImageItemVO> imageItemVOS = new ArrayList<>();
+        for (ImageItem imageItem: item.getImageItems()) {
+            ImageItemVO imageItemVO = new ImageItemVO();
+            imageItemVO.setId(imageItem.getId());
+            imageItemVO.setImage(imageItem.getImage());
+            imageItemVOS.add(imageItemVO);
+        }
         ItemVO itemVO = ItemVOBuilder.anItemVO().withId(item.getId())
                 .withName(item.getName())
                 .withPrice(item.getPrice())
@@ -84,6 +115,9 @@ public class ItemServiceImpl implements ItemService {
                 .withDescription(item.getDescription())
                 .withQuantity(item.getQuantity())
                 .withPromotions(promotionItemVOS)
+                .withCreatedAt(item.getCreatedAt())
+                .withCategory(categoryVOSet)
+                .withImageItems(imageItemVOS).withUnit(unitVO)
                 .build();
         return itemVO;
     }
@@ -123,22 +157,65 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemVO> getItemPromotion(int quantity) {
         return this.defaultJson(itemRepository.findAllByOrderByPromotionItemsDesc()).subList(0,quantity);
     }
+
     @Override
     public List<ItemVO> getItemTool(int quantity) {
         Category category = new Category();
         category = categoryRepository.findOne(44);
-        return this.defaultJson(itemRepository.findAllByCategories(category)).subList(0,quantity);
+        return this.defaultJson(itemRepository.findAllByCategoriesIsContaining(category)).subList(0,quantity);
     }
 
     @Override
-    public List<ItemVO> search(String key) {
-        return this.defaultJson(itemRepository.search(key));
+    public Page<ItemVO> search(String key,int page, int size) {
+        Page<Item> items = itemRepository.search(key, new PageRequest(page, size));
+        ItemServiceImpl itemService = new ItemServiceImpl();
+        Page<ItemVO> itemsVOs = items.map(new Converter<Item, ItemVO>() {
+            @Override
+            public ItemVO convert(Item entity) {
+                return itemService.convertVO(entity);
+            }
+        });
+        return itemsVOs;
     }
 
     @Override
     public List<ItemVO> searchWithCategory(int cate_id, String key) {
         return this.defaultJson(itemRepository.searchWithCategory(cate_id, key));
     }
+
+    @Override
+    public List<ItemVO> searchWithSupplierId(Integer id, String key) {
+        List<Item> items = itemRepository.findByNameLikeAndSupplier_Id('%'+key+'%',id);
+        List<ItemVO> itemVOS = new ArrayList<>();
+        for (Item item: items){
+            itemVOS.add(convertVO(item));
+        }
+        return itemVOS;
+    }
+    //    @Override
+//    public ItemVO create(ItemVO itemVO) {
+//        Item item = new Item();
+//        item.setName(itemVO.getName());
+//        item.setAvatar(itemVO.getAvatar());
+//        item.setDescription(itemVO.getDescription());
+//        item.setPrice(itemVO.getPrice());
+//        item.setQuantity(itemVO.getQuantity());
+//        item.setStatus(true);
+//        item.setUnit(unitRepository.findOne(itemVO.getUnit().getId()));
+//        item.setActive(true);
+//        List<Category> list =itemVO.getCategory();
+//        item.setCategories(list);
+//        item.setSupplier(supplierRepository.findOne(itemVO.getId()));
+//        item = itemRepository.save(item);
+//        for (ImageItem imageItem:itemVO.getImageItems()) {
+//            ImageItem imageItem1 = new ImageItem();
+//            imageItem1.setItem(item);
+//            imageItem1.setImage(imageItem.getImage());
+//            imageItem1.setActive(true);
+//            imageRepository.save(imageItem1);
+//        }
+//        return this.convertVO(item);
+//    }
 
     @Override
     public List<ItemVO> getItemNew(int quantity) {
@@ -153,8 +230,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Page<ItemVO> findPaginated(int page, int size) {
-        Page<Item> items = itemRepository.findAll(new PageRequest(page, size));
+    public Page<ItemVO> findPaginated(int page, int size, String sort) {
+        String direction = sort.substring(0,1);
+        String keySort = sort.substring(1,sort.length());
+        Page<Item> items = itemRepository.findAll(new PageRequest(page, size,
+                direction.equals("-") ? Sort.Direction.DESC : Sort.Direction.ASC,
+                keySort));
         Page<ItemVO> itemsVOs = items.map(new Converter<Item, ItemVO>() {
             @Override
             public ItemVO convert(Item entity) {
@@ -186,14 +267,11 @@ public class ItemServiceImpl implements ItemService {
         newItem = itemRepository.save(item);
         return newItem;
     }
-    @Autowired
-    private UserRepository userRepository;
+
 
     @Autowired
-    private SupplierRepository supplierRepository;
+    private ImageRepository imageRepository;
 
-    @Autowired
-    private UnitRepository unitRepository;
 
     @Override
     public void init() {
@@ -225,10 +303,91 @@ public class ItemServiceImpl implements ItemService {
 
     }
     @Override
-    public List<CategoryVO> getCategory(Integer id){
+    public Set<CategoryVO> getCategory(Integer id){
         Item item = itemRepository.findOne(id);
         CategoryServiceImpl categoryService = new CategoryServiceImpl();
         return categoryService.defaultJson(item.getCategories());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public ItemVO createItem(Item item) {
+        item.setActive(true);
+        item = itemRepository.save(item);
+        for (ImageItem imageItem: item.getImageItems()
+             ) {
+            ImageItem newImageItem = new ImageItem();
+            newImageItem.setItem(item);
+            newImageItem.setImage("/" + imageItem.getImage());
+            newImageItem.setActive(true);
+            imageRepository.save(newImageItem);
+        }
+        item = itemRepository.findOne(item.getId());
+        return convertVO(item);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public ItemVO updateItem(Item item) {
+        Item itemUpdate = itemRepository.findOne(item.getId());
+        itemUpdate.setAvatar(item.getAvatar());
+        itemUpdate.setName(item.getName());
+        itemUpdate.setUnit(item.getUnit());
+        itemUpdate.setPrice(item.getPrice());
+        itemUpdate.setQuantity(item.getQuantity());
+        itemUpdate.setDescription(item.getDescription());
+        itemUpdate.setCategories(item.getCategories());
+        itemRepository.save(itemUpdate);
+        List<ImageItem> imageItems = itemUpdate.getImageItems();
+        for (ImageItem imageItem:imageItems
+             ) {
+            imageRepository.delete(imageItem);
+        }
+        for (ImageItem imageItem: item.getImageItems()
+                ) {
+            ImageItem newImageItem = new ImageItem();
+            newImageItem.setItem(item);
+            newImageItem.setImage("/" + imageItem.getImage());
+            newImageItem.setActive(true);
+            imageRepository.save(newImageItem);
+        }
+        item = itemRepository.findOne(item.getId());
+        return convertVO(item);
+    }
+
+    @Override
+    public Page<ItemVO> getItemBySuplier(Supplier supplier, int page, int size) {
+        Page<Item> items = itemRepository.findAllBySupplier(supplier, new PageRequest(page, size));
+        Page<ItemVO> itemVOS = items.map(new Converter<Item, ItemVO>() {
+            @Override
+            public ItemVO convert(Item item) {
+                return convertVO(item);
+            }
+        });
+        return itemVOS;
+    }
+
+    @Override
+    public Page<ItemVO> getItemByStatus(int status, int page, int size) {
+        Page<Item> items = itemRepository.findAllByStatus(status, new PageRequest(page,size));
+        if( items != null) {
+            Page<ItemVO> itemVOS = items.map(new Converter<Item, ItemVO>() {
+                @Override
+                public ItemVO convert(Item item) {
+                    return convertVO(item);
+                }
+            });
+            return itemVOS;
+        }
+        return null;
+    }
+
+    @Override
+    public ItemVO deleteItem(int id) {
+        Item item = itemRepository.findOne(id);
+        ItemVO itemVO = this.convertVO(item);
+        itemRepository.delete(item);
+        return itemVO;
     }
 }
 

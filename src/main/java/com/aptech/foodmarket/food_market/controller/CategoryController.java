@@ -13,13 +13,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Basic;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/category")
@@ -33,7 +31,7 @@ public class CategoryController {
 
     @RequestMapping("/level/{level}")
     @ResponseBody
-    public List<CategoryVO> getCategoriesByLevel(@PathVariable Integer level) {
+    public Set<CategoryVO> getCategoriesByLevel(@PathVariable Integer level) {
         return categoryService.getCategoriesByLevel(level);
     }
 
@@ -42,12 +40,14 @@ public class CategoryController {
     public CategoryVO getCategoriesById(@PathVariable Integer id) {
         return categoryService.getCategoryById(id);
     }
-    @RequestMapping(value = "/items/{id}", params = { "page", "size" })
+    @RequestMapping(value = "/items/{id}")
     @ResponseBody
     public Page<ItemVO> getItemsById(@PathVariable Integer id,
                                      @RequestParam("page") int page,
-                                     @RequestParam("size") int size) {
-        Page<ItemVO> resultPage = categoryService.getItems(id,page, size);
+                                     @RequestParam("size") int size,
+                                     @RequestParam(value = "sort", required=false) String sort) {
+
+        Page<ItemVO> resultPage = categoryService.getItems(id,page, size, sort);
         if (page > resultPage.getTotalPages()) {
             new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -56,8 +56,13 @@ public class CategoryController {
 
     @RequestMapping("/parents/{parentID}")
     @ResponseBody
-    public List<CategoryVO> getCategoriesByParent(@PathVariable Integer parentID) {
+    public Set<CategoryVO> getCategoriesByParent(@PathVariable Integer parentID) {
         return categoryService.getCategoriesByParent(parentID);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{id}")
+    public void deleteItem(@PathVariable Integer id) {
+        categoryService.deleteItem(id);
     }
 
 }

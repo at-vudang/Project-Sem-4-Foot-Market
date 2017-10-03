@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.repository.CategoryRepository;
@@ -36,7 +37,7 @@ public class BasicWebCrawler {
     public BasicWebCrawler() {
         links = new HashSet<String>();
     }
-    public void getItems(String url, List<Category> categories) {
+    public void getItems(String url, Set<Category> categories) {
         List<Item> items = new ArrayList<>();
         try {
             Document document = Jsoup.connect(url).get();
@@ -44,7 +45,8 @@ public class BasicWebCrawler {
             for (Element el: itemElements
                  ) {
                 try {
-                    String urlImage = el.select(".post-thumb img").attr("data-src");
+                    String urlImage = el.select(".post-thumb img").attr("data-other-src");
+                    System.out.println(urlImage);
                     String name = el.select(".post-title a").attr("title");
                     Float price = Float.parseFloat(el.select(".item-content .adr-coupon").attr("data-price"));
                     String urlDetail = el.select(".post-title a").attr("href");
@@ -74,7 +76,7 @@ public class BasicWebCrawler {
                         try {
                             String image = elImage.select("img").attr("src");
                             ImageItem imageItem = new ImageItem();
-                            imageItem.setImage(image);
+                            imageItem.setImage(FileUtil.getImages(image,"/home/vudang/Documents/Sem4/Images/Upload/"));
                             imageItem.setItem(item);
                             imageItem.setActive(true);
                             imageRepository.save(imageItem);
@@ -116,7 +118,7 @@ public class BasicWebCrawler {
                     catesOnPage = document.select(".widget-breadcrumb .active .list-unstyled li");
                     for (Element cateSub : catesOnPage) {
                         try {
-                            List<Category> categories = new ArrayList<>();
+                            Set<Category> categories = new HashSet<>();
 
                             category = new Category();
                             category.setName(cateSub.select("a").text());

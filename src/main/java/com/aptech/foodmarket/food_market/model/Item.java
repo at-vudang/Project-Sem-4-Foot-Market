@@ -1,17 +1,20 @@
 package com.aptech.foodmarket.food_market.model;
 
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Where(clause = "is_active")
 @Table(name = "items", uniqueConstraints={
         @UniqueConstraint(columnNames = {"name", "supplier_id"})
 })
+@SQLDelete(sql="UPDATE items SET is_active = 0 WHERE id = ?")
 public class Item {
     public Item() {
     }
@@ -47,6 +50,9 @@ public class Item {
     @NotNull
     private Integer quantity;
 
+    @Column(name = "expired_at")
+    private Date expiredAt;
+
     @Column(name = "created_at")
     @NotNull
     private Date createdAt;
@@ -66,6 +72,7 @@ public class Item {
     private Supplier supplier;
 
     @OneToMany(mappedBy = "item")
+    @Where(clause = "promotion_id in (select id from promotions a where a.end_at >= CURDATE())")
     private List<PromotionItem> promotionItems;
 
     @OneToMany(mappedBy = "item")
@@ -81,7 +88,7 @@ public class Item {
             inverseJoinColumns = @JoinColumn(name = "category_id",
                     referencedColumnName = "id"))
 
-    private List<Category> categories;
+    private Set<Category> categories;
 
     @PrePersist
     protected void onCreate() {
@@ -142,6 +149,14 @@ public class Item {
         this.quantity = quantity;
     }
 
+    public Date getExpiredAt() {
+        return expiredAt;
+    }
+
+    public void setExpiredAt(Date expiredAt) {
+        this.expiredAt = expiredAt;
+    }
+
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -198,11 +213,11 @@ public class Item {
         this.orderItems = orderItems;
     }
 
-    public List<Category> getCategories() {
+    public Set<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(Set<Category> categories) {
         this.categories = categories;
     }
 

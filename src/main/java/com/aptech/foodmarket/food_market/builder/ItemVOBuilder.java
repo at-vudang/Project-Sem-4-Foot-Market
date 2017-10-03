@@ -1,12 +1,10 @@
 package com.aptech.foodmarket.food_market.builder;
 
-import com.aptech.foodmarket.food_market.vo.ItemVO;
-import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
-import com.aptech.foodmarket.food_market.vo.SupplierVO;
-import com.aptech.foodmarket.food_market.vo.UnitVO;
+import com.aptech.foodmarket.food_market.vo.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public final class ItemVOBuilder {
     private Integer id;
@@ -23,10 +21,9 @@ public final class ItemVOBuilder {
     private SupplierVO supplier;
 
     private List<PromotionItemVO> promotions;
-//    private List<ImageItem> imageItems;
+    private List<ImageItemVO> imageItems;
 //    private List<OrderItem> orderItems;
-//    private List<Category> category;
-
+    private Set<CategoryVO> categories;
 
     private ItemVOBuilder() {
     }
@@ -100,20 +97,20 @@ public final class ItemVOBuilder {
         return this;
     }
 
-//    public ItemVOBuilder withImageItems(List<ImageItem> imageItems) {
-//        this.imageItems = imageItems;
-//        return this;
-//    }
+    public ItemVOBuilder withImageItems(List<ImageItemVO> imageItems) {
+        this.imageItems = imageItems;
+        return this;
+    }
 //
 //    public ItemVOBuilder withOrderItems(List<OrderItem> orderItems) {
 //        this.orderItems = orderItems;
 //        return this;
 //    }
-//
-//    public ItemVOBuilder withCategory(List<Category> category) {
-//        this.category = category;
-//        return this;
-//    }
+
+    public ItemVOBuilder withCategory(Set<CategoryVO> categories) {
+        this.categories = categories;
+        return this;
+    }
 
     public ItemVO build() {
         ItemVO itemVO = new ItemVO();
@@ -130,12 +127,12 @@ public final class ItemVOBuilder {
         itemVO.setActive(active);
         itemVO.setUnit(unit);
         itemVO.setSupplier(supplier);
-//        itemVO.setUnit(unit);
-//        itemVO.setSupplier(supplier);
+        itemVO.setUnit(unit);
+        itemVO.setSupplier(supplier);
         itemVO.setPromotions(promotions);
-//        itemVO.setImageItems(imageItems);
+        itemVO.setImageItems(imageItems);
 //        itemVO.setOrderItems(orderItems);
-      //  itemVO.setCategory(category);
+        itemVO.setCategory(categories);
         return itemVO;
     }
 }

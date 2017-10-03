@@ -1,11 +1,14 @@
 package com.aptech.foodmarket.food_market.security.controller;
 
+import com.aptech.foodmarket.food_market.model.User;
+import com.aptech.foodmarket.food_market.repository.UserRepository;
 import com.aptech.foodmarket.food_market.security.JwtAuthenticationRequest;
 import com.aptech.foodmarket.food_market.security.JwtTokenUtil;
 import com.aptech.foodmarket.food_market.security.JwtUser;
 import com.aptech.foodmarket.food_market.security.service.JwtAuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,22 +40,25 @@ public class AuthenticationRestController {
     private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private UserDetailsService userDetailsService;
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
-
+        User user = userRepository.findByEmail(authenticationRequest.getUsername());
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        authenticationRequest.getUsername(),
+                        user.getUsername(),
                         authenticationRequest.getPassword()
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Reload password post-security so we can generate token
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails, device);
         final Long expire = jwtTokenUtil.getExpiration();
         // Return the token
@@ -80,5 +86,29 @@ public class AuthenticationRestController {
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
         return user.getAuthorities();
     }
-
+    @RequestMapping(value = "${jwt.route.authentication.path}/admin", method = RequestMethod.POST)
+    public ResponseEntity<?> createAuthenticationTokenAdmin(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
+        User user = userRepository.findByEmail(authenticationRequest.getUsername());
+        // Reload password post-security so we can generate token
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+        for (GrantedAuthority grantedAuthority: userDetails.getAuthorities()
+             ) {
+            if (grantedAuthority.getAuthority().equals("ROLE_ADMIN") || grantedAuthority.getAuthority().equals("ROLE_SUPPLIER"))
+            {
+                // Perform the security
+                final Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                user.getUsername(),
+                                authenticationRequest.getPassword()
+                        )
+                );
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                final String token = jwtTokenUtil.generateToken(userDetails, device);
+                final Long expire = jwtTokenUtil.getExpiration();
+                // Return the token
+                return ResponseEntity.ok(new JwtAuthenticationResponse(token,expire));
+            }
+        }
+       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("UNAUTHORIZED");
+    }
 }

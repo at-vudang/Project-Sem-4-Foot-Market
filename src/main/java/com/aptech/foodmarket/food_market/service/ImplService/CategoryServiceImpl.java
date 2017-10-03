@@ -13,24 +13,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CategoryServiceImpl implements CategoryService{
     @Autowired
     private CategoryRepository categoryRepository;
     @Override
-    public List<CategoryVO> getCategoriesByLevel(Integer level) {
-        List<Category> categories = categoryRepository.findByLevelCategory(level);
+    public Set<CategoryVO> getCategoriesByLevel(Integer level) {
+        Set<Category> categories = categoryRepository.findByLevelCategory(level);
         return this.defaultJson(categories);
     }
 
-    public List<CategoryVO> defaultJson(List<Category> categories) {
+    public Set<CategoryVO> defaultJson(Set<Category> categories) {
 
-        List<CategoryVO> categoryVOS = new ArrayList<>();
+        Set<CategoryVO> categoryVOS = new HashSet<>();
         categories.stream().forEach(item -> {
             categoryVOS.add(CategoryVOBuilder.aCategoryVO().withId(item.getId())
                     .withName(item.getName())
@@ -43,8 +46,8 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public List<CategoryVO> getCategoriesByParent(Integer parentID) {
-        List<Category> categories = categoryRepository.findByParentId(parentID);
+    public Set<CategoryVO> getCategoriesByParent(Integer parentID) {
+        Set<Category> categories = categoryRepository.findByParentId(parentID);
         return this.defaultJson(categories);
     }
 
@@ -66,7 +69,31 @@ public class CategoryServiceImpl implements CategoryService{
         Category category = categoryRepository.findOne(id);
         ItemServiceImpl itemService = new ItemServiceImpl();
         PageRequest pageRequest = new PageRequest(page,size);
-        Page<Item> items = itemRepository.findAllByCategories(category, new PageRequest(page, size));
+        Page<Item> items = itemRepository.findAllByCategoriesIsContaining(category, new PageRequest(page, size));
+        Page<ItemVO> itemsVOs = items.map(new Converter<Item, ItemVO>() {
+            @Override
+            public ItemVO convert(Item entity) {
+                return itemService.convertVO(entity);
+            }
+        });
+        return itemsVOs;
+    }
+
+    @Override
+    public Page<ItemVO> getItems(Integer id, int page, int size, String sort) {
+
+        Category category = categoryRepository.findOne(id);
+        ItemServiceImpl itemService = new ItemServiceImpl();
+        Page<Item> items;
+        if (sort != null && !sort.equals("") && (sort.charAt(0) == '+' || sort.charAt(0) == '-')) {
+            String direction = sort.substring(0,1);
+            String keySort = sort.substring(1,sort.length());
+            items = itemRepository.findAllByCategoriesIsContaining(category, new PageRequest(page, size,
+                    direction.equals("-") ? Sort.Direction.DESC : Sort.Direction.ASC,
+                    keySort));
+        } else {
+            items = itemRepository.findAllByCategoriesIsContaining(category, new PageRequest(page, size));
+        }
         Page<ItemVO> itemsVOs = items.map(new Converter<Item, ItemVO>() {
             @Override
             public ItemVO convert(Item entity) {
@@ -92,5 +119,23 @@ public class CategoryServiceImpl implements CategoryService{
             return null;
         }
 
+    }
+    @Override
+    public CategoryVO deleteItem(int id) {
+        Category cate = categoryRepository.findOne(id);
+        CategoryVO categoryVO = this.convertVO(cate);
+        categoryRepository.delete(id);
+        return categoryVO;
+    }
+
+    public CategoryVO convertVO(Category category) {
+        CategoryVO categoryVO = CategoryVOBuilder.aCategoryVO()
+                .withId(category.getId())
+                .withLevelCategory(category.getLevelCategory())
+                .withParentId(category.getParentId())
+                .withDescription(category.getDescription())
+                .withName(category.getName())
+                .build();
+        return categoryVO;
     }
 }

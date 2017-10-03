@@ -1,5 +1,6 @@
 package com.aptech.foodmarket.food_market.model;
 
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.Date;
 @Entity
 @Where(clause = "is_active")
 @Table(name = "image_items")
+
 public class ImageItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

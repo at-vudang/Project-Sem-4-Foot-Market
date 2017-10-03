@@ -1,17 +1,21 @@
 package com.aptech.foodmarket.food_market.model;
 
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Where(clause = "is_active = 1")
 @Table(name = "orders")
-public class Order {
+@SQLDelete(sql="UPDATE orders SET is_active = 0 WHERE id = ?")
+
+public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

@@ -5,6 +5,7 @@ import com.aptech.foodmarket.food_market.model.*;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 public class ItemVO {
 
@@ -22,9 +23,9 @@ public class ItemVO {
     private UnitVO unit;
     private SupplierVO supplier;
     private List<PromotionItemVO> promotions;
-//    private List<ImageItem> imageItems;
+    private List<ImageItemVO> imageItems;
 //    private List<OrderItem> orderItems;
-//    private List<Category> category;
+    private Set<CategoryVO> categories;
 
     public Integer getId() {
         return id;
@@ -115,14 +116,6 @@ public class ItemVO {
         this.unit = unit;
     }
 
-    //    public UnitVO getUnit() {
-//        return unit;
-//    }
-//
-//    public void setUnit(UnitVO unit) {
-//        this.unit = unit;
-//    }
-//
     public SupplierVO getSupplier() {
         return supplier;
     }
@@ -139,14 +132,15 @@ public class ItemVO {
         this.promotions = promotions;
     }
 
-//    public List<ImageItem> getImageItems() {
-//        return imageItems;
-//    }
+    public List<ImageItemVO> getImageItems() {
+        return imageItems;
+    }
+
+    public void setImageItems(List<ImageItemVO> imageItems) {
+        this.imageItems = imageItems;
+    }
 //
-//    public void setImageItems(List<ImageItem> imageItems) {
-//        this.imageItems = imageItems;
-//    }
-//
+
 //    public List<OrderItem> getOrderItems() {
 //        return orderItems;
 //    }
@@ -155,11 +149,11 @@ public class ItemVO {
 //        this.orderItems = orderItems;
 //    }
 
-//    public List<Category> getCategory() {
-//        return category;
-//    }
-//
-//    public void setCategory(List<Category> category) {
-//        this.category = category;
-//    }
+    public Set<CategoryVO> getCategory() {
+        return categories;
+    }
+
+    public void setCategory(Set<CategoryVO> category) {
+        this.categories = category;
+    }
 }
