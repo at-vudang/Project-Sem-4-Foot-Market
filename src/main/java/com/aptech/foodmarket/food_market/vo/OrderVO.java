@@ -17,11 +17,20 @@ public class OrderVO {
     private String phone;
     private String note;
     private Date transportedAt;
+    private Date createdAt;
     private Double total;
     private Integer userId;
     private Integer promotionId;
     private Integer shipId;
     private Byte status;
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public Byte getStatus() {
         return status;

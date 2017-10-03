@@ -55,7 +55,7 @@ public class ItemController {
                                @RequestParam("size") int size,
                                @RequestParam("sort") String sort,
                                @RequestParam(value = "category", required=false) String category
-                               ) {
+                               ) throws EntityNotFoundException {
         if (category == null) {
             Page<ItemVO> resultPage = itemService.findPaginated(page, size, sort);
             if (page > resultPage.getTotalPages()) {
@@ -73,56 +73,56 @@ public class ItemController {
 
     }
     @RequestMapping(method = RequestMethod.POST, value = "/getCart")
-    public ResponseEntity<?> getCart(@RequestBody List<Integer> itemIds) {
+    public ResponseEntity<?> getCart(@RequestBody List<Integer> itemIds) throws EntityNotFoundException {
         List<ItemVO> itemVOList = itemService.getCart(itemIds);
         return ResponseEntity.ok(itemVOList);
     }
 
     @RequestMapping("/getItemByName")
     @ResponseBody
-    public List<ItemVO> getItemByName(String name) {
+    public List<ItemVO> getItemByName(String name) throws EntityNotFoundException {
         return itemService.getItemByName(name);
     }
 
     @RequestMapping("/getItemByCate")
     @ResponseBody
-    public List<ItemVO> getItemByCate(int cate_id) {
+    public List<ItemVO> getItemByCate(int cate_id) throws EntityNotFoundException {
         return itemService.getItemByCategory(categoryRepository.findOne(cate_id));
     }
 
     @RequestMapping("/getItemById/{id}")
     @ResponseBody
-    public ItemVO getItemByID(@PathVariable Integer id) {
+    public ItemVO getItemByID(@PathVariable Integer id) throws EntityNotFoundException {
         return itemService.getItemById(id);
     }
 
     @RequestMapping("/getItemNew")
     @ResponseBody
-    public List<ItemVO> getItemNew(int quantity) {
+    public List<ItemVO> getItemNew(int quantity) throws EntityNotFoundException {
         return itemService.getItemNew(quantity);
     }
 
     @RequestMapping("/getItemPromotion")
     @ResponseBody
-    public List<ItemVO> getItemPromotion(int quantity) {
+    public List<ItemVO> getItemPromotion(int quantity) throws EntityNotFoundException {
         return itemService.getItemPromotion(quantity);
     }
 
     @RequestMapping("/getItemTool")
     @ResponseBody
-    public List<ItemVO> getItemTool(int quantity) {
+    public List<ItemVO> getItemTool(int quantity) throws EntityNotFoundException {
         return itemService.getItemTool(quantity);
     }
 
     @RequestMapping("/getItemBest")
     @ResponseBody
-    public List<ItemVO> getItemBest() {
+    public List<ItemVO> getItemBest() throws EntityNotFoundException {
         return itemService.getItemBestSeller(orderItemRepository.getIDBest());
     }
 
     @RequestMapping("/getCategory/{id}")
     @ResponseBody
-    public Set<CategoryVO> getCategories(@PathVariable Integer id) {
+    public Set<CategoryVO> getCategories(@PathVariable Integer id) throws EntityNotFoundException {
         return itemService.getCategory(id);
     }
 
@@ -130,24 +130,30 @@ public class ItemController {
     @ResponseBody
     public Page<ItemVO> search(@RequestParam String key,
                                @RequestParam int page,
-                               @RequestParam int size) {
+                               @RequestParam int size) throws EntityNotFoundException {
         return itemService.search(key, page, size);
+    }
+
+    @RequestMapping(value = "/search/supplier/{id}")
+    @ResponseBody
+    public List<ItemVO> searchItemBySupllierID(
+            @PathVariable Integer id, @RequestParam String key) throws EntityNotFoundException {
+        return itemService.searchWithSupplierId(id, key);
     }
 
     @RequestMapping("/searchWithCategory")
     @ResponseBody
-    public List<ItemVO> searchWithCategory(@RequestParam int id, @RequestParam String key) {
+    public List<ItemVO> searchWithCategory(@RequestParam int id, @RequestParam String key) throws EntityNotFoundException {
         return itemService.searchWithCategory(id,key);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/create")
-    public ResponseEntity<ItemVO> createItem(@RequestBody Item item) {
-//        System.out.println(item.getCategories());
+    public ResponseEntity<ItemVO> createItem(@RequestBody Item item) throws EntityNotFoundException {
         return new ResponseEntity<ItemVO>(itemService.createItem(item), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/update")
-    public ResponseEntity<ItemVO> updateItem(@RequestBody Item item) {
+    public ResponseEntity<ItemVO> updateItem(@RequestBody Item item) throws EntityNotFoundException {
         System.out.println(item.getCategories());
         return new ResponseEntity<ItemVO>(itemService.updateItem(item), HttpStatus.OK);
     }
@@ -156,7 +162,7 @@ public class ItemController {
     @ResponseBody
     public Page<ItemVO> getgetItemBySupplier(@PathVariable Integer id,
                                              @RequestParam int page,
-                                             @RequestParam int size) {
+                                             @RequestParam int size) throws EntityNotFoundException {
         Supplier supplier = supplierRepository.findOne(id);
         if (supplier != null) {
             return itemService.getItemBySuplier(supplier, page, size);
@@ -165,15 +171,15 @@ public class ItemController {
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{id}")
-    public void deleteItem(@PathVariable Integer id) {
-        itemService.deleteItem(id);
+    public ItemVO deleteItem(@PathVariable Integer id) {
+        return itemService.deleteItem(id);
     }
 
     @RequestMapping(value = "/getItemByStatus", params = {"status", "page", "size"})
     @ResponseBody
     public Page<ItemVO> getgetItemBySupplier(@RequestParam int status,
                                                 @RequestParam int page,
-                                             @RequestParam int size) {
+                                             @RequestParam int size) throws EntityNotFoundException {
             return itemService.getItemByStatus(status, page, size);
     }
 }

@@ -12,6 +12,15 @@ public class OrderItemVO {
     private ItemVO itemVO;
     private Integer quantityCart;
     private Double priceOffical;
+    private Date createAt;
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
 
     public Integer getId() {
         return id;

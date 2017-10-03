@@ -10,6 +10,7 @@ import java.util.List;
 public final class PromotionVOBuilder {
     private Integer id;
     private String title;
+    private Date createdAt;
     private Date fromAt;
     private Date endAt;
     private Boolean active;
@@ -42,6 +43,11 @@ public final class PromotionVOBuilder {
         return this;
     }
 
+    public PromotionVOBuilder withCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
     public PromotionVOBuilder withActive(Boolean active) {
         this.active = active;
         return this;
@@ -59,6 +65,7 @@ public final class PromotionVOBuilder {
         promotionVO.setFromAt(fromAt);
         promotionVO.setEndAt(endAt);
         promotionVO.setActive(active);
+        promotionVO.setCreateAt(createdAt);
         promotionVO.setPromotionItems(promotionItems);
         return promotionVO;
     }

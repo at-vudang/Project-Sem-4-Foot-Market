@@ -20,7 +20,8 @@ public interface ItemRepository extends JpaRepository<Item,Integer>, PagingAndSo
     Item findById(Integer id);
 //    @Query("SELECT i FROM items i join categories c on c.id = i.category_id where i.name LIKE '%:key%' or i.name LIKE '%:key%'")
 //    List<Item> findByItemNameOrCategory();
-
+    List<Item> findByNameLikeAndSupplier_Id(String name, Integer id);
+    List<Item> findByNameIsLike(String name);
     List<Item> findAllByOrderByIdDesc();
 
     List<Item> findAllByOrderByPromotionItemsDesc();

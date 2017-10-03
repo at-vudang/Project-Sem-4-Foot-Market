@@ -10,6 +10,7 @@ import java.util.List;
 
 public interface PromotionService {
     PromotionVO create(Promotion promotion);
+    PromotionVO getById(Integer id);
     PromotionVO update(Promotion promotion);
     Page<PromotionVO> getAll(int page, int size, String sort);
     Page<PromotionVO> getByDate(Date date, int page, int size, String sort);

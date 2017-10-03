@@ -12,6 +12,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.*;
@@ -113,6 +115,7 @@ public class ItemServiceImpl implements ItemService {
                 .withDescription(item.getDescription())
                 .withQuantity(item.getQuantity())
                 .withPromotions(promotionItemVOS)
+                .withCreatedAt(item.getCreatedAt())
                 .withCategory(categoryVOSet)
                 .withImageItems(imageItemVOS).withUnit(unitVO)
                 .build();
@@ -180,7 +183,16 @@ public class ItemServiceImpl implements ItemService {
         return this.defaultJson(itemRepository.searchWithCategory(cate_id, key));
     }
 
-//    @Override
+    @Override
+    public List<ItemVO> searchWithSupplierId(Integer id, String key) {
+        List<Item> items = itemRepository.findByNameLikeAndSupplier_Id('%'+key+'%',id);
+        List<ItemVO> itemVOS = new ArrayList<>();
+        for (Item item: items){
+            itemVOS.add(convertVO(item));
+        }
+        return itemVOS;
+    }
+    //    @Override
 //    public ItemVO create(ItemVO itemVO) {
 //        Item item = new Item();
 //        item.setName(itemVO.getName());
@@ -298,6 +310,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ItemVO createItem(Item item) {
         item.setActive(true);
         item = itemRepository.save(item);
@@ -314,6 +327,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ItemVO updateItem(Item item) {
         Item itemUpdate = itemRepository.findOne(item.getId());
         itemUpdate.setAvatar(item.getAvatar());
@@ -325,7 +339,10 @@ public class ItemServiceImpl implements ItemService {
         itemUpdate.setCategories(item.getCategories());
         itemRepository.save(itemUpdate);
         List<ImageItem> imageItems = itemUpdate.getImageItems();
-        imageRepository.delete(imageItems);
+        for (ImageItem imageItem:imageItems
+             ) {
+            imageRepository.delete(imageItem);
+        }
         for (ImageItem imageItem: item.getImageItems()
                 ) {
             ImageItem newImageItem = new ImageItem();
@@ -369,7 +386,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemVO deleteItem(int id) {
         Item item = itemRepository.findOne(id);
         ItemVO itemVO = this.convertVO(item);
-        itemRepository.delete(id);
+        itemRepository.delete(item);
         return itemVO;
     }
 }

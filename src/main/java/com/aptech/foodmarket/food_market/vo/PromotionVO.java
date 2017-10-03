@@ -9,6 +9,7 @@ import java.util.List;
 public class PromotionVO {
     private Integer id;
     private String title;
+    private Date createAt;
     private Date fromAt;
     private Date endAt;
     private Boolean active;
@@ -44,6 +45,14 @@ public class PromotionVO {
 
     public void setEndAt(Date endAt) {
         this.endAt = endAt;
+    }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
     }
 
     public Boolean getActive() {
