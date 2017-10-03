@@ -5,6 +5,7 @@ import com.aptech.foodmarket.food_market.repository.UserRepository;
 import com.aptech.foodmarket.food_market.security.JwtAuthenticationRequest;
 import com.aptech.foodmarket.food_market.security.JwtTokenUtil;
 import com.aptech.foodmarket.food_market.security.JwtUser;
+import com.aptech.foodmarket.food_market.security.service.CustomAuthenticationProvider;
 import com.aptech.foodmarket.food_market.security.service.JwtAuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,8 +34,11 @@ public class AuthenticationRestController {
     @Value("${jwt.header}")
     private String tokenHeader;
 
+//    @Autowired
+//    private AuthenticationManager authenticationManager;
+
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private CustomAuthenticationProvider authenticationManager;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -47,18 +51,18 @@ public class AuthenticationRestController {
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
-        User user = userRepository.findByEmail(authenticationRequest.getUsername());
+//        User user = userRepository.findByEmail(authenticationRequest.getUsername());
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        user.getUsername(),
+                        authenticationRequest.getUsername(),
                         authenticationRequest.getPassword()
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Reload password post-security so we can generate token
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authentication.getPrincipal().toString());
         final String token = jwtTokenUtil.generateToken(userDetails, device);
         final Long expire = jwtTokenUtil.getExpiration();
         // Return the token

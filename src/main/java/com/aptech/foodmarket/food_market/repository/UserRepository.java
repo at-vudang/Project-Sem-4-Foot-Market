@@ -23,6 +23,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     User findByUsername(String username);
     @Query(value = "SELECT * FROM USERS WHERE email = ?1", nativeQuery = true)
     User findByEmailAddress(String emailAddress);
+    User findByEmailAndPassword(String emailAddress, String password);
     User findByEmail(String email);
     User findByOrders(Order order);
     Page<User> findAllByAuthorities(Authority authority, Pageable pageable);
