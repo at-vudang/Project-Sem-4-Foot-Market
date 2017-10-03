@@ -124,6 +124,12 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @RequestMapping(value = "/getUserByToken/{token}")
+    @ResponseBody
+    public UserVO getUserById(@PathVariable String user_token){
+        return userService.getDetailUser(user_token);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public UserVO deleteUser(@PathVariable Integer id){
