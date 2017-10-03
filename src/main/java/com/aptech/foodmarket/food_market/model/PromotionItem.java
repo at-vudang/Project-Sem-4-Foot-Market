@@ -7,10 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Where(clause = "is_active = 1")
 @Table(name = "promotion_items")
-@SQLDelete(sql="UPDATE promotion_ SET is_active = 0 WHERE id = ?")
-
 public class PromotionItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

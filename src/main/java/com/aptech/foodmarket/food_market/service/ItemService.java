@@ -43,6 +43,8 @@ public interface ItemService {
 
     List<ItemVO> searchWithCategory(int cate_id, String key);
 
+    List<ItemVO> searchWithSupplierId(Integer id,String key);
+
     ItemVO createItem(Item item);
     ItemVO updateItem(Item item);
 

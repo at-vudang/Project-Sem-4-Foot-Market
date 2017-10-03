@@ -14,6 +14,7 @@ public final class OrderVOBuilder {
     private String phone;
     private String note;
     private Date transportedAt;
+    private Date createdAt;
     private Integer userId;
     private Integer promotionId;
     private Integer shipId;
@@ -54,6 +55,11 @@ public final class OrderVOBuilder {
 
     public OrderVOBuilder withTransportedAt(Date transportedAt) {
         this.transportedAt = transportedAt;
+        return this;
+    }
+
+    public OrderVOBuilder withCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
         return this;
     }
 
@@ -99,6 +105,7 @@ public final class OrderVOBuilder {
         orderVO.setOrderItems(orderItems);
         orderVO.setTotal(total);
         orderVO.setStatus(status);
+        orderVO.setCreatedAt(createdAt);
         return orderVO;
     }
 }

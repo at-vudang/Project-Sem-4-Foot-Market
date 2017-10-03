@@ -9,7 +9,6 @@ import java.util.Date;
 @Entity
 @Where(clause = "is_active")
 @Table(name = "image_items")
-@SQLDelete(sql="UPDATE image_ SET is_active = 0 WHERE id = ?")
 
 public class ImageItem {
     @Id

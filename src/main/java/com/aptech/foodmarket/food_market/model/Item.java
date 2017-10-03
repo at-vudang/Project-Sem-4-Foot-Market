@@ -72,6 +72,7 @@ public class Item {
     private Supplier supplier;
 
     @OneToMany(mappedBy = "item")
+    @Where(clause = "promotion_id in (select id from promotions a where a.end_at >= CURDATE())")
     private List<PromotionItem> promotionItems;
 
     @OneToMany(mappedBy = "item")

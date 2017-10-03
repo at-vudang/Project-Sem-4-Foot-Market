@@ -85,7 +85,7 @@ public class CategoryServiceImpl implements CategoryService{
         Category category = categoryRepository.findOne(id);
         ItemServiceImpl itemService = new ItemServiceImpl();
         Page<Item> items;
-        if (sort != null && sort.equals("") && (sort.charAt(0) == '+' || sort.charAt(0) == '-')) {
+        if (sort != null && !sort.equals("") && (sort.charAt(0) == '+' || sort.charAt(0) == '-')) {
             String direction = sort.substring(0,1);
             String keySort = sort.substring(1,sort.length());
             items = itemRepository.findAllByCategoriesIsContaining(category, new PageRequest(page, size,
