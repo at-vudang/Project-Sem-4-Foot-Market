@@ -10,9 +10,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MyCommandLineRunner implements ApplicationRunner {
-
+    @Autowired
     private CategoryService categoryService;
+    @Autowired
     private ItemService itemService;
+    @Autowired
     private BasicWebCrawler basicWebCrawler;
 
     @Autowired

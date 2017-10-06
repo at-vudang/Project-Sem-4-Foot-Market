@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService{
              ) {
             orderItemVOS.add(orderItemService.convertVO(orderItem));
             if (orderItem.getPriceOffical() != null) {
-                total += orderItem.getPriceOffical();
+                total += orderItem.getPriceOffical() * orderItem.getQuantity();
             }
         }
         OrderVO orderVO = OrderVOBuilder.anOrderVO().withId(order.getId()).withAddress(order.getAddress())

@@ -14,7 +14,7 @@ public class SupplierVO {
     private Date createdAt;
     private Date editedAt;
     private Boolean active;
-    private User user;
+    private UserVO user;
     private List<Item> items;
 
     public Integer getId() {
@@ -57,11 +57,11 @@ public class SupplierVO {
         this.active = active;
     }
 
-    public User getUser() {
+    public UserVO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserVO user) {
         this.user = user;
     }
 
