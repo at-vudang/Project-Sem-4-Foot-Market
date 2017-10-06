@@ -119,12 +119,6 @@ public class UserServiceImpl implements UserService {
     }
 
     //    public User findByUserName(String username){
-//       return userRepository.findByUsername(username);
-//    }
-//    @Override
-//    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-//        User user =  userRepository.findByUsername(s);
-//        if(user == null) {
 //            throw new UsernameNotFoundException(String.format("The username %s doesn't exist", s));
 //        }
 //        List<GrantedAuthority> authorities = new ArrayList<>();
