@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
@@ -26,6 +29,8 @@ public class ItemServiceImpl implements ItemService {
     private CategoryRepository categoryRepository;
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private ItemStatisticRepository itemStatisticRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -249,6 +254,29 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemVO> getCart(List<Integer> itemIds) {
         List<ItemVO> itemVOS = this.defaultJson(itemRepository.findByIdIn(itemIds));
         return itemVOS;
+    }
+
+    @Override
+    public Page<ItemStatisticView> statisticBestSeller(int page, int size,String sort,
+                                                       String beginAt, String endAt) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date begin = null; Date end = null;
+        try {
+            begin = df.parse(beginAt);
+            end = df.parse(endAt);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Page<ItemStatisticView> items;
+        if (sort != null && !sort.equals("") && (sort.charAt(0) == ' ' || sort.charAt(0) == '-')) {
+            String direction = sort.substring(0,1);
+            String keySort = sort.substring(1,sort.length());
+            items = itemStatisticRepository.getItemStatistic(begin, end, new PageRequest(page,size,
+                    direction.equals("-") ? Sort.Direction.DESC : Sort.Direction.ASC, keySort));
+        } else {
+            items = itemStatisticRepository.getItemStatistic(new Date(),end,new PageRequest(page,size));
+        }
+        return items;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.aptech.foodmarket.food_market.builder;
 import com.aptech.foodmarket.food_market.model.Item;
 import com.aptech.foodmarket.food_market.model.User;
 import com.aptech.foodmarket.food_market.vo.SupplierVO;
+import com.aptech.foodmarket.food_market.vo.UserVO;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,7 @@ public final class SupplierVOBuilder {
     private Date createdAt;
     private Date editedAt;
     private Boolean active;
-    private User user;
+    private UserVO user;
     private List<Item> items;
 
     private SupplierVOBuilder() {
@@ -48,7 +49,7 @@ public final class SupplierVOBuilder {
         return this;
     }
 
-    public SupplierVOBuilder withUser(User user) {
+    public SupplierVOBuilder withUser(UserVO user) {
         this.user = user;
         return this;
     }

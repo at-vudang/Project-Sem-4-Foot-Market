@@ -73,6 +73,7 @@ public class ItemController {
 
     }
     @RequestMapping(method = RequestMethod.POST, value = "/getCart")
+    @ResponseBody
     public ResponseEntity<?> getCart(@RequestBody List<Integer> itemIds) throws EntityNotFoundException {
         List<ItemVO> itemVOList = itemService.getCart(itemIds);
         return ResponseEntity.ok(itemVOList);

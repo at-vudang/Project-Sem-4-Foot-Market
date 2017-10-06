@@ -46,4 +46,7 @@ public interface ItemRepository extends JpaRepository<Item,Integer>, PagingAndSo
     Page<Item> findAllBySupplier(Supplier supplier, Pageable pageable);
 
     Page<Item> findAllByStatus(int status, Pageable pageable);
+
+//    @Query(value="select from items where id  from (SELECT a.*, count(b.id) as sl FROM items a left join order_items b on a.id = b.item_id GROUP BY a.id) ORDER BY ?#{#pageable}" ,nativeQuery = true)
+//    Page<Item> getBestOrder(Pageable pageable);
 }
