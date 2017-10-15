@@ -101,7 +101,10 @@ public class UserServiceImpl implements UserService {
                 user.setBirthday(userVO.getBirthday());
                 user.setEmail(userVO.getEmail());
                 user.setGender(userVO.getGender());
-                user.setAvatar(userVO.getAvatar());
+                user.setPhone(userVO.getPhone());
+                if (userVO.getAvatar() != null){
+                    user.setAvatar(userVO.getAvatar());
+                }
                 return this.convertVO(userRepository.save(user));
             }
         }
@@ -113,7 +116,8 @@ public class UserServiceImpl implements UserService {
         String username = jwtTokenUtil.getUsernameFromToken(user_token);
         if (username != null) {
             User user = userRepository.findByUsername(username);
-            return this.convertVO(user);
+            UserVO userVO = convertVO(user);
+            return userVO;
         }
         return null;
     }
@@ -221,6 +225,7 @@ public class UserServiceImpl implements UserService {
                 .withGender(user.getGender())
                 .withAuthorities(authorityVOS)
                 .withFullName(user.getFullName())
+                .withPhone(user.getPhone())
                 .withOrder(orderVOS).build();
         return userVO;
     }

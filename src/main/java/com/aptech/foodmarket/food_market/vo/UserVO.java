@@ -15,6 +15,7 @@ public class UserVO {
     private String password;
     private String fullName;
     private String address;
+    private String phone;
     private Boolean gender = true;
     private Date birthday;
     private String avatar;
@@ -152,5 +153,13 @@ public class UserVO {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

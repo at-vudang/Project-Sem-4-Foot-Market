@@ -102,6 +102,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/update")
+    @ResponseBody
     public ResponseEntity<UserVO> updateUser(@RequestHeader(value="Authorization") String user_token, @RequestBody UserVO userVO) {
         return new ResponseEntity<UserVO>(userService.update(user_token, userVO), HttpStatus.OK);
     }
