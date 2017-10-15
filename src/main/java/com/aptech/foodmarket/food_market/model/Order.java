@@ -63,6 +63,9 @@ public class Order implements Serializable {
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
 
+    @OneToMany(mappedBy = "order")
+    private List<Payment> payments;
+
     @PrePersist
     protected void onCreate() {
         createdAt = new Date();

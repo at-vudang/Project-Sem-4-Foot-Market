@@ -17,6 +17,7 @@ public final class UserVOBuilder {
     private String password;
     private String fullName;
     private String address;
+    private String phone;
     private Boolean gender;
     private Date birthday;
     private String avatar;
@@ -61,6 +62,10 @@ public final class UserVOBuilder {
 
     public UserVOBuilder withAddress(String address) {
         this.address = address;
+        return this;
+    }
+    public UserVOBuilder withPhone(String phone) {
+        this.phone = phone;
         return this;
     }
 
@@ -130,6 +135,7 @@ public final class UserVOBuilder {
         userVO.setActive(active);
         userVO.setAuthorities(authorities);
         userVO.setOrders(orders);
+        userVO.setPhone(phone);
         return userVO;
     }
 }

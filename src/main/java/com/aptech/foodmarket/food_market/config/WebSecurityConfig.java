@@ -70,14 +70,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).permitAll()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/category/**").permitAll()
-                .antMatchers("/upload/**").permitAll()
-                .antMatchers("/item/**").permitAll()
-                .antMatchers("/order/**").permitAll()
-                .antMatchers("/orderItem/**").permitAll()
-                .antMatchers("/user/**").permitAll()
-                .antMatchers("/promotion/**").permitAll()
-                .antMatchers("/statistic/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/category/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/item/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/unit/**").permitAll()
                 .anyRequest().authenticated();
 

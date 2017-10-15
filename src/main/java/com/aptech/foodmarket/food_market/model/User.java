@@ -79,7 +79,8 @@ public class User implements Serializable{
 
     @Column(name="is_active")
     private Boolean active;
-
+    @Column(name="phone")
+    private String phone;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "USER_AUTHORITY",
@@ -242,6 +243,14 @@ public class User implements Serializable{
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
 
