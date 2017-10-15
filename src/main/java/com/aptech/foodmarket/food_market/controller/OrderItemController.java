@@ -56,7 +56,7 @@ public class OrderItemController {
         Order order = new Order();
         order.setId(id);
         User userOrder = userRepository.findByOrders(order);
-        if (userOrder.getId() == user.getId()) {
+        if (userOrder.getId() == user.getId() && userOrder != null) {
             return orderItemService.getItemByOrder(id);
         }
         return new ArrayList<>();
