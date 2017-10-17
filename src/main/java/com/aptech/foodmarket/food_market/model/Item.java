@@ -2,12 +2,17 @@ package com.aptech.foodmarket.food_market.model;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
 
 @Entity
 @Where(clause = "is_active")
@@ -21,6 +26,8 @@ public class Item {
     public Item(Integer id) {
         this.id = id;
     }
+    private static String hostname = "http://foodmarket.ddns.net:9000/Images/Upload";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -124,9 +131,8 @@ public class Item {
     public void setPrice(Float price) {
         this.price = price;
     }
-
     public String getAvatar() {
-        return avatar;
+        return  this.hostname + "/" + avatar;
     }
 
     public void setAvatar(String avatar) {

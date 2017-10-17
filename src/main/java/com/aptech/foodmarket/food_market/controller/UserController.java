@@ -94,7 +94,11 @@ public class UserController {
 //        return "User succesfully updated!";
 //    }
 
-    // Private fields
+    @RequestMapping(method = RequestMethod.POST, value = "/register")
+    public ResponseEntity<UserVO> register(@RequestBody UserVO userVO) {
+        return new ResponseEntity<UserVO>(userService.register(userVO), HttpStatus.OK);
+    }
+        // Private fields
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.POST, value = "/createUser")
     public ResponseEntity<UserVO> createUser(@RequestBody UserVO userVO) {

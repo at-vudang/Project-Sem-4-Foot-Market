@@ -1,7 +1,9 @@
 # config context path to "/" by setting an empty string
 server:
-  contextPath:
+  contextPath: /
+  hostname: http://127.0.1.1:8089
 
+hostname: http://127.0.1.1:8089
 # JACKSON
 spring:
   jackson:
