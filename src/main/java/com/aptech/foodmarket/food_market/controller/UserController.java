@@ -100,7 +100,10 @@ public class UserController {
     public ResponseEntity<UserVO> createUser(@RequestBody UserVO userVO) {
         return new ResponseEntity<UserVO>(userService.createUser(userVO), HttpStatus.OK);
     }
-
+    @RequestMapping(method = RequestMethod.POST, value = "/create")
+    public ResponseEntity<UserVO> create(@RequestBody UserVO userVO) {
+        return new ResponseEntity<UserVO>(userService.create(userVO), HttpStatus.OK);
+    }
     @RequestMapping(method = RequestMethod.PUT, value = "/update")
     @ResponseBody
     public ResponseEntity<UserVO> updateUser(@RequestHeader(value="Authorization") String user_token, @RequestBody UserVO userVO) {
