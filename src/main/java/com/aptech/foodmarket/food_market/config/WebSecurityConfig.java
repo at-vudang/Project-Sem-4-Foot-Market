@@ -70,9 +70,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).permitAll()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/user/register").permitAll()
                 .antMatchers(HttpMethod.GET,"/category/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/item/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/unit/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/payments").permitAll()
                 .anyRequest().authenticated();
 
         // Custom JWT based security filter
@@ -80,6 +82,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
         // disable page caching
-        httpSecurity.headers().cacheControl();
+        httpSecurity.headers().cacheControl();  
     }
 }

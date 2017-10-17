@@ -4,13 +4,16 @@ import com.aptech.foodmarket.food_market.config.PaypalPaymentIntent;
 import com.aptech.foodmarket.food_market.config.PaypalPaymentMethod;
 import com.aptech.foodmarket.food_market.repository.PaymentRepository;
 import com.aptech.foodmarket.food_market.service.ImplService.PaypalService;
+import com.aptech.foodmarket.food_market.service.PaymentService;
 import com.aptech.foodmarket.food_market.utils.URLUtils;
+import com.aptech.foodmarket.food_market.vo.PaymentVO;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,13 +29,18 @@ public class PaymentController {
 	private Logger log = LoggerFactory.getLogger(getClass());
 	@Autowired
 	private PaymentRepository paymentRepository;
+	@Autowired
+	private PaymentService paymentService;
 
 	@Autowired
 	private PaypalService paypalService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public String index(){
-		return "index";
+	@ResponseBody
+	public Page<PaymentVO> index(@RequestParam("page") int page,
+								 @RequestParam("size") int size,
+								 @RequestParam("sort") String sort) {
+		return paymentService.getAll(page,size,sort);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value = "/create")

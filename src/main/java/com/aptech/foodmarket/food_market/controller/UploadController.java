@@ -29,7 +29,6 @@ import java.util.Map;
 @RequestMapping("/upload")
 public class UploadController {
 
-    //Save the uploaded file to this folder
     private static String UPLOADED_FOLDER = "/home/vudang/Documents/Sem4/Images/";
 
     @RequestMapping(value = "/upload",
