@@ -78,12 +78,12 @@ public class UserServiceImpl implements UserService {
         user.setAvatar(userVO.getAvatar());
         user.setActive(true);
         Set<Authority> authorities = new HashSet<>();
-        for (AuthorityVO authorityVO:userVO.getAuthorities()
-                ) {
-            Authority authority = authorityRepository.findOne(authorityVO.getId());
-            authorities.add(authority);
-        }
-        user.setAuthorities(authorities);
+//        for (AuthorityVO authorityVO:userVO.getAuthorities()
+//                ) {
+//            Authority authority = authorityRepository.findOne(authorityVO.getId());
+//            authorities.add(authority);
+//        }
+//        user.setAuthorities(authorities);
         return convertVO(this.save(user));
     }
 
@@ -218,6 +218,16 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Override
+    public UserVO checkEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null){
+            return convertVO(user);
+        }
+        return null;
+    }
+
     public UserVO getUserById(Integer id) {
         return convertVO(userRepository.findOne(id));
     }

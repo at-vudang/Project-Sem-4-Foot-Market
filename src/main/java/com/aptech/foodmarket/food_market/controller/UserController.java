@@ -153,4 +153,10 @@ public class UserController {
     public ResponseEntity<UserVO> updateUser( @PathVariable Integer id, @RequestParam String newPassword) {
         return new ResponseEntity<UserVO>(userService.updatePassword(id, newPassword), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/checkEmail", params = {"email"})
+    @ResponseBody
+    public UserVO checkEmail(@RequestParam String email) {
+        return userService.checkEmail(email);
+    }
 }

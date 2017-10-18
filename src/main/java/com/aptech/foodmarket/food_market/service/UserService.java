@@ -16,4 +16,5 @@ public interface UserService {
     public UserVO delete(Integer id);
     public UserVO updateUserByAdmin(UserVO userVO);
     public UserVO updatePassword(int id, String newPassword);
+    public UserVO checkEmail(String email);
 }
