@@ -8,6 +8,7 @@ import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.w3c.dom.ls.LSException;
 
 import java.util.ArrayList;
@@ -67,11 +68,13 @@ public class PromotionItemServiceImpl implements PromotionItemService {
         return promotionItemVO;
     }
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public PromotionItemVO create(PromotionItem promotionItem) {
         return convertVO(promotionItemRepository.save(promotionItem));
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public PromotionItemVO update(PromotionItem promotionItem) {
         PromotionItem promotionItemUpdate;
         promotionItemUpdate = promotionItemRepository.findOne(promotionItem.getId());

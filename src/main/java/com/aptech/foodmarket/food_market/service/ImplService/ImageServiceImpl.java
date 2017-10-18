@@ -11,6 +11,7 @@ import com.aptech.foodmarket.food_market.vo.ImageItemVO;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class ImageServiceImpl implements ImageService {
     @Autowired
     ImageRepository imageRepository;
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ImageItemVO> getImageOfItem(int id) {
         List<ImageItemVO> imageItemVOS = new ArrayList<>();
         imageRepository.findAllByItem_Id(id).stream().forEach( imageItem -> {
@@ -34,6 +36,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ImageItemVO deleteItem(int id) {
         ImageItem imageItem = imageRepository.findOne(id);
         ImageItemVO imageItemVO = this.convertVO(imageItem);

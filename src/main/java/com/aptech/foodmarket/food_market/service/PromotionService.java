@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface PromotionService {
-    PromotionVO create(Promotion promotion);
+    PromotionVO create(Promotion promotion) throws Exception;
     PromotionVO getById(Integer id);
     PromotionVO update(Promotion promotion);
     Page<PromotionVO> getAll(int page, int size, String sort);
