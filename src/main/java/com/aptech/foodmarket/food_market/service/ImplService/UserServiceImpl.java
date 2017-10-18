@@ -64,6 +64,28 @@ public class UserServiceImpl implements UserService {
         user.setPassword(getPasswordEncoder().encode(user.getPassword()));
         return userRepository.save(user);
     }
+    @Override
+    public UserVO create(UserVO userVO) {
+        User user = new User();
+        user.setUsername(userVO.getUsername());
+        user.setPassword(userVO.getPassword());
+        user.setFullName(userVO.getFullName());
+        user.setAddress(userVO.getAddress());
+        user.setBirthday(userVO.getBirthday());
+        user.setCreditCard(userVO.getCreditCard());
+        user.setEmail(userVO.getEmail());
+        user.setGender(userVO.getGender());
+        user.setAvatar(userVO.getAvatar());
+        user.setActive(true);
+        Set<Authority> authorities = new HashSet<>();
+//        for (AuthorityVO authorityVO:userVO.getAuthorities()
+//                ) {
+//            Authority authority = authorityRepository.findOne(authorityVO.getId());
+//            authorities.add(authority);
+//        }
+//        user.setAuthorities(authorities);
+        return convertVO(this.save(user));
+    }
 
     @Override
     public UserVO register(UserVO userVO) {
@@ -216,6 +238,16 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    @Override
+    public UserVO checkEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null){
+            return convertVO(user);
+        }
+        return null;
+    }
+
     public UserVO getUserById(Integer id) {
         return convertVO(userRepository.findOne(id));
     }
