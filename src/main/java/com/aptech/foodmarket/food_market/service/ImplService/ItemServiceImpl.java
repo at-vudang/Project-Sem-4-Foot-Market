@@ -83,13 +83,16 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public ItemVO convertVO(Item item) {
+
         List<PromotionItemVO> promotionItemVOS = new ArrayList<>();
-        for (PromotionItem promotionItem: item.getPromotionItems()
-                ) {
-            PromotionItemVO promotionItemVO = PromotionItemVOBuilder.aPromotionItemVO()
-                    .withId(promotionItem.getId())
-                    .withPercent(promotionItem.getPercent()).build();
-            promotionItemVOS.add(promotionItemVO);
+        if (item.getPromotionItems() != null) {
+            for (PromotionItem promotionItem: item.getPromotionItems()
+                    ) {
+                PromotionItemVO promotionItemVO = PromotionItemVOBuilder.aPromotionItemVO()
+                        .withId(promotionItem.getId())
+                        .withPercent(promotionItem.getPercent()).build();
+                promotionItemVOS.add(promotionItemVO);
+            }
         }
         Set<CategoryVO> categoryVOSet = new HashSet<>();
         for(Category category: item.getCategories()){
@@ -107,11 +110,13 @@ public class ItemServiceImpl implements ItemService {
                 .withSyntax(item.getUnit().getSyntax())
                 .build();
         List<ImageItemVO> imageItemVOS = new ArrayList<>();
-        for (ImageItem imageItem: item.getImageItems()) {
-            ImageItemVO imageItemVO = new ImageItemVO();
-            imageItemVO.setId(imageItem.getId());
-            imageItemVO.setImage(imageItem.getImage());
-            imageItemVOS.add(imageItemVO);
+        if (item.getImageItems() != null) {
+            for (ImageItem imageItem: item.getImageItems()) {
+                ImageItemVO imageItemVO = new ImageItemVO();
+                imageItemVO.setId(imageItem.getId());
+                imageItemVO.setImage(imageItem.getImage());
+                imageItemVOS.add(imageItemVO);
+            }
         }
         ItemVO itemVO = ItemVOBuilder.anItemVO().withId(item.getId())
                 .withName(item.getName())
@@ -128,6 +133,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ItemVO> getAll() {
 
         List<Item> items = itemRepository.findAll();
@@ -135,12 +141,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ItemVO> getItemByName(String name) {
         List<Item> items = itemRepository.findByName(name);
         return this.defaultJson(items);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ItemVO> getItemByCategory(Category cate) {
 //        List<Item> items = itemRepository.findAllByCategories(cate);
 //        return this.defaultJson(items);
@@ -148,22 +156,26 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ItemVO> getItemByCategoryOrName(String key) {
 
         return null;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ItemVO> getItemBestSeller(List<Integer> ids) {
         return this.defaultJson(itemRepository.findByIdIn(ids));
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ItemVO> getItemPromotion(int quantity) {
         return this.defaultJson(itemRepository.findAllByOrderByPromotionItemsDesc()).subList(0,quantity);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ItemVO> getItemTool(int quantity) {
         Category category = new Category();
         category = categoryRepository.findOne(44);
@@ -171,6 +183,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Page<ItemVO> search(String key,int page, int size) {
         Page<Item> items = itemRepository.search(key, new PageRequest(page, size));
         ItemServiceImpl itemService = new ItemServiceImpl();
@@ -184,11 +197,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ItemVO> searchWithCategory(int cate_id, String key) {
         return this.defaultJson(itemRepository.searchWithCategory(cate_id, key));
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ItemVO> searchWithSupplierId(Integer id, String key) {
         List<Item> items = itemRepository.findByNameLikeAndSupplier_Id('%'+key+'%',id);
         List<ItemVO> itemVOS = new ArrayList<>();
@@ -223,18 +238,21 @@ public class ItemServiceImpl implements ItemService {
 //    }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ItemVO> getItemNew(int quantity) {
         return this.defaultJson(itemRepository.findAllByOrderByIdDesc()).subList(0,quantity);
     }
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ItemVO getItemById( int id) {
         Item item = itemRepository.findOne(id);
         return convertVO(item);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Page<ItemVO> findPaginated(int page, int size, String sort) {
         String direction = sort.substring(0,1);
         String keySort = sort.substring(1,sort.length());
@@ -251,12 +269,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<ItemVO> getCart(List<Integer> itemIds) {
         List<ItemVO> itemVOS = this.defaultJson(itemRepository.findByIdIn(itemIds));
         return itemVOS;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Page<ItemStatisticView> statisticBestSeller(int page, int size,String sort,
                                                        String beginAt, String endAt) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -280,6 +300,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Item create(Item item) {
         Item newItem = new Item();
         newItem.setName(item.getName());
@@ -302,6 +323,7 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void init() {
         try {
             User user = new User();
@@ -331,6 +353,7 @@ public class ItemServiceImpl implements ItemService {
 
     }
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Set<CategoryVO> getCategory(Integer id){
         Item item = itemRepository.findOne(id);
         CategoryServiceImpl categoryService = new CategoryServiceImpl();
