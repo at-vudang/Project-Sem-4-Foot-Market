@@ -5,6 +5,7 @@ import com.aptech.foodmarket.food_market.service.UnitService;
 import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
 import com.aptech.foodmarket.food_market.vo.UnitVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,7 @@ public class UnitController {
         return unitService.getAll();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{id}")
     public void deleteItem(@PathVariable Integer id) {
         unitService.deleteItem(id);

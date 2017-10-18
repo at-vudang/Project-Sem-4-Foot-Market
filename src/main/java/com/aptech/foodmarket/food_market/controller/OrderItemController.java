@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -61,6 +62,7 @@ public class OrderItemController {
         }
         return new ArrayList<>();
     }
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping("/admin/getItemByOrder/{id}")
     @ResponseBody
     public List<OrderItemVO> getItemByOrderAdmin(@PathVariable Integer id, HttpServletRequest request)  throws EntityNotFoundException {

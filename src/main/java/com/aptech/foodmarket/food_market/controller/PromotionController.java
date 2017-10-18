@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,16 +35,19 @@ public class PromotionController {
         return  promotionService.getById(id);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN') AND hasRole('SUPPLIER')")
     @RequestMapping(method = RequestMethod.DELETE, value = "/delete/{id}")
     public void deleteItem(@PathVariable Integer id) {
         promotionItemService.deleteItem(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN') AND hasRole('SUPPLIER')")
     @RequestMapping(method = RequestMethod.POST, value = "")
     public ResponseEntity<PromotionVO> createPromotion(@RequestBody Promotion promotion) {
         return new ResponseEntity<PromotionVO>(promotionService.create(promotion), HttpStatus.OK);
     }
+
+    @PreAuthorize("hasRole('ADMIN') AND hasRole('SUPPLIER')")
     @RequestMapping(method = RequestMethod.PUT, value = "")
     public ResponseEntity<PromotionVO> updatePromotion(@RequestBody Promotion promotion) {
         return new ResponseEntity<PromotionVO>(promotionService.update(promotion), HttpStatus.OK);
