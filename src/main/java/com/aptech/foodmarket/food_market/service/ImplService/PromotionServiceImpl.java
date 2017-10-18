@@ -34,7 +34,7 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PromotionVO create(Promotion promotion) {
+    public PromotionVO create(Promotion promotion) throws Exception {
         promotion.setActive(true);
         promotion = promotionRepository.save(promotion);
         for (PromotionItem promotionItem: promotion.getPromotionItems()
@@ -56,11 +56,13 @@ public class PromotionServiceImpl implements PromotionService {
             for (PromotionItem promotionItem: promotionUpdate.getPromotionItems()) {
                 promotionItemService.deleteItem(promotionItem.getId());
             }
-            for (PromotionItem promotionItem: promotion.getPromotionItems()
-                    ) {
-                promotionItem.setActive(true);
-                promotionItem.setPromotion(promotionUpdate);
-                promotionItemService.create(promotionItem);
+            if (promotion.getPromotionItems() != null) {
+                for (PromotionItem promotionItem: promotion.getPromotionItems()
+                        ) {
+                    promotionItem.setActive(true);
+                    promotionItem.setPromotion(promotionUpdate);
+                    promotionItemService.create(promotionItem);
+                }
             }
             promotionUpdate.setEndAt(promotion.getEndAt());
             promotionUpdate.setFromAt(promotion.getFromAt());

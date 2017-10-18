@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,6 +27,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Autowired
     private CategoryRepository categoryRepository;
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Set<CategoryVO> getCategoriesByLevel(Integer level) {
         Set<Category> categories = categoryRepository.findByLevelCategory(level);
         return this.defaultJson(categories);
@@ -46,12 +48,14 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Set<CategoryVO> getCategoriesByParent(Integer parentID) {
         Set<Category> categories = categoryRepository.findByParentId(parentID);
         return this.defaultJson(categories);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public CategoryVO getCategoryById(Integer id) {
         Category category = categoryRepository.findOne(id);
         CategoryVO categoryVO = CategoryVOBuilder.aCategoryVO().withId(id)
@@ -65,6 +69,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Autowired
     private ItemRepository itemRepository;
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Page<ItemVO> getItems(Integer id, int page, int size) {
         Category category = categoryRepository.findOne(id);
         ItemServiceImpl itemService = new ItemServiceImpl();
@@ -80,6 +85,7 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Page<ItemVO> getItems(Integer id, int page, int size, String sort) {
 
         Category category = categoryRepository.findOne(id);
@@ -106,6 +112,7 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Category create(Category categorie) {
         try {
             Category category = new Category();
@@ -121,6 +128,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     }
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public CategoryVO deleteItem(int id) {
         Category cate = categoryRepository.findOne(id);
         CategoryVO categoryVO = this.convertVO(cate);

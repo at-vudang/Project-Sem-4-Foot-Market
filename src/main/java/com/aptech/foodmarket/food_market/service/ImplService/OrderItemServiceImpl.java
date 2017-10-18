@@ -20,6 +20,7 @@ import com.aptech.foodmarket.food_market.vo.OrderVO;
 import com.aptech.foodmarket.food_market.vo.PromotionItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,7 @@ public class OrderItemServiceImpl implements OrderItemService{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public List<OrderItemVO> getItemByOrder(int id) throws EntityNotFoundException {
         List<OrderItem> orderItems = orderRepository.findOne(id).getOrderItems();
         List<OrderItemVO> orderItemVOS = new ArrayList<>();
@@ -58,6 +60,7 @@ public class OrderItemServiceImpl implements OrderItemService{
         return orderItemVOS;
     }
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public OrderItemVO deleteItem(int id) {
         OrderItem orderItem = orderItemRepository.findOne(id);
         OrderItemVO orderItemVO = this.convertVO(orderItem);

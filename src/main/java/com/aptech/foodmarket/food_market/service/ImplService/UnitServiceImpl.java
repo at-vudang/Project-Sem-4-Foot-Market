@@ -35,9 +35,11 @@ public class UnitServiceImpl implements UnitService {
     public List<UnitVO> getAll() {
         List<Unit> units = unitRepository.findAll();
         List<UnitVO> unitVOs = new ArrayList<>();
-        for (Unit unit: units
-             ) {
-            unitVOs.add(changUnitVO(unit));
+        if (units != null) {
+            for (Unit unit: units
+                    ) {
+                unitVOs.add(changUnitVO(unit));
+            }
         }
         return unitVOs;
     }

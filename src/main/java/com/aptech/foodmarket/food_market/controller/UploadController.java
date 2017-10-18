@@ -29,7 +29,7 @@ import java.util.Map;
 @RequestMapping("/upload")
 public class UploadController {
 
-    private static String UPLOADED_FOLDER = "/home/vudang/Documents/Sem4/Images/";
+    private static String UPLOADED_FOLDER = "/home/vudang/Documents/Sem4/Images/Upload/";
 
     @RequestMapping(value = "/upload",
             method = { RequestMethod.POST })

@@ -44,11 +44,13 @@ public class OrderServiceImpl implements OrderService{
     public OrderVO convertVO(Order order) {
         Double total = 0.0;
         List<OrderItemVO> orderItemVOS = new ArrayList<>();
-        for (OrderItem orderItem:order.getOrderItems()
-             ) {
-            orderItemVOS.add(orderItemService.convertVO(orderItem));
-            if (orderItem.getPriceOffical() != null) {
-                total += orderItem.getPriceOffical() * orderItem.getQuantity();
+        if (order.getOrderItems() != null) {
+            for (OrderItem orderItem:order.getOrderItems()
+                    ) {
+                orderItemVOS.add(orderItemService.convertVO(orderItem));
+                if (orderItem.getPriceOffical() != null) {
+                    total += orderItem.getPriceOffical() * orderItem.getQuantity();
+                }
             }
         }
         OrderVO orderVO = OrderVOBuilder.anOrderVO().withId(order.getId()).withAddress(order.getAddress())
@@ -106,6 +108,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public OrderVO updateStatus(int id, byte status) {
         Order order = orderRepository.findOne(id);
         order.setStatus(status);
@@ -171,10 +174,12 @@ public class OrderServiceImpl implements OrderService{
 
     public OrderVO convertVOWithoutOrderItem(Order order) {
         Double total = 0.0;
-        for (OrderItem orderItem: order.getOrderItems()
-             ) {
-            if (orderItem.getPriceOffical() != null) {
-                total += orderItem.getPriceOffical();
+        if (order.getOrderItems() != null) {
+            for (OrderItem orderItem: order.getOrderItems()
+                    ) {
+                if (orderItem.getPriceOffical() != null) {
+                    total += orderItem.getPriceOffical();
+                }
             }
         }
         OrderVO orderVO = OrderVOBuilder.anOrderVO().withId(order.getId()).withAddress(order.getAddress())
