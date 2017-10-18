@@ -104,10 +104,6 @@ public class UserController {
     public ResponseEntity<UserVO> createUser(@RequestBody UserVO userVO) {
         return new ResponseEntity<UserVO>(userService.createUser(userVO), HttpStatus.OK);
     }
-    @RequestMapping(method = RequestMethod.POST, value = "/create")
-    public ResponseEntity<UserVO> create(@RequestBody UserVO userVO) {
-        return new ResponseEntity<UserVO>(userService.create(userVO), HttpStatus.OK);
-    }
     @RequestMapping(method = RequestMethod.PUT, value = "/update")
     @ResponseBody
     public ResponseEntity<UserVO> updateUser(@RequestHeader(value="Authorization") String user_token, @RequestBody UserVO userVO) {
@@ -158,9 +154,9 @@ public class UserController {
         return new ResponseEntity<UserVO>(userService.updatePassword(id, newPassword), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/checkEmail", params = {"email"})
+    @RequestMapping(method = RequestMethod.GET,value = "/check-mail",params = {"email"})
     @ResponseBody
-    public UserVO checkEmail(@RequestParam String email) {
+    public Boolean checkEmail(@RequestParam  String email) {
         return userService.checkEmail(email);
     }
 }
