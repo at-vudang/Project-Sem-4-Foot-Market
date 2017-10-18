@@ -2,8 +2,11 @@ package com.aptech.foodmarket.food_market.model;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Date;
 
 @Entity
@@ -11,6 +14,7 @@ import java.util.Date;
 @Table(name = "image_items")
 
 public class ImageItem {
+    private static String hostname = "http://foodmarket.ddns.net:9000/Images/Upload";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -74,9 +78,8 @@ public class ImageItem {
     public void setItem(Item item) {
         this.item = item;
     }
-
     public String getImage() {
-        return image;
+        return hostname + '/' + image;
     }
 
     public void setImage(String image) {
