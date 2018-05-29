@@ -28,7 +28,7 @@ public interface ItemService {
     public List<ItemVO> getItemByCategoryOrName( String key);
 
     public List<ItemVO> getItemPromotion( int quantity);
-
+    public List<ItemVO> getItemTrending( int quantity);
     public List<ItemVO> getItemNew( int quantity);
 
     public ItemVO getItemById( int id);

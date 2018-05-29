@@ -73,6 +73,7 @@ public class UserServiceImpl implements UserService {
         user.setFullName(userVO.getFullName());
         user.setAddress(userVO.getAddress());
         user.setBirthday(userVO.getBirthday());
+        user.setPhone(userVO.getPhone());
         user.setCreditCard(userVO.getCreditCard());
         user.setEmail(userVO.getEmail());
         user.setGender(userVO.getGender());

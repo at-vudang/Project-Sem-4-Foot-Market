@@ -7,6 +7,7 @@ import com.aptech.foodmarket.food_market.model.*;
 import com.aptech.foodmarket.food_market.repository.*;
 import com.aptech.foodmarket.food_market.service.OrderService;
 import com.aptech.foodmarket.food_market.service.PromotionItemService;
+import com.aptech.foodmarket.food_market.utils.OrderStatus;
 import com.aptech.foodmarket.food_market.vo.ItemVO;
 import com.aptech.foodmarket.food_market.vo.OrderItemVO;
 import com.aptech.foodmarket.food_market.vo.OrderVO;
@@ -72,7 +73,7 @@ public class OrderServiceImpl implements OrderService{
         order.setAddress(orderVO.getAddress());
         order.setPhone(orderVO.getPhone());
         order.setNote(orderVO.getNote());
-        order.setStatus(Byte.parseByte("2"));
+        order.setStatus(Byte.parseByte(OrderStatus.Pending.getValue()));
         order.setTransportedAt(orderVO.getTransportedAt());
         User user = userRepository.findOne(orderVO.getUserId());
         order.setUser(user);

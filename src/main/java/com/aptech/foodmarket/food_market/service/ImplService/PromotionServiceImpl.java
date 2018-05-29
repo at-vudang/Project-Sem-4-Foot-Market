@@ -34,7 +34,7 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public PromotionVO create(Promotion promotion) throws Exception {
+    public PromotionVO create(Promotion promotion) {
         promotion.setActive(true);
         promotion = promotionRepository.save(promotion);
         for (PromotionItem promotionItem: promotion.getPromotionItems()

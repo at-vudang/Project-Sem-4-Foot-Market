@@ -14,7 +14,7 @@ import java.util.Date;
 @Table(name = "image_items")
 
 public class ImageItem {
-    private static String hostname = "http://foodmarket.ddns.net:9000/Images/Upload";
+    private static String hostname = "http://localhost:9000/Images/Upload";
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
