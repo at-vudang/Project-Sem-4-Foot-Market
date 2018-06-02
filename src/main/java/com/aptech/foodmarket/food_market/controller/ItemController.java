@@ -109,6 +109,11 @@ public class ItemController {
     public List<ItemVO> getItemPromotion(int quantity) throws EntityNotFoundException {
         return itemService.getItemPromotion(quantity);
     }
+    @RequestMapping("/getItemTrending")
+    @ResponseBody
+    public List<ItemVO> getItemTrending(int quantity) throws EntityNotFoundException {
+        return itemService.getItemTrending(quantity);
+    }
 
     @RequestMapping("/getItemTool")
     @ResponseBody

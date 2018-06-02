@@ -26,7 +26,7 @@ public class Item {
     public Item(Integer id) {
         this.id = id;
     }
-    private static String hostname = "http://foodmarket.ddns.net:9000/Images/Upload";
+    private static String hostname = "http://localhost:9000/Images/Upload";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,7 +79,7 @@ public class Item {
     private Supplier supplier;
 
     @OneToMany(mappedBy = "item")
-    @Where(clause = "promotion_id in (select id from promotions a where a.end_at >= CURDATE())")
+    @Where(clause = "promotion_id in (select a.id from promotions a where a.end_at >= CURDATE())")
     private List<PromotionItem> promotionItems;
 
     @OneToMany(mappedBy = "item")

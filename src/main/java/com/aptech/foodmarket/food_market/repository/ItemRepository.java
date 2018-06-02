@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item,Integer>, PagingAndSortingRepository<Item, Integer>{
@@ -23,9 +24,13 @@ public interface ItemRepository extends JpaRepository<Item,Integer>, PagingAndSo
     List<Item> findByNameLikeAndSupplier_Id(String name, Integer id);
     List<Item> findByNameIsLike(String name);
     List<Item> findAllByOrderByIdDesc();
-
+    List<Item> findAllByOrderByCreatedAtDesc();
     List<Item> findAllByOrderByPromotionItemsDesc();
+    @Query(value="SELECT i.*,p.* as promotion ,pi.* from items i join promotion_items pi on i.id = pi.item_id join promotions p on p.id = pi.promotion_id where p.end_at >= ?1", nativeQuery = true)
+    List<Item> findAllByAndPromotionItem(Date date);
 //
+    List<Item> findAllByPromotionItemsNotNull( );
+    List<Item> findAllByPromotionItemsNotNullOrderByCreatedAt( );
 //    @Query("select * from ")
 //    List<Item> getItemBest();
 

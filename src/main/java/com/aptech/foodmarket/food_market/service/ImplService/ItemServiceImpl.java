@@ -171,8 +171,23 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<ItemVO> getItemPromotion(int quantity) {
-        return this.defaultJson(itemRepository.findAllByOrderByPromotionItemsDesc()).subList(0,quantity);
+        List<ItemVO> list = this.defaultJson(itemRepository.findAllByPromotionItemsNotNull());
+        if (list.size() >= quantity) {
+            return list.subList(0,quantity);
+        }
+        return list;
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<ItemVO> getItemTrending(int quantity) {
+        List<ItemVO> list = this.defaultJson(itemRepository.findAllByPromotionItemsNotNullOrderByCreatedAt());
+        if (list.size() >= quantity) {
+            return list.subList(0,quantity);
+        }
+        return list;
+    }
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -240,7 +255,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<ItemVO> getItemNew(int quantity) {
-        return this.defaultJson(itemRepository.findAllByOrderByIdDesc()).subList(0,quantity);
+        return this.defaultJson(itemRepository.findAllByOrderByCreatedAtDesc()).subList(0,quantity);
     }
 
 
